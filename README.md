@@ -1,10 +1,10 @@
 # 商城
 
-### Package
+## Package
 
-# vee-validate
+### vee-validate
 
-# sweet-alert
+### sweet-alert
 
-# font-awesome
+### font-awesome
 ```example: <fa :icon="['fas', 'home']" />```
