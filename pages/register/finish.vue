@@ -1,7 +1,7 @@
 <template>
   <section class="w-full">
     <div class="w-full flex items-center justify-center gap-2">
-      <font-awesome-icon class="text-green-600 text-3xl" :icon="['far', 'check-circle']" />
+      <fa class="text-green-600 text-3xl" :icon="['far', 'check-circle']" />
       <strong class="tracking-widest text-2xl">完成註冊</strong>
     </div>
 

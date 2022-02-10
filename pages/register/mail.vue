@@ -68,7 +68,7 @@
 
       <div class="w-full mt-7 flex items-center justify-end">
         <a class="text-[#0EA5E9] cursor-pointer" @click="reSendVertify()">
-          <font-awesome-icon :icon="['fas', 'redo']" /> 重寄驗證信
+          <fa :icon="['fas', 'redo']" /> 重寄驗證信
         </a>
       </div>
     </div>
