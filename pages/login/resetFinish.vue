@@ -1,7 +1,7 @@
 <template>
   <section class="w-full">
     <div class="w-full flex items-center justify-center gap-2">
-      <fa class="text-green-600 text-3xl" :icon="['far', 'check-circle']" />
+      <font-awesome-icon class="text-green-600 text-3xl" :icon="['far', 'check-circle']" />
       <strong class="tracking-widest text-2xl">已重設密碼</strong>
     </div>
 

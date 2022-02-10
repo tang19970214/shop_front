@@ -7,4 +7,4 @@
 ### sweet-alert
 
 ### font-awesome
-```example: <fa :icon="['fas', 'home']" />```
+```example: <font-awesome-icon :icon="['fas', 'home']" />```
