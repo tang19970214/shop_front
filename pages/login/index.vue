@@ -65,6 +65,7 @@ export default {
       formInfo: {
         account: "",
         password: "",
+        provider: "",
       },
 
       googleSignInParams: {

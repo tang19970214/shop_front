@@ -18,12 +18,7 @@ export const actions = {
     commit
   }, data) {
     return new Promise((resolve, reject) => {
-      const param = {
-        account: data.account,
-        password: data.password,
-        appKey: ""
-      }
-      $api.check.login(param).then((res) => {
+      $api.members.login(data).then((res) => {
         console.log('store/index:17', res);
         const {
           code,
