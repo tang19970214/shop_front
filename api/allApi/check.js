@@ -8,6 +8,13 @@ const api = {
       data
     })
   },
+  getUserProfile(params) {
+    return request({
+      url: "check/GetUserProfile",
+      method: "get",
+      params
+    })
+  },
 }
 
 export default api;

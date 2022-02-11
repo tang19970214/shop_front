@@ -13,7 +13,7 @@
       <div class="form-group relative pb-6">
         <label class="form-label inline-block mb-2 text-gray-700">Email</label>
         <ValidationProvider name="Email" rules="required" v-slot="{ errors }" class="w-full">
-          <input v-model="email" type="email" class="form-control w-full px-3 py-1.5 text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" :class="{'border-red-500': errors.length > 0}" placeholder="請輸入電子信箱 ex. user@example.com">
+          <input v-model="email" type="email" class="form-control w-full px-3 py-1.5 text-gray-700 bg-white border border-gray-300 rounded transition ease-in-out focus:text-gray-700 focus:border-blue-600 focus:outline-none" :class="{'border-red-500': errors.length > 0}" placeholder="請輸入電子信箱 ex. user@example.com">
           <span v-if="errors.length > 0" class="absolute left-0 bottom-1 text-red-500 text-xs">{{ errors[0] }}</span>
         </ValidationProvider>
       </div>
@@ -54,24 +54,22 @@
     </ValidationObserver>
 
     <!-- vertify -->
-    <div class="w-full mt-8" v-if="defaultStep === 2">
-      <div class="w-full text-gray-700">
-        <p>我們已經將電子郵件寄送至</p>
+    <ValidationObserver ref="vertify" v-if="defaultStep === 2">
+      <div class="w-full text-center mt-6 mb-4">
+        <p>驗證碼已發送至</p>
         <p>{{email}}</p>
       </div>
 
-      <div class="w-full mt-4 text-gray-700">
-        <p>您必須驗證電子郵件才能繼續執行。</p>
-        <p>如果您尚未收到驗證電子郵件，請查看【垃圾郵件】或【電子廣告郵件】檔案夾。</p>
-        <p>您也可以在下面選按重寄按鈕，要求再寄一次。</p>
+      <div class="form-group relative pb-6">
+        <label class="form-label inline-block mb-2 text-gray-700">驗證碼</label>
+        <ValidationProvider name="驗證碼" rules="required" v-slot="{ errors }" class="w-full">
+          <input v-model="verifyCode" type="phone" class="form-control w-full px-3 py-1.5 text-gray-700 bg-white border border-gray-300 rounded transition ease-in-out focus:text-gray-700 focus:border-blue-600 focus:outline-none" :class="{'border-red-500': errors.length > 0}" placeholder="請輸入簡訊內6位數驗證碼" @keypress.enter="goVerify()">
+          <span v-if="errors.length > 0" class="absolute left-0 bottom-1 text-red-500 text-xs">{{ errors[0] }}</span>
+        </ValidationProvider>
       </div>
 
-      <div class="w-full mt-7 flex items-center justify-end">
-        <a class="text-[#0EA5E9] cursor-pointer" @click="reSendVertify()">
-          <fa :icon="['fas', 'redo']" /> 重寄驗證信
-        </a>
-      </div>
-    </div>
+      <button type="submit" class="w-full p-1.5 rounded-lg shadow-md text-white text-lg tracking-widest bg-gradient-to-r from-[#FA5936] to-[#FF6D3F] hover:shadow-inner" @click="goVerify()">驗證</button>
+    </ValidationObserver>
   </section>
 </template>
 
@@ -83,10 +81,11 @@ export default {
       defaultStep: 1,
       stepList: [
         { id: 1, label: "輸入信箱" },
-        { id: 2, label: "收驗證信" },
+        { id: 2, label: "輸入驗證碼" },
       ],
 
       email: "",
+      verifyCode: "",
     };
   },
   methods: {
@@ -97,9 +96,24 @@ export default {
         this.defaultStep = 2;
       }
     },
-    reSendVertify() {
-      console.log("驗證");
-      // this.$router.push({ name: "register-finish" });
+    async goVerify() {
+      const status = await this.$refs.vertify.validate();
+
+      if (status) {
+        const query = {
+          acc: this.phone || "0975429820",
+          verifyCode: this.verifyCode,
+        };
+        $api.members.checkRegistVerifyCode(query).then(() => {
+          this.$swal.fire({
+            icon: "success",
+            title: "完成註冊！",
+            timer: 1500,
+            showConfirmButton: false,
+          });
+          this.$router.push({ name: "register-finish" });
+        });
+      }
     },
   },
 };

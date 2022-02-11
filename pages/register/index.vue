@@ -13,12 +13,12 @@
       <div class="form-group relative pb-6">
         <label class="form-label inline-block mb-2 text-gray-700">手機號碼</label>
         <ValidationProvider name="手機號碼" rules="required" v-slot="{ errors }" class="w-full">
-          <input v-model="phone" type="phone" class="form-control w-full px-3 py-1.5 text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" :class="{'border-red-500': errors.length > 0}" placeholder="請輸入手機號碼 ex. 0912345678">
+          <input v-model="registerInfo.phone" type="phone" class="form-control w-full px-3 py-1.5 text-gray-700 bg-white border border-gray-300 rounded transition ease-in-out focus:text-gray-700 focus:border-blue-600 focus:outline-none" :class="{'border-red-500': errors.length > 0}" placeholder="請輸入手機號碼 ex. 0912345678" @keypress.enter="nextStep()">
           <span v-if="errors.length > 0" class="absolute left-0 bottom-1 text-red-500 text-xs">{{ errors[0] }}</span>
         </ValidationProvider>
       </div>
 
-      <button type="submit" class="w-full p-1.5 rounded-lg shadow-md text-white text-lg tracking-widest bg-gradient-to-r from-[#FA5936] to-[#FF6D3F] hover:shadow-inner mb-4" @click="nextStep()">下一步</button>
+      <button type="submit" class="w-full p-1.5 rounded-lg shadow-md text-white text-lg tracking-widest bg-gradient-to-r from-[#FA5936] to-[#FF6D3F] hover:shadow-inner mb-4 disabled:cursor-not-allowed disabled:opacity-80" :disabled="disNextStep" @click="nextStep()">下一步</button>
 
       <div class="w-full text-center mb-6 text-sm text-gray-400">
         <p>若要繼續註冊，請先閱讀並同意本商城的<a class="text-[#0EA5E9] underline hover:no-underline cursor-pointer">服務條款</a>與<a class="text-[#0EA5E9] underline hover:no-underline cursor-pointer">隱私權政策</a></p>
@@ -57,18 +57,26 @@
     <ValidationObserver ref="vertify" v-if="defaultStep === 2">
       <div class="w-full text-center mt-6 mb-4">
         <p>驗證碼已發送至</p>
-        <p>{{phone}}</p>
+        <p>{{registerInfo.phone}}</p>
       </div>
 
       <div class="form-group relative pb-6">
         <label class="form-label inline-block mb-2 text-gray-700">驗證碼</label>
         <ValidationProvider name="驗證碼" rules="required" v-slot="{ errors }" class="w-full">
-          <input v-model="vertifyCode" type="phone" class="form-control w-full px-3 py-1.5 text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" :class="{'border-red-500': errors.length > 0}" placeholder="請輸入簡訊內6位數驗證碼">
+          <input v-model="registerInfo.verifyCode" type="phone" class="form-control w-full px-3 py-1.5 text-gray-700 bg-white border border-gray-300 rounded transition ease-in-out focus:text-gray-700 focus:border-blue-600 focus:outline-none" :class="{'border-red-500': errors.length > 0}" placeholder="請輸入簡訊內6位數驗證碼">
           <span v-if="errors.length > 0" class="absolute left-0 bottom-1 text-red-500 text-xs">{{ errors[0] }}</span>
         </ValidationProvider>
       </div>
 
-      <button type="submit" class="w-full p-1.5 rounded-lg shadow-md text-white text-lg tracking-widest bg-gradient-to-r from-[#FA5936] to-[#FF6D3F] hover:shadow-inner" @click="goVertify()">驗證</button>
+      <div class="form-group relative pb-6">
+        <label class="form-label inline-block mb-2 text-gray-700">設定密碼</label>
+        <ValidationProvider name="設定密碼" rules="required" v-slot="{ errors }" class="w-full">
+          <input v-model="registerInfo.password" type="password" class="form-control w-full px-3 py-1.5 text-gray-700 bg-white border border-gray-300 rounded transition ease-in-out focus:text-gray-700 focus:border-blue-600 focus:outline-none" :class="{'border-red-500': errors.length > 0}" placeholder="請輸入您的密碼" @keypress.enter="goVerify()">
+          <span v-if="errors.length > 0" class="absolute left-0 bottom-1 text-red-500 text-xs">{{ errors[0] }}</span>
+        </ValidationProvider>
+      </div>
+
+      <button type="submit" class="w-full p-1.5 rounded-lg shadow-md text-white text-lg tracking-widest bg-gradient-to-r from-[#FA5936] to-[#FF6D3F] hover:shadow-inner disabled:cursor-not-allowed disabled:opacity-80" :disabled="disGoVerify" @click="goVerify()">驗證</button>
     </ValidationObserver>
   </section>
 </template>
@@ -84,21 +92,72 @@ export default {
         { id: 2, label: "輸入驗證碼" },
       ],
 
-      phone: "",
-      vertifyCode: "",
+      registerInfo: {
+        password: "",
+        name: "",
+        phone: "",
+        isPhoneVerify: true,
+        email: "",
+        isEmailVerify: false,
+        county: "",
+        area: "",
+        address: "",
+        birthday: "",
+        fbUserId: "",
+        googleUserId: "",
+        lineUserId: "",
+        verifyCode: "",
+      },
+
+      // disabled btn
+      disNextStep: false,
+      disGoVerify: false,
     };
   },
   methods: {
     async nextStep() {
+      this.disNextStep = true;
       const status = await this.$refs.form.validate();
 
       if (status) {
-        this.defaultStep = 2;
+        $api.members
+          .getRegistVerifyCode({ account: this.registerInfo.phone })
+          .then((res) => {
+            const { code } = res.data;
+            if (code === 200) {
+              this.defaultStep = 2;
+            } else {
+              this.disNextStep = false;
+            }
+          })
+          .catch(() => {
+            this.disNextStep = false;
+          });
+      } else {
+        this.disNextStep = false;
       }
     },
-    goVertify() {
-      console.log("驗證");
-      this.$router.push({ name: "register-finish" });
+    async goVerify() {
+      this.disGoVerify = true;
+      const status = await this.$refs.vertify.validate();
+
+      if (status) {
+        $api.members
+          .add(this.registerInfo)
+          .then((res) => {
+            const { code } = res.data;
+            if (code === 200) {
+              this.$router.push({ name: "register-finish" });
+            } else {
+              this.disGoVerify = false;
+            }
+          })
+          .catch(() => {
+            this.disGoVerify = false;
+          });
+      } else {
+        this.disGoVerify = false;
+      }
     },
   },
 };

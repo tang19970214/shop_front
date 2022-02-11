@@ -4,7 +4,7 @@
       <div class="form-group relative pb-6">
         <label class="form-label inline-block mb-2 text-gray-700">帳號</label>
         <ValidationProvider name="帳號" rules="required" v-slot="{ errors }" class="w-full">
-          <input v-model="formInfo.account" type="email" class="form-control w-full px-3 py-1.5 text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" :class="{'border-red-500': errors.length > 0}" placeholder="請輸入手機 / Email">
+          <input v-model="formInfo.account" type="email" class="form-control w-full px-3 py-1.5 text-gray-700 bg-white border border-gray-300 rounded transition ease-in-out focus:text-gray-700 focus:border-blue-600 focus:outline-none" :class="{'border-red-500': errors.length > 0}" placeholder="請輸入手機 / Email">
           <span v-if="errors.length > 0" class="absolute left-0 bottom-1 text-red-500 text-xs">{{ errors[0] }}</span>
         </ValidationProvider>
       </div>
@@ -12,7 +12,7 @@
       <div class="form-group relative pb-6">
         <label class="form-label inline-block mb-2 text-gray-700">密碼</label>
         <ValidationProvider name="密碼" rules="required" v-slot="{ errors }" class="w-full">
-          <input v-model="formInfo.password" type="password" class="form-control w-full px-3 py-1.5 text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" :class="{'border-red-500': errors.length > 0}" placeholder="請輸入密碼" @keypress.enter="handleLogin()">
+          <input v-model="formInfo.password" type="password" class="form-control w-full px-3 py-1.5 text-gray-700 bg-white border border-gray-300 rounded transition ease-in-out focus:text-gray-700 focus:border-blue-600 focus:outline-none" :class="{'border-red-500': errors.length > 0}" placeholder="請輸入密碼" @keypress.enter="handleLogin()">
           <span v-if="errors.length > 0" class="absolute left-0 bottom-1 text-red-500 text-xs">{{ errors[0] }}</span>
         </ValidationProvider>
       </div>
@@ -57,9 +57,6 @@
 <script>
 export default {
   name: "login-index",
-  asyncData() {
-    console.log($api);
-  },
   data() {
     return {
       formInfo: {
@@ -79,9 +76,19 @@ export default {
       const status = await this.$refs.form.validate();
 
       if (status) {
-        console.log("登入", this.formInfo);
-        this.$store.dispatch("Login", this.formInfo).then((res) => {
-          console.log(res);
+        this.$store.dispatch("Login", this.formInfo).then((status) => {
+          if (status === "success") {
+            this.$swal
+              .fire({
+                icon: "success",
+                title: "登入成功！",
+                timer: 1500,
+                showConfirmButton: false,
+              })
+              .then(() => {
+                this.$router.push("/");
+              });
+          }
         });
       }
     },
