@@ -1,4 +1,5 @@
-import { setToken, getToken, setRefreshToken, getRefreshToken } from "../api/auth";
+import Vue from 'vue'
+import { setToken, getToken, setRefreshToken, getRefreshToken } from "~/plugins/auth";
 
 export const state = () => ({
   token: getToken(),
@@ -19,7 +20,7 @@ export const actions = {
     commit
   }, data) {
     return new Promise((resolve, reject) => {
-      $api.members.login(data).then((res) => {
+      Vue.prototype.api.members.login(data).then((res) => {
         const { accessToken, refreshToken, code, message } = res.data;
         if (code === 200) {
           setToken(accessToken);
@@ -36,5 +37,4 @@ export const actions = {
       })
     })
   },
-
 }

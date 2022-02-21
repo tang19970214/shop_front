@@ -4,7 +4,7 @@
       <div class="form-group relative pb-6">
         <label class="form-label inline-block mb-2 text-gray-700">帳號</label>
         <ValidationProvider name="帳號" rules="required" v-slot="{ errors }" class="w-full">
-          <input v-model="formInfo.account" type="email" class="form-control w-full px-3 py-1.5 text-gray-700 bg-white border border-gray-300 rounded transition ease-in-out focus:text-gray-700 focus:border-blue-600 focus:outline-none" :class="{'border-red-500': errors.length > 0}" placeholder="請輸入手機 / Email">
+          <input v-model="formInfo.account" type="email" class="form-control w-full px-3 py-1.5 text-gray-700 bg-white border border-gray-300 rounded transition ease-in-out focus:text-gray-700 focus:border-blue-600 focus:outline-none" :class="{ 'border-red-500': errors.length > 0 }" placeholder="請輸入手機 / Email" />
           <span v-if="errors.length > 0" class="absolute left-0 bottom-1 text-red-500 text-xs">{{ errors[0] }}</span>
         </ValidationProvider>
       </div>
@@ -12,15 +12,18 @@
       <div class="form-group relative pb-6">
         <label class="form-label inline-block mb-2 text-gray-700">密碼</label>
         <ValidationProvider name="密碼" rules="required" v-slot="{ errors }" class="w-full">
-          <input v-model="formInfo.password" type="password" class="form-control w-full px-3 py-1.5 text-gray-700 bg-white border border-gray-300 rounded transition ease-in-out focus:text-gray-700 focus:border-blue-600 focus:outline-none" :class="{'border-red-500': errors.length > 0}" placeholder="請輸入密碼" @keypress.enter="handleLogin()">
+          <div class="w-full relative">
+            <input v-model="formInfo.password" id="pwdId" type="password" class="form-control w-full pl-3 pr-8 py-1.5 text-gray-700 bg-white border border-gray-300 rounded transition ease-in-out focus:text-gray-700 focus:border-blue-600 focus:outline-none" :class="{ 'border-red-500': errors.length > 0 }" placeholder="請輸入密碼" @keypress.enter="handleLogin()" />
+            <fa class="absolute right-2 top-[11px] cursor-pointer text-base text-gray-600" :icon="['fas', `${pwdType === 'password' ? 'eye-slash' : 'eye'}`]" @click="showPassword()" />
+          </div>
           <span v-if="errors.length > 0" class="absolute left-0 bottom-1 text-red-500 text-xs">{{ errors[0] }}</span>
         </ValidationProvider>
       </div>
 
-      <button type="submit" class="w-full p-1.5 rounded-lg shadow-md text-white text-lg tracking-widest bg-gradient-to-r from-[#FA5936] to-[#FF6D3F] hover:shadow-inner mb-4" @click="handleLogin()">登入</button>
+      <button type="submit" class="w-full p-1.5 rounded-lg shadow-md text-white text-lg tracking-widest bg-gradient-to-r from-[#FA5936] to-[#FF6D3F] hover:shadow-inner disabled:cursor-not-allowed disabled:opacity-80 mb-4" :disabled="disLoginBtn" @click="handleLogin()"><fa v-if="disLoginBtn" class="animate-spin text-xl mr-2" :icon="['fas', 'spinner']" />登入</button>
 
       <div class="flex justify-end items-center mb-6">
-        <a @click="$router.push({name: 'login-forgetPassword'})" class="text-[#0EA5E9] hover:underline cursor-pointer">忘記密碼？</a>
+        <a @click="$router.push({ name: 'login-forgetPassword' })" class="text-[#0EA5E9] hover:underline cursor-pointer">忘記密碼？</a>
       </div>
 
       <div class="w-full">
@@ -32,24 +35,23 @@
         <!-- 第三方登入 -->
         <div class="w-full grid grid-cols-1 lg:grid-cols-3 gap-2 lg:gap-5">
           <button class="px-1.5 flex items-center gap-1 bg-white border border-[#A3A3A3] rounded-lg cursor-pointer transition duration-300 hover:bg-[#CCCCCC] hover: bg-opacity-40" @click="facebookLogin()">
-            <img src="~/static/images/icon/facebook.svg" alt="Facebook" width="36px">
+            <img src="~/static/images/icon/facebook.svg" alt="Facebook" width="36px" />
             <p>Facebook</p>
           </button>
 
           <g-signin-button class="px-1.5 flex items-center gap-1 bg-white border border-[#A3A3A3] rounded-lg cursor-pointer transition duration-300 hover:bg-[#CCCCCC] hover: bg-opacity-40" :params="googleSignInParams" @success="onSignInSuccess" @error="onSignInError">
-            <img src="~/static/images/icon/google.svg" alt="Google" width="36px">
+            <img src="~/static/images/icon/google.svg" alt="Google" width="36px" />
             <p>Google</p>
           </g-signin-button>
 
           <button class="px-1.5 flex items-center gap-1 bg-white border border-[#A3A3A3] rounded-lg cursor-pointer transition duration-300 hover:bg-[#CCCCCC] hover: bg-opacity-40" @click="lineLogin()">
-            <img src="~/static/images/icon/line.svg" alt="LINE帳號" width="36px">
+            <img src="~/static/images/icon/line.svg" alt="LINE帳號" width="36px" />
             <p>LINE帳號</p>
           </button>
         </div>
       </div>
 
-      <p class="text-gray-800 mt-6 text-center">還沒加入會員？ <a class="text-[#0EA5E9] hover:underline cursor-pointer" @click="$router.push({name: 'register'})">前往註冊</a>
-      </p>
+      <p class="text-gray-800 mt-6 text-center">還沒加入會員？ <a class="text-[#0EA5E9] hover:underline cursor-pointer" @click="$router.push({ name: 'register' })">前往註冊</a></p>
     </ValidationObserver>
   </section>
 </template>
@@ -59,6 +61,8 @@ export default {
   name: "login-index",
   data() {
     return {
+      pwdType: "password",
+      disLoginBtn: false,
       formInfo: {
         account: "",
         password: "",
@@ -66,30 +70,48 @@ export default {
       },
 
       googleSignInParams: {
-        client_id:
-          "133220704045-n7apgpp07hs37pc1iu6ngcshc5c7sm3v.apps.googleusercontent.com",
+        client_id: "133220704045-n7apgpp07hs37pc1iu6ngcshc5c7sm3v.apps.googleusercontent.com",
       },
     };
   },
   methods: {
+    showPassword() {
+      let x = document.getElementById("pwdId");
+      if (x.type === "password") {
+        x.type = "text";
+      } else {
+        x.type = "password";
+      }
+      this.pwdType = x.type;
+    },
     async handleLogin() {
+      this.disLoginBtn = true;
       const status = await this.$refs.form.validate();
 
       if (status) {
-        this.$store.dispatch("Login", this.formInfo).then((status) => {
-          if (status === "success") {
-            this.$swal
-              .fire({
-                icon: "success",
-                title: "登入成功！",
-                timer: 1500,
-                showConfirmButton: false,
-              })
-              .then(() => {
-                this.$router.push("/");
-              });
-          }
-        });
+        this.$store
+          .dispatch("Login", this.formInfo)
+          .then((status) => {
+            if (status === "success") {
+              this.$swal
+                .fire({
+                  icon: "success",
+                  title: "登入成功！",
+                  timer: 1500,
+                  showConfirmButton: false,
+                })
+                .then(() => {
+                  this.$router.push("/");
+                });
+            } else {
+              this.disLoginBtn = false;
+            }
+          })
+          .catch(() => {
+            this.disLoginBtn = false;
+          });
+      } else {
+        this.disLoginBtn = false;
       }
     },
 
@@ -118,8 +140,6 @@ export default {
     },
   },
   mounted() {
-    // console.log($api);
-
     window.fbAsyncInit = () => {
       FB.init({
         appId: "1289081708257437",
@@ -130,13 +150,13 @@ export default {
       FB.AppEvents.logPageView();
 
       // Get FB Login Status
-      FB.getLoginStatus((res) => {
-        console.log("res", res);
-        const { status, authResponse } = res;
-        if (status === "connected") {
-          console.log(authResponse.accessToken);
-        }
-      });
+      // FB.getLoginStatus((res) => {
+      //   console.log("res", res);
+      //   const { status, authResponse } = res;
+      //   if (status === "connected") {
+      //     console.log(authResponse.accessToken);
+      //   }
+      // });
     };
   },
 };

@@ -9,33 +9,13 @@
 <script>
 export default {
   name: "IndexPage",
-  async asyncData() {
-    // members/load
-    console.log($api);
-    // const query = {
-    //   page: 1,
-    //   limit: 10,
-    // };
-    // await $api.members.load(query).then((res) => {
-    //   console.log(res);
-    // });
+  async asyncData({ app }) {
+    // console.log(app.$api);
   },
   methods: {
     goLogin() {
       this.$router.push("/login");
     },
-    // getList() {
-    //   const query = {
-    //     page: 1,
-    //     limit: 10,
-    //   };
-    //   $api.members.load(query).then((res) => {
-    //     console.log(res);
-    //   });
-    // },
-  },
-  mounted() {
-    // this.getList();
   },
 };
 </script>

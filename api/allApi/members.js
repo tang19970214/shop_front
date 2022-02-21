@@ -8,13 +8,6 @@ const api = {
       data
     })
   },
-  load(params) {
-    return request({
-      url: "members/Load",
-      method: "get",
-      params
-    })
-  },
   add(data) {
     return request({
       url: "members/Add",

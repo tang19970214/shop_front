@@ -4,6 +4,12 @@ export default {
   server: {
     port: 1803
   },
+  router: {
+    // middleware: ['ssr-cookie'],
+    scrollBehavior() {
+      return { x: 0, y:0 }
+    }
+  },
   head: {
     title: 'shop',
     htmlAttrs: {
@@ -24,18 +30,28 @@ export default {
   },
 
   css: [
+    '~/static/style/animation.css'
   ],
 
   plugins: [
-    { src: '~/static/application', ssr: false },
+    '~/plugins/auth',
+    '~/plugins/axios',
+    '~/plugins/api',
 
     { src: '~/plugins/sweet-alert', ssr: false },
     { src: '~/plugins/vee-validate', ssr: false },
     { src: '~/plugins/font-awesome', ssr: false },
     { src: '~/plugins/g-signin', ssr: false },
+    
+    { src: '~/static/application', ssr: false },
   ],
 
   components: true,
+
+  transition:{
+    name:'fade',
+    mode:'out-in'
+  },
 
   buildModules: [
     '@nuxtjs/tailwindcss',
@@ -52,10 +68,11 @@ export default {
 
   build: {
     transpile: ["vee-validate/dist/rules"],
-    plugins: [
-      new webpack.ProvidePlugin({
-        $api: ['~/api/index.js', 'default']
-      })
-    ]
+    vendor: ['axios'],
+    // plugins: [
+    //   new webpack.ProvidePlugin({
+    //      $api: ['~/api/index.js', 'default']
+    //   })
+    // ]
   }
 }
