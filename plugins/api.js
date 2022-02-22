@@ -20,11 +20,34 @@ export default ({ $request }, inject) => {
     },
     members: {
         login(data) {
-            return $request({
-                url: "members/login",
-                method: "post",
-                data
-            })
+          return $request({
+            url: "members/login",
+            method: "post",
+            data
+          })
+        },
+        getLineToken(data) {
+          return $request({
+            url: "https://api.line.me/oauth2/v2.1/token",
+            method: "post",
+            headers: {
+              'Content-Type': 'application/json;charset=UTF-8'
+            },  
+            data
+          })
+        },
+        getLineProfiles(tokenRes) {
+          const {
+            id_token,
+            token_type
+          } = tokenRes;
+          let url = "https://api.line.me/v2/profile?Authorization";
+          url += `${token_type}`;
+          url += `${id_token}`;
+          return $request({
+            url: url,
+            method: "get"
+          })
         }
     }
   }

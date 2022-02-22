@@ -12,6 +12,13 @@ export default {
   async asyncData({ app }) {
     // console.log(app.$api);
   },
+  created() {
+    const params = new URLSearchParams(window.location.search)
+    const lineCode = params.get('code')
+    if (lineCode !== null) {
+      this.$router.push(`/register?code=${lineCode}`)
+    }
+  },
   methods: {
     goLogin() {
       this.$router.push("/login");

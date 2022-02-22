@@ -31,7 +31,7 @@
         </div>
 
         <!-- TODO: 第三方註冊 @YuTsung -->
-        <!-- <div class="w-full grid grid-cols-1 lg:grid-cols-3 lg:gap-5">
+        <div class="w-full grid grid-cols-1 lg:grid-cols-3 lg:gap-5">
           <button class="px-1.5 flex items-center gap-1 bg-white border border-[#A3A3A3] rounded-lg cursor-pointer transition duration-300 hover:bg-[#CCCCCC] hover: bg-opacity-40" @click="facebookLogin()">
             <img src="~/static/images/icon/facebook.svg" alt="Facebook" width="36px">
             <p>Facebook</p>
@@ -46,7 +46,7 @@
             <img src="~/static/images/icon/line.svg" alt="LINE帳號" width="36px">
             <p>LINE帳號</p>
           </button>
-        </div> -->
+        </div>
       </div>
 
       <p class="text-gray-800 mt-6 text-center">已是會員？ <a class="text-[#0EA5E9] hover:underline cursor-pointer" @click="$router.push({ name: 'login' })">前往登入</a></p>
@@ -115,6 +115,9 @@ export default {
       // disabled btn
       disNextStep: false,
       disGoVerify: false,
+      googleSignInParams: {
+        client_id: "133220704045-n7apgpp07hs37pc1iu6ngcshc5c7sm3v.apps.googleusercontent.com",
+      },
     };
   },
   methods: {
@@ -173,6 +176,99 @@ export default {
         this.disGoVerify = false;
       }
     },
+    facebookLogin() {
+      FB.login((res) => {
+        const {
+          accessToken,
+          data_access_expiration_time,
+          expiresIn,
+          userID
+        } = res.authResponse
+        console.log(accessToken)
+      });
+    },
+    onSignInSuccess(googleUser) {
+      const profile = googleUser.getBasicProfile();
+      // console.log(googleUser, profile);
+      const {
+        sf,
+        zv
+      } = profile
+      const {
+        access_token,
+        expires_at,
+        expires_in,
+        id_token
+      } = googleUser.wc
+      console.log(sf, zv)
+      console.log(id_token)
+
+    },
+    onSignInError(err) {
+      console.log(err.error);
+    },
+    lineLogin() {
+      let client_id = "1656841233";
+      let redirect_uri = `${process.env.VUE_APP_REDIRECTURI}`;
+      let link = "https://access.line.me/oauth2/v2.1/authorize?";
+      link += "response_type=code";
+      link += `&client_id=${client_id}`;
+      link += `&redirect_uri=${redirect_uri}`;
+      link += "&state=login";
+      link += "&scope=profile%20openid%20email";
+      window.location.href = link;
+    },
+    async getLineToken(lineCode) {
+      try {
+        let client_id = "1656841233";
+        let client_secret = "83d6a4c1fc49c5f9dac7e29b017cd0c0"
+        let redirect_uri = `${process.env.VUE_APP_REDIRECTURI}`;
+        let params = {
+          "grant_type": 'authorization_code',
+          "code": lineCode,
+          "redirect_uri": redirect_uri,
+          "client_id": client_id,
+          "client_secret": client_secret
+        }
+        const res = await this.api.members.getLineToken(params);
+        console.log(res)
+        // this.getLineProfiles(res);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async getLineProfiles(tokenRes) {
+      try {
+        const profileRes = await this.api.members.getLineProfiles(tokenRes);
+        const {
+          userId,
+          displayName,
+          pictureUrl,
+          statusMessage
+        } = profileRes;
+      } catch (error) {
+        console.log(error)
+      }
+    }
   },
+  created() {
+    const params = new URLSearchParams(window.location.search)
+    const lineCode = params.get('code')
+    if (lineCode !== null) {
+      this.getLineToken(lineCode)
+    }
+  },
+  mounted() {
+    window.fbAsyncInit = () => {
+      FB.init
+      ({
+        appId: "1289081708257437",
+        cookie: true,
+        xfbml: true,
+        version: "v12.0"
+      });
+      FB.AppEvents.logPageView();
+    };
+  }
 };
 </script>
