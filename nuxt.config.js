@@ -42,6 +42,7 @@ export default {
     { src: '~/plugins/vee-validate', ssr: false },
     { src: '~/plugins/font-awesome', ssr: false },
     { src: '~/plugins/g-signin', ssr: false },
+    { src: '~/plugins/aos', ssr: false },
     
     { src: '~/static/application', ssr: false },
   ],
