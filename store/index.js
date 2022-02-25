@@ -23,18 +23,19 @@ export const actions = {
       Vue.prototype.api.members.login(data).then((res) => {
         const { accessToken, refreshToken, code, message } = res.data;
         if (code === 200) {
-          setToken(accessToken);
-          setRefreshToken(refreshToken);
+          setToken(accessToken)
+          setRefreshToken(refreshToken)
           commit("setToken", accessToken);
-          commit("setRefreshToken",refreshToken);
+          commit("setRefreshToken", refreshToken);
+          // console.log(res.data);
 
           resolve('success');
         } else {
-          resolve(message)
+          resolve(message);
         }
       }).catch((err) => {
-        reject(err)
+        reject(err);
       })
     })
-  },
+  }
 }

@@ -11,9 +11,9 @@
     <!-- form -->
     <ValidationObserver ref="form" v-if="defaultStep === 1">
       <div class="form-group relative pb-6">
-        <label class="form-label inline-block mb-2 text-gray-700">手機號碼</label>
+        <label class="form-label inline-block mb-2 text-gray-700" for="phoneField">手機號碼</label>
         <ValidationProvider name="手機號碼" rules="required" v-slot="{ errors }" class="w-full">
-          <input ref="phoneField" v-model="registerInfo.phone" type="phone" class="form-control w-full px-3 py-1.5 text-gray-700 bg-white border border-gray-300 rounded transition ease-in-out focus:text-gray-700 focus:border-blue-600 focus:outline-none" :class="{ 'border-red-500': errors.length > 0 }" placeholder="請輸入手機號碼 ex. 0912345678" @keypress.enter="nextStep()" />
+          <input ref="phoneField" id="phoneField" v-model="registerInfo.phone" type="phone" class="form-control w-full px-3 py-1.5 text-gray-700 bg-white border border-gray-300 rounded transition ease-in-out focus:text-gray-700 focus:border-blue-600 focus:outline-none" :class="{ 'border-red-500': errors.length > 0 }" placeholder="請輸入手機號碼 ex. 0912345678" @keypress.enter="nextStep()" />
           <span v-if="errors.length > 0" class="absolute left-0 bottom-1 text-red-500 text-xs">{{ errors[0] }}</span>
         </ValidationProvider>
       </div>
@@ -31,7 +31,7 @@
         </div>
 
         <!-- TODO: 第三方註冊 @YuTsung -->
-        <div class="w-full grid grid-cols-1 lg:grid-cols-3 lg:gap-5">
+        <div class="w-full grid grid-cols-1 lg:grid-cols-3 gap-2 lg:gap-5">
           <button class="px-1.5 flex items-center gap-1 bg-white border border-[#A3A3A3] rounded-lg cursor-pointer transition duration-300 hover:bg-[#CCCCCC] hover: bg-opacity-40" @click="facebookLogin()">
             <img src="~/static/images/icon/facebook.svg" alt="Facebook" width="36px">
             <p>Facebook</p>
@@ -176,20 +176,27 @@ export default {
         this.disGoVerify = false;
       }
     },
-    facebookLogin() {
-      FB.login((res) => {
-        const {
-          accessToken,
-          data_access_expiration_time,
-          expiresIn,
-          userID
-        } = res.authResponse
-        console.log(accessToken)
+    async facebookLogin() {
+      await FB.login(() => {
+         FB.getLoginStatus((res) => {
+          const { authResponse, status } = res
+          console.log(authResponse)
+          if (status === 'connected') {
+            FB.api('/me', {
+              'fields': 'id, name, email, picture'
+            }, function (profileRes) {
+              const { id, name, email, picture } = profileRes
+              console.log(profileRes)
+            });
+          }
+        })
+      },{
+        scope: 'email',
+        auth_type: 'rerequest'
       });
     },
     onSignInSuccess(googleUser) {
       const profile = googleUser.getBasicProfile();
-      // console.log(googleUser, profile);
       const {
         sf,
         zv
@@ -202,7 +209,6 @@ export default {
       } = googleUser.wc
       console.log(sf, zv)
       console.log(id_token)
-
     },
     onSignInError(err) {
       console.log(err.error);
@@ -210,12 +216,8 @@ export default {
     lineLogin() {
       let client_id = "1656841233";
       let redirect_uri = `${process.env.VUE_APP_REDIRECTURI}`;
-      let link = "https://access.line.me/oauth2/v2.1/authorize?";
-      link += "response_type=code";
-      link += `&client_id=${client_id}`;
-      link += `&redirect_uri=${redirect_uri}`;
-      link += "&state=login";
-      link += "&scope=profile%20openid%20email";
+      let link = "https://access.line.me/oauth2/v2.1/authorize?response_type=code";
+      link += `&client_id=${client_id}&redirect_uri=${redirect_uri}&state=login&scope=profile%20openid%20email`;
       window.location.href = link;
     },
     async getLineToken(lineCode) {
@@ -230,22 +232,31 @@ export default {
           "client_id": client_id,
           "client_secret": client_secret
         }
-        const res = await this.api.members.getLineToken(params);
-        console.log(res)
-        // this.getLineProfiles(res);
+        const { data } = await this.api.members.getLineToken(params);
+        const {
+          access_token,
+          expires_in,
+          id_token,
+          refresh_token,
+          scope,
+          token_type
+        } = data
+        console.log(access_token);
+        this.getLineProfiles(access_token);
       } catch (error) {
         console.log(error);
       }
     },
-    async getLineProfiles(tokenRes) {
+    async getLineProfiles(idToken) {
       try {
-        const profileRes = await this.api.members.getLineProfiles(tokenRes);
+        const { data } = await this.api.members.getLineProfiles(idToken);
         const {
           userId,
           displayName,
           pictureUrl,
           statusMessage
-        } = profileRes;
+        } = data;
+        console.log(displayName, pictureUrl, userId);
       } catch (error) {
         console.log(error)
       }

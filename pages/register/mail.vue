@@ -11,9 +11,9 @@
     <!-- form -->
     <ValidationObserver ref="form" v-if="defaultStep === 1">
       <div class="form-group relative pb-6">
-        <label class="form-label inline-block mb-2 text-gray-700">Email</label>
+        <label class="form-label inline-block mb-2 text-gray-700" for="emailField">Email</label>
         <ValidationProvider name="Email" rules="required" v-slot="{ errors }" class="w-full">
-          <input ref="emailField" v-model="registerInfo.email" type="email" class="form-control w-full px-3 py-1.5 text-gray-700 bg-white border border-gray-300 rounded transition ease-in-out focus:text-gray-700 focus:border-blue-600 focus:outline-none" :class="{ 'border-red-500': errors.length > 0 }" placeholder="請輸入電子信箱 ex. user@example.com" @keypress.enter="nextStep()" />
+          <input ref="emailField" id="emailField" v-model="registerInfo.email" type="email" class="form-control w-full px-3 py-1.5 text-gray-700 bg-white border border-gray-300 rounded transition ease-in-out focus:text-gray-700 focus:border-blue-600 focus:outline-none" :class="{ 'border-red-500': errors.length > 0 }" placeholder="請輸入電子信箱 ex. user@example.com" @keypress.enter="nextStep()" />
           <span v-if="errors.length > 0" class="absolute left-0 bottom-1 text-red-500 text-xs">{{ errors[0] }}</span>
         </ValidationProvider>
       </div>
@@ -31,7 +31,7 @@
         </div>
 
         <!-- TODO: 第三方註冊 @YuTsung -->
-        <!-- <div class="w-full grid grid-cols-1 lg:grid-cols-3 lg:gap-5">
+        <div class="w-full grid grid-cols-1 lg:grid-cols-3 gap-2 lg:gap-5">
           <button class="px-1.5 flex items-center gap-1 bg-white border border-[#A3A3A3] rounded-lg cursor-pointer transition duration-300 hover:bg-[#CCCCCC] hover: bg-opacity-40" @click="facebookLogin()">
             <img src="~/static/images/icon/facebook.svg" alt="Facebook" width="36px">
             <p>Facebook</p>
@@ -46,7 +46,7 @@
             <img src="~/static/images/icon/line.svg" alt="LINE帳號" width="36px">
             <p>LINE帳號</p>
           </button>
-        </div> -->
+        </div>
       </div>
 
       <p class="text-gray-800 mt-6 text-center">已是會員？ <a class="text-[#0EA5E9] hover:underline cursor-pointer" @click="$router.push({ name: 'login' })">前往登入</a></p>
@@ -115,6 +115,9 @@ export default {
       // disabled btn
       disNextStep: false,
       disGoVerify: false,
+      googleSignInParams: {
+        client_id: "133220704045-n7apgpp07hs37pc1iu6ngcshc5c7sm3v.apps.googleusercontent.com",
+      },
     };
   },
   methods: {
@@ -173,6 +176,96 @@ export default {
         this.disGoVerify = false;
       }
     },
+    facebookLogin() {
+      FB.login((res) => {
+        const {
+          accessToken,
+          data_access_expiration_time,
+          expiresIn,
+          userID
+        } = res.authResponse
+        console.log(accessToken)
+      });
+    },
+    onSignInSuccess(googleUser) {
+      const profile = googleUser.getBasicProfile();
+      const {
+        sf,
+        zv
+      } = profile
+      const {
+        access_token,
+        expires_at,
+        expires_in,
+        id_token
+      } = googleUser.wc
+      console.log(sf, zv)
+      console.log(id_token)
+
+    },
+    onSignInError(err) {
+      console.log(err.error);
+    },
+    lineLogin() {
+      let client_id = "1656841233";
+      let redirect_uri = `${process.env.VUE_APP_REDIRECTURI}`;
+      let link = "https://access.line.me/oauth2/v2.1/authorize?response_type=code";
+      link += `&client_id=${client_id}&redirect_uri=${redirect_uri}&state=login&scope=profile%20openid%20email`;
+      window.location.href = link;
+    },
+    async getLineToken(lineCode) {
+      try {
+        let client_id = "1656841233";
+        let client_secret = "83d6a4c1fc49c5f9dac7e29b017cd0c0"
+        let redirect_uri = `${process.env.VUE_APP_REDIRECTURI}`;
+        let params = {
+          "grant_type": 'authorization_code',
+          "code": lineCode,
+          "redirect_uri": redirect_uri,
+          "client_id": client_id,
+          "client_secret": client_secret
+        }
+        const { data } = await this.api.members.getLineToken(params);
+        const {
+          access_token,
+          expires_in,
+          id_token,
+          refresh_token,
+          scope,
+          token_type
+        } = data
+        console.log(access_token);
+        this.getLineProfiles(access_token);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async getLineProfiles(idToken) {
+      try {
+        const { data } = await this.api.members.getLineProfiles(idToken);
+        const {
+          userId,
+          displayName,
+          pictureUrl,
+          statusMessage
+        } = data;
+        console.log(displayName, pictureUrl, userId);
+      } catch (error) {
+        console.log(error)
+      }
+    }
   },
+  mounted() {
+    window.fbAsyncInit = () => {
+      FB.init
+      ({
+        appId: "1289081708257437",
+        cookie: true,
+        xfbml: true,
+        version: "v12.0"
+      });
+      FB.AppEvents.logPageView();
+    };
+  }
 };
 </script>

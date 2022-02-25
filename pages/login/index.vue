@@ -64,6 +64,7 @@ export default {
       pwdType: "password",
       disLoginBtn: false,
       formInfo: {
+        source: "computer",
         account: "",
         password: "",
         provider: "",
@@ -114,15 +115,39 @@ export default {
         this.disLoginBtn = false;
       }
     },
-
-    facebookLogin() {
-      FB.login((res) => {
-        console.log(res);
+    async facebookLogin() {
+      await FB.login(() => {
+         FB.getLoginStatus((res) => {
+          const { authResponse, status } = res
+          console.log(authResponse)
+          if (status === 'connected') {
+            FB.api('/me', {
+              'fields': 'id, name, email, picture'
+            }, function (profileRes) {
+              const { id, name, email, picture } = profileRes
+              console.log(profileRes)
+            });
+          }
+        })
+      },{
+        scope: 'email',
+        auth_type: 'rerequest'
       });
     },
     onSignInSuccess(googleUser) {
       const profile = googleUser.getBasicProfile();
-      console.log(googleUser, profile);
+      const {
+        sf,
+        zv
+      } = profile
+      const {
+        access_token,
+        expires_at,
+        expires_in,
+        id_token
+      } = googleUser.wc
+      console.log(sf, zv)
+      console.log(id_token)
     },
     onSignInError(error) {
       console.log(error);
@@ -130,14 +155,58 @@ export default {
     lineLogin() {
       let client_id = "1656841233";
       let redirect_uri = `${process.env.VUE_APP_REDIRECTURI}`;
-      let link = "https://access.line.me/oauth2/v2.1/authorize?";
-      link += "response_type=code";
-      link += `&client_id=${client_id}`;
-      link += `&redirect_uri=${redirect_uri}`;
-      link += "&state=login";
-      link += "&scope=profile%20openid";
+      let link = "https://access.line.me/oauth2/v2.1/authorize?response_type=code";
+      link += `&client_id=${client_id}&redirect_uri=${redirect_uri}&state=login&scope=profile%20openid%20email`;
       window.location.href = link;
     },
+    async getLineToken(lineCode) {
+      try {
+        let client_id = "1656841233";
+        let client_secret = "83d6a4c1fc49c5f9dac7e29b017cd0c0"
+        let redirect_uri = `${process.env.VUE_APP_REDIRECTURI}`;
+        let params = {
+          "grant_type": 'authorization_code',
+          "code": lineCode,
+          "redirect_uri": redirect_uri,
+          "client_id": client_id,
+          "client_secret": client_secret
+        }
+        const { data } = await this.api.members.getLineToken(params);
+        const {
+          access_token,
+          expires_in,
+          id_token,
+          refresh_token,
+          scope,
+          token_type
+        } = data
+        console.log(access_token);
+        this.getLineProfiles(access_token);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async getLineProfiles(idToken) {
+      try {
+        const { data } = await this.api.members.getLineProfiles(idToken);
+        const {
+          userId,
+          displayName,
+          pictureUrl,
+          statusMessage
+        } = data;
+        console.log(displayName, pictureUrl, userId);
+      } catch (error) {
+        console.log(error)
+      }
+    }
+  },
+  created() {
+    const params = new URLSearchParams(window.location.search)
+    const lineCode = params.get('code')
+    if (lineCode !== null) {
+      this.getLineToken(lineCode)
+    }
   },
   mounted() {
     window.fbAsyncInit = () => {
@@ -148,15 +217,6 @@ export default {
         version: "v12.0",
       });
       FB.AppEvents.logPageView();
-
-      // Get FB Login Status
-      // FB.getLoginStatus((res) => {
-      //   console.log("res", res);
-      //   const { status, authResponse } = res;
-      //   if (status === "connected") {
-      //     console.log(authResponse.accessToken);
-      //   }
-      // });
     };
   },
 };

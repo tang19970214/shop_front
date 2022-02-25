@@ -8,7 +8,9 @@ export function getToken() {
 }
 
 export function setToken(token) {
-  return Cookies.set(TokenKey, token)
+  // const date = new Date()
+  // date.setTime(date.getTime() + (86400 * 1000)); //! 設定有效期限為一天
+  return Cookies.set(TokenKey, token, { expires: 3 }) //! 設定有效期限為三天
 }
 
 export function removeToken() {
