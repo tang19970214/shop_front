@@ -176,15 +176,23 @@ export default {
         this.disGoVerify = false;
       }
     },
-    facebookLogin() {
-      FB.login((res) => {
-        const {
-          accessToken,
-          data_access_expiration_time,
-          expiresIn,
-          userID
-        } = res.authResponse
-        console.log(accessToken)
+    async facebookLogin() {
+      await FB.login(() => {
+         FB.getLoginStatus((res) => {
+          const { authResponse, status } = res
+          console.log(authResponse)
+          if (status === 'connected') {
+            FB.api('/me', {
+              'fields': 'id, name, email, picture'
+            }, function (profileRes) {
+              const { id, name, email, picture } = profileRes
+              console.log(profileRes)
+            });
+          }
+        })
+      },{
+        scope: 'email',
+        auth_type: 'rerequest'
       });
     },
     onSignInSuccess(googleUser) {
@@ -254,18 +262,6 @@ export default {
         console.log(error)
       }
     }
-  },
-  mounted() {
-    window.fbAsyncInit = () => {
-      FB.init
-      ({
-        appId: "1289081708257437",
-        cookie: true,
-        xfbml: true,
-        version: "v12.0"
-      });
-      FB.AppEvents.logPageView();
-    };
   }
 };
 </script>
