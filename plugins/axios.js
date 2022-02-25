@@ -55,16 +55,19 @@ export default ({ $axios, redirect }, inject) => {
         })
         break
       default:
+        console.log('testttt')
         if(errorRes.response.code) {
-          if (errorRes.response.code !== 200) {
-            Swal.fire({
-              icon: 'error',
-              title: response.data.message,
-              showConfirmButton: false,
-              timer: 1500
-            })
+          switch(errorRes.response.code) {
+            default:
+              Swal.fire({
+                icon: 'error',
+                title: response.data.message,
+                showConfirmButton: false,
+                timer: 1500
+              })
           }
         }
+        break
     }
   })
 

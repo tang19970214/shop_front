@@ -30,7 +30,8 @@ export default {
   },
 
   css: [
-    '~/static/style/animation.css'
+    '~/static/style/animation.css',
+    '@/assets/scss/main.scss',
   ],
 
   plugins: [
@@ -43,6 +44,7 @@ export default {
     { src: '~/plugins/font-awesome', ssr: false },
     { src: '~/plugins/g-signin', ssr: false },
     { src: '~/plugins/aos', ssr: false },
+    { src: '~/plugins/tw-elements-path', ssr: false },
     
     { src: '~/static/application', ssr: false },
   ],
@@ -55,7 +57,7 @@ export default {
   },
 
   buildModules: [
-    '@nuxtjs/tailwindcss',
+    '@nuxt/postcss8',
     ["@nuxtjs/dotenv", {filename: ".env." + process.env.NODE_ENV}]
   ],
 
@@ -70,6 +72,12 @@ export default {
   build: {
     transpile: ["vee-validate/dist/rules"],
     vendor: ['axios'],
+    postcss: {
+      plugins: {
+        tailwindcss: {},
+        autoprefixer: {},
+      },
+    },
     // plugins: [
     //   new webpack.ProvidePlugin({
     //      $api: ['~/api/index.js', 'default']

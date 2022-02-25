@@ -2,15 +2,15 @@
   <section class="w-full">
     <ValidationObserver ref="form">
       <div class="form-group relative pb-6">
-        <label class="form-label inline-block mb-2 text-gray-700">帳號</label>
+        <label class="form-label inline-block mb-2 text-gray-700" for="accountId">帳號</label>
         <ValidationProvider name="帳號" rules="required" v-slot="{ errors }" class="w-full">
-          <input v-model="formInfo.account" type="email" class="form-control w-full px-3 py-1.5 text-gray-700 bg-white border border-gray-300 rounded transition ease-in-out focus:text-gray-700 focus:border-blue-600 focus:outline-none" :class="{ 'border-red-500': errors.length > 0 }" placeholder="請輸入手機 / Email" />
+          <input v-model="formInfo.account" id="accountId" type="email" class="form-control w-full px-3 py-1.5 text-gray-700 bg-white border border-gray-300 rounded transition ease-in-out focus:text-gray-700 focus:border-blue-600 focus:outline-none" :class="{ 'border-red-500': errors.length > 0 }" placeholder="請輸入手機 / Email" />
           <span v-if="errors.length > 0" class="absolute left-0 bottom-1 text-red-500 text-xs">{{ errors[0] }}</span>
         </ValidationProvider>
       </div>
 
       <div class="form-group relative pb-6">
-        <label class="form-label inline-block mb-2 text-gray-700">密碼</label>
+        <label class="form-label inline-block mb-2 text-gray-700" for="pwdId">密碼</label>
         <ValidationProvider name="密碼" rules="required" v-slot="{ errors }" class="w-full">
           <div class="w-full relative">
             <input v-model="formInfo.password" id="pwdId" type="password" class="form-control w-full pl-3 pr-8 py-1.5 text-gray-700 bg-white border border-gray-300 rounded transition ease-in-out focus:text-gray-700 focus:border-blue-600 focus:outline-none" :class="{ 'border-red-500': errors.length > 0 }" placeholder="請輸入密碼" @keypress.enter="handleLogin()" />
@@ -20,7 +20,7 @@
         </ValidationProvider>
       </div>
 
-      <button type="submit" class="w-full p-1.5 rounded-lg shadow-md text-white text-lg tracking-widest bg-gradient-to-r from-[#FA5936] to-[#FF6D3F] hover:shadow-inner disabled:cursor-not-allowed disabled:opacity-80 mb-4" :disabled="disLoginBtn" @click="handleLogin()"><fa v-if="disLoginBtn" class="animate-spin text-xl mr-2" :icon="['fas', 'spinner']" />登入</button>
+      <button type="submit" data-mdb-ripple="true" data-mdb-ripple-color="light" class="w-full p-1.5 rounded-lg shadow-md text-white text-lg tracking-widest bg-gradient-to-r from-[#FA5936] to-[#FF6D3F] hover:shadow-inner disabled:cursor-not-allowed disabled:opacity-80 mb-4" :disabled="disLoginBtn" @click="handleLogin()"><fa v-if="disLoginBtn" class="animate-spin text-xl mr-2" :icon="['fas', 'spinner']" />登入</button>
 
       <div class="flex justify-end items-center mb-6">
         <a @click="$router.push({ name: 'login-forgetPassword' })" class="text-[#0EA5E9] hover:underline cursor-pointer">忘記密碼？</a>

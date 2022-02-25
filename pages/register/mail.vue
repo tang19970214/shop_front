@@ -18,7 +18,7 @@
         </ValidationProvider>
       </div>
 
-      <button type="submit" class="w-full p-1.5 rounded-lg shadow-md text-white text-lg tracking-widest bg-gradient-to-r from-[#FA5936] to-[#FF6D3F] hover:shadow-inner disabled:cursor-not-allowed disabled:opacity-80 mb-4" :disabled="disNextStep" @click="nextStep()"><fa v-if="disNextStep" class="animate-spin text-xl mr-2" :icon="['fas', 'spinner']" />下一步</button>
+      <button type="submit" data-mdb-ripple="true" data-mdb-ripple-color="light" class="w-full p-1.5 rounded-lg shadow-md text-white text-lg tracking-widest bg-gradient-to-r from-[#FA5936] to-[#FF6D3F] hover:shadow-inner disabled:cursor-not-allowed disabled:opacity-80 mb-4" :disabled="disNextStep" @click="nextStep()"><fa v-if="disNextStep" class="animate-spin text-xl mr-2" :icon="['fas', 'spinner']" />下一步</button>
 
       <div class="w-full text-center mb-6 text-sm text-gray-400">
         <p>若要繼續註冊，請先閱讀並同意本商城的<a class="text-[#0EA5E9] underline hover:no-underline cursor-pointer">服務條款</a>與<a class="text-[#0EA5E9] underline hover:no-underline cursor-pointer">隱私權政策</a></p>
@@ -78,7 +78,7 @@
         </ValidationProvider>
       </div>
 
-      <button type="submit" class="w-full p-1.5 rounded-lg shadow-md text-white text-lg tracking-widest bg-gradient-to-r from-[#FA5936] to-[#FF6D3F] hover:shadow-inner disabled:cursor-not-allowed disabled:opacity-80" :disabled="disGoVerify" @click="goVerify()"><fa v-if="disGoVerify" class="animate-spin text-xl mr-2" :icon="['fas', 'spinner']" />驗證</button>
+      <button type="submit" data-mdb-ripple="true" data-mdb-ripple-color="light" class="w-full p-1.5 rounded-lg shadow-md text-white text-lg tracking-widest bg-gradient-to-r from-[#FA5936] to-[#FF6D3F] hover:shadow-inner disabled:cursor-not-allowed disabled:opacity-80" :disabled="disGoVerify" @click="goVerify()"><fa v-if="disGoVerify" class="animate-spin text-xl mr-2" :icon="['fas', 'spinner']" />驗證</button>
     </ValidationObserver>
   </section>
 </template>
