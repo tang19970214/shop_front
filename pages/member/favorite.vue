@@ -12,7 +12,7 @@
             <p class="text-sm text-neutral-400 line-through" v-if="item.sale > 0">${{ item.price }}</p>
           </div>
 
-          <fa class="cursor-pointer" :class="{ 'text-red-600': item.favorite }" :icon="[item.favorite ? 'fas' : 'far', 'heart']" @click="joinFavorite(item)" />
+          <fa class="cursor-pointer text-red-500" :icon="['fas', 'heart']" @click="cancelFavorite(item)" />
         </div>
       </div>
     </div>
@@ -41,7 +41,7 @@ export default {
     },
   },
   methods: {
-    joinFavorite(item) {
+    cancelFavorite(item) {
       item.favorite = !item.favorite;
 
       this.$swal.fire({
