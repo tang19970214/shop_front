@@ -9,8 +9,8 @@
 
       <button @click="getMemberByToken()" class="shadow-md duration-150 text-pink-400 border-2 border-pink-400 rounded-2xl p-3 mt-5 hover:bg-pink-400 hover:text-white">GET_MEMBER_BY_TOKEN</button>
 
-      <Banner-Carousel :carouselArr="carouselArr"></Banner-Carousel>
     </div>
+    <BannerCarousel :carouselArr="carouselArr"></BannerCarousel>
   </section>
 </template>
 
@@ -21,23 +21,21 @@ export default {
   async asyncData({ app }) {
     // console.log(app.$api);
     const carouselArr = [
-        {
-          img: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80',
-          text: 'The above example demonstrates the two core features of Vue:',
-        },
-        {
-          img: 'https://images.unsplash.com/photo-1559827291-72ee739d0d9a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1548&q=80',
-          text: `You may already have questions - don't worry. We will cover every little detail in the rest of the documentation. For now, please read along so you can have a high-level understanding of what Vue offers.`,
-        }
-      ]
+      {
+        img: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80",
+        text: "The above example demonstrates the two core features of Vue:",
+      },
+      {
+        img: "https://images.unsplash.com/photo-1559827291-72ee739d0d9a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1548&q=80",
+        text: `You may already have questions - don't worry. We will cover every little detail in the rest of the documentation. For now, please read along so you can have a high-level understanding of what Vue offers.`,
+      },
+    ];
 
-    return { carouselArr }
+    return { carouselArr };
   },
-  middleware: ['checkLineCode'],
+  middleware: ["checkLineCode"],
   data() {
-    return {
-      
-    }
+    return {};
   },
   methods: {
     goLogin() {
@@ -45,16 +43,16 @@ export default {
     },
     async getMemberByToken() {
       try {
-        const token = Cookies.get('Authorization')
-        const res = await this.api.members.getMemberByToken(token)
-        const { code, message } = res.data
-        const { email, id, name, phone } = res.data.result
-        console.log(code, message)
-        console.log(email, id, name, phone)
+        const token = Cookies.get("Authorization");
+        const res = await this.api.members.getMemberByToken(token);
+        const { code, message, result } = res.data;
+        const { email, id, name, phone } = result;
+        console.log(code, message);
+        console.log(email, id, name, phone);
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
-    }
-  }
+    },
+  },
 };
 </script>
