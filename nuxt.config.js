@@ -1,11 +1,9 @@
-import webpack from "webpack";
-
 export default {
   server: {
     port: 1803
   },
   router: {
-    // middleware: ['ssr-cookie'],
+    // middleware: [],
     scrollBehavior() {
       return { x: 0, y:0 }
     }
