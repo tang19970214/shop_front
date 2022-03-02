@@ -9,7 +9,7 @@
 <script>
 export default {
   name: "login",
-  // middleware: ['checkMemberToken'],
+  middleware: ['checkMemberAuth'],
   computed: {
     setTitle() {
       return () => {

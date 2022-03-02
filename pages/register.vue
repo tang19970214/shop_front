@@ -13,7 +13,7 @@
 
 <script>
 export default {
-  // middleware: ['checkMemberToken'],
+  middleware: ['checkMemberAuth'],
   name: "register",
   data() {
     return {
