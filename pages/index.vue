@@ -8,6 +8,8 @@
       <button type="button" class="inline-block px-6 py-2 border-2 border-blue-600 text-blue-600 font-medium text-xs leading-tight uppercase rounded-full hover:bg-black hover:bg-opacity-5 focus:outline-none focus:ring-0 transition duration-150 ease-in-out" @click="goLogin()">Login</button>
 
       <button @click="getMemberByToken()" class="shadow-md duration-150 text-pink-400 border-2 border-pink-400 rounded-2xl p-3 mt-5 hover:bg-pink-400 hover:text-white">GET_MEMBER_BY_TOKEN</button>
+
+      <Banner-Carousel :carouselArr="carouselArr"></Banner-Carousel>
     </div>
   </section>
 </template>
@@ -18,33 +20,41 @@ export default {
   name: "IndexPage",
   async asyncData({ app }) {
     // console.log(app.$api);
+    const carouselArr = [
+        {
+          img: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80',
+          text: 'The above example demonstrates the two core features of Vue:',
+        },
+        {
+          img: 'https://images.unsplash.com/photo-1559827291-72ee739d0d9a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1548&q=80',
+          text: `You may already have questions - don't worry. We will cover every little detail in the rest of the documentation. For now, please read along so you can have a high-level understanding of what Vue offers.`,
+        }
+      ]
+
+    return { carouselArr }
   },
-  middleware: ["checkLineCode", "checkMemberToken"],
+  middleware: ['checkLineCode'],
+  data() {
+    return {
+      
+    }
+  },
   methods: {
     goLogin() {
       this.$router.push("/login");
     },
     async getMemberByToken() {
-      const token = Cookies.get("Authorization");
-      // const res = await this.api.members.getMemberByToken(token);
-      // const { code, message } = res.data;
-      // const { email, id, name, phone } = res.data.result;
-      // console.log(code, message);
-      // console.log(email, id, name, phone);
-
-      await this.api.members.getMemberByToken(token).then((res) => {
-        const { code, result } = res.data;
-        const { email, id, name, phone } = result;
-        if (code === 200) {
-          console.log(email, id, name, phone);
-        }
-      });
-    },
-  },
+      try {
+        const token = Cookies.get('Authorization')
+        const res = await this.api.members.getMemberByToken(token)
+        const { code, message } = res.data
+        const { email, id, name, phone } = res.data.result
+        console.log(code, message)
+        console.log(email, id, name, phone)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+  }
 };
 </script>
-<style>
-.hooper-list {
-  min-height: 100vh !important;
-}
-</style>

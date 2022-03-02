@@ -4,7 +4,7 @@
       <div class="form-group relative pb-6">
         <label class="form-label inline-block mb-2 text-gray-700" for="accountId">帳號</label>
         <ValidationProvider name="帳號" rules="required" v-slot="{ errors }" class="w-full">
-          <input v-model="formInfo.account" id="accountId" type="email" class="form-control w-full px-3 py-1.5 text-gray-700 bg-white border border-gray-300 rounded transition ease-in-out focus:text-gray-700 focus:border-blue-600 focus:outline-none" :class="{ 'border-red-500': errors.length > 0 }" placeholder="請輸入手機 / Email" />
+          <input v-model="formInfo.account" id="accountId" type="text" class="form-control w-full px-3 py-1.5 text-gray-700 bg-white border border-gray-300 rounded transition ease-in-out focus:text-gray-700 focus:border-blue-600 focus:outline-none" :class="{ 'border-red-500': errors.length > 0 }" placeholder="請輸入手機 / Email" />
           <span v-if="errors.length > 0" class="absolute left-0 bottom-1 text-red-500 text-xs">{{ errors[0] }}</span>
         </ValidationProvider>
       </div>
@@ -55,7 +55,6 @@
     </ValidationObserver>
   </section>
 </template>
-
 <script>
 export default {
   name: "login-index",

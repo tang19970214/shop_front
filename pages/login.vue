@@ -9,6 +9,7 @@
 <script>
 export default {
   name: "login",
+  // middleware: ['checkMemberToken'],
   computed: {
     setTitle() {
       return () => {

@@ -138,13 +138,22 @@ export default {
         this.api.members
           .getRegistVerifyCode({ account: this.registerInfo.email })
           .then((res) => {
-            const { code } = res.data;
-            if (code === 200) {
-              this.defaultStep = 2;
-            } else {
-              this.disNextStep = false;
-              this.registerInfo.email = "";
-              this.$refs.emailField.focus();
+            const { code, message } = res.data;
+            switch(code) {
+              case 200:
+                this.defaultStep = 2;
+                break
+              case 500:
+                this.disNextStep = false;
+                this.$swal.fire({
+                  icon: 'error',
+                  title: message,
+                  showConfirmButton: false,
+                  timer: 1000
+                })
+                break
+              default:
+                this.disNextStep = false;
             }
           })
           .catch(() => {
@@ -152,6 +161,8 @@ export default {
           });
       } else {
         this.disNextStep = false;
+        this.registerInfo.email = "";
+        this.$refs.emailField.focus();
       }
     },
     async goVerify() {

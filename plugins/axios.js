@@ -1,5 +1,11 @@
 import Swal from 'sweetalert2'
-import { getToken, getRefreshToken, setToken, setRefreshToken } from './auth'
+import {
+  getToken,
+  getRefreshToken,
+  setToken,
+  setRefreshToken,
+  removeToken,
+  removeRefreshToken } from './auth'
 import Vue from 'vue'
 
 export default ({ $axios, redirect }, inject) => {
@@ -44,28 +50,30 @@ export default ({ $axios, redirect }, inject) => {
               resolve(reGetRes)
             })
             .catch((err) => {
+              removeToken()
+              removeRefreshToken()
               reject(err)
               redirect('/login')
             })
           })
           .catch((err) => {
+            removeToken()
+            removeRefreshToken()
             reject(err)
             redirect('/login')
           })
         })
         break
       default:
-        console.log('testttt')
         if(errorRes.response.code) {
-          switch(errorRes.response.code) {
-            default:
-              Swal.fire({
-                icon: 'error',
-                title: response.data.message,
-                showConfirmButton: false,
-                timer: 1500
-              })
-          }
+          Swal.fire({
+            icon: 'error',
+            title: response.data.message,
+            showConfirmButton: false,
+            timer: 1000
+          })
+        } else {
+          console.log(errorRes.response)
         }
         break
     }
