@@ -38,6 +38,7 @@
       v-for="(list, idx) in orderList"
       :key="list.id"
       class="border-b-[1px] border-b-[#bbbbbb] duration-150 hover:bg-stone-50 cursor-pointer"
+      @click="toOrderDetail(order.orderId)"
       >
         <td
         class="py-[15px]"
@@ -116,6 +117,11 @@ export default {
     return {
       isOverFiveItems: false,
       isShowTotalItems: false
+    }
+  },
+  methods: {
+    toOrderDetail(orderId) {
+      this.$router.push(`/member/order/${orderId}`)
     }
   },
   mounted() {
