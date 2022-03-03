@@ -29,5 +29,8 @@ export default {
       this.$router.push({ name: routeName });
     },
   },
+  // mounted() {
+  //   this.$router.push('/register/finish')
+  // }
 };
 </script>

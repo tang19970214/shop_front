@@ -1,5 +1,5 @@
 <template>
-  <section class="w-full max-w-[1280px] mx-auto flex px-5 gap-3 mt-[22px] mb-[64px] lg:mt-[67px] lg:mb-[83px]">
+  <section class="w-full max-w-[1280px] mx-auto flex px-3 gap-0 md:gap-3 mt-[22px] mb-[64px] lg:mt-[67px] lg:mb-[83px]">
     <div class=" overflow-hidden w-0 lg:min-w-[9rem]">
       <ul class="relative">
         <li class="flex items-center py-1 text-gray-700 rounded text-lg" v-for="item in menuList" :key="item.id">

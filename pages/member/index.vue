@@ -1,6 +1,6 @@
 <template>
   <section class="w-full">
-    <div class="grid grid-cols-1 gap-[60px] px-[30px] lg:grid-cols-2">
+    <div class="grid grid-cols-1 gap-[60px] md:px-[30px] lg:grid-cols-2">
       <div class="space-y-[20px] order-last lg:order-first">
         <div class="flex items-center space-x-[17px]">
           <div class="w-[64px] h-[64px] bg-gray-300 rounded-full flex justify-center items-center">

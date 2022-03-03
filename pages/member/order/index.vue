@@ -2,11 +2,11 @@
   <section class="w-full lg:px-[50px]">
     <h2 class="text-[18px] mb-[16px] font-bold tracking-[0.105em]">我的訂單</h2>
     <form @submit.prevent="handleSearch()">
-      <div class="lg:flex xl:justify-between">
-        <div>
-          <span class="block my-[10px] xl:inline xl:items-center xl:my-[0px]">日期：</span>
+      <div class="lg:flex">
+        <span class="block my-[10px] xl:inline xl:items-center xl:my-[0px]">日期：</span>
+        <div class="flex items-center lg:mr-auto">
           <input type="date" class="border-[1px] border-[#c4c4c4] rounded-[10px] px-[8px] py-[4px]" />
-          <span>至</span>
+          <span class="mx-[6px]">至</span>
           <input type="date" class="border-[1px] border-[#c4c4c4] rounded-[10px] px-[8px] py-[4px]" />
         </div>
         <div class="xl:flex">
@@ -16,14 +16,14 @@
         </div>
       </div>
     </form>
-    <div class="w-full mt-[35px] shadow-[0px_4px_4px_rgba(0,0,0,0.25)]">
-      <div class="grid grid-cols-6">
-        <div v-for="list in orderTab" :key="list.name" class="text-center">
-          <span class="duration-300 py-[12px] text-[18px] block cursor-pointer border-b-[#fff] border-b-[5px]" :class="{ 'border-b-[#FA5936]': selectedList === list.name }" @click="selectedList = list.name">
-            {{ list.name }}
+    <div class="w-[100%] overflow-x-scroll flex flex-nowrap">
+      <ul class="flex min-w-[170%] md:min-w-full mt-[35px] mb-[5px] mx-[2px] shadow-[0px_4px_4px_rgba(0,0,0,0.25)]">
+        <li v-for="list in orderTab" :key="list.label" class="text-center w-[16.6%] flex-none">
+          <span class="duration-300 py-[12px] text-[18px] block cursor-pointer border-b-[#fff] border-b-[5px]" :class="{ 'border-b-[#FA5936]': selectedList === list.label }" @click="selectedList = list.label">
+            {{ list.label }}
           </span>
-        </div>
-      </div>
+        </li>
+      </ul>
     </div>
 
     <OrderList v-for="list in orderList" :key="list.id" :orderList="list.orderItems" :order="list"></OrderList>
@@ -31,26 +31,27 @@
 </template>
 <script>
 export default {
+  name: "member",
   data() {
     return {
       orderTab: [
         {
-          name: "全部",
+          label: "全部",
         },
         {
-          name: "待付款",
+          label: "待付款",
         },
         {
-          name: "待出貨",
+          label: "待出貨",
         },
         {
-          name: "待收貨",
+          label: "待收貨",
         },
         {
-          name: "完成",
+          label: "完成",
         },
         {
-          name: "不成立",
+          label: "不成立",
         },
       ],
       orderList: [

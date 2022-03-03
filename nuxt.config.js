@@ -81,5 +81,10 @@ export default {
     //      $api: ['~/api/index.js', 'default']
     //   })
     // ]
+  },
+  server: {
+    port: 1803,
+    host: '0.0.0.0',
+    timing: false
   }
 }

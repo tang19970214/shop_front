@@ -27,7 +27,7 @@
       @click="toOrderDetail(order.orderId)"
       >
         <td
-        class="py-[15px]"
+        class="p-[15px]"
         :class="{'hidden': idx >= 5 && isOverFiveItems && !isShowTotalItems}"
         >
           <div class="flex">
@@ -45,8 +45,8 @@
           <p class="text-[18px] text-[#FA5936]">${{ list.sale * list.quantity }}</p>
         </td>
       </tr>
-      <div v-if="isOverFiveItems && !isShowTotalItems" class="absolute flex justify-center items-end pb-[15px] bottom-0 left-0 w-full h-[250px] bg-gradient-to-b from-transparent to-[rgba(251,238,223,0.87)]">
-        <a href="#" class="w-full text-center duration-300 text-sky-500 hover:text-sky-600 text-[18px]" @click.prevent="isShowTotalItems = true"> 查看完整訂單 >> </a>
+      <div v-if="isOverFiveItems && !isShowTotalItems" class="cursor-pointer absolute flex justify-center items-end pb-[15px] bottom-0 left-0 w-full h-[250px] bg-gradient-to-b from-transparent to-[rgba(251,238,223,0.87)]" @click.prevent="isShowTotalItems = true">
+        <a href="#" class="w-full text-center duration-300 text-sky-500 hover:text-sky-600 text-[18px]"> 查看完整訂單 >> </a>
       </div>
     </table>
     <div class="w-full text-right mt-[15px] lg:flex lg:items-center lg:justify-end text-[18px]" :class="{ 'lg:hidden': isOverFiveItems && !isShowTotalItems, hidden: isOverFiveItems && !isShowTotalItems }">
