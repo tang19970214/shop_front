@@ -166,7 +166,7 @@
               <span> 物流編號 <span id="transportId">{{ order.transportId }}</span></span>
               <img @click="copyId()" class="inline cursor-pointer ml-[4px] mr-[22px]" src="~/static/images/icon/copy.svg" alt="" title="複製物流編號">
               <transition name="fade">
-                <div v-if="copyMessageIsShow" class="absolute top-[40px] rounded-[10px] p-[10px] right-[30%] bg-[rgba(0,0,0,0.27)] backdrop-blur-[10px] text-white">已複製到剪貼簿</div>
+                <div v-if="copyMessageIsShow" class="absolute top-[40px] rounded-[10px] p-[10px] right-[0%] md:right-[25%] bg-[rgba(0,0,0,0.27)] backdrop-blur-[10px] text-white">已複製到剪貼簿</div>
               </transition>
               <button data-mdb-ripple="true" data-mdb-ripple-color="light" class="py-[6px] px-[20px] duration-300 bg-[#1ebe5a] hover:bg-[#1aa54f] text-white text-[14px] rounded-[5px] mt-[10px] lg:mt-[0px]">訂單查詢</button>
             </div>
