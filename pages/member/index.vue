@@ -27,7 +27,9 @@
 export default {
   name: "member-index",
   data() {
-    return {};
+    return {
+      
+    };
   },
 };
 </script>

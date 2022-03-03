@@ -70,6 +70,7 @@
 </template>
 <script>
 export default {
+  name: 'member-password',
   data() {
     return {
       memberPwd: {

@@ -179,8 +179,10 @@
           <div class="w-[23px] h-[23px] rounded-full bg-transparent border-[1px] border-[#a3a3a3] relative flex justify-center items-center mt-[2px] mr-[20px]">
             <div class="absolute w-[18px] h-[18px] bg-[#a3a3a3] rounded-full"></div>
           </div>
-          <span>{{ order.paymentType }}</span>
-          <span class="text-[#a3a3a3] ml-[11px]">{{ order.paymentAccount }}</span>
+          <div class="flex flex-col md:flex-row">
+            <span>{{ order.paymentType }}</span>
+            <span class="text-[#a3a3a3] md:ml-[11px]">{{ order.paymentAccount }}</span>
+          </div>
         </div>
       </div>
     </div>
@@ -206,7 +208,7 @@
 </template>
 <script>
 export default {
-  name: "member",
+  name: "member-order-id",
   data() {
     return {
       order: {

@@ -21,6 +21,7 @@
 
 <script>
 export default {
+  name: 'member-favorite',
   data() {
     return {
       list: [

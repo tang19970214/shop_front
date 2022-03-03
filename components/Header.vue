@@ -1,5 +1,5 @@
 <template>
-  <section class="fixed top-0 left-0 w-full p-5 lg:p-5 bg-white shadow-xl z-20">
+  <section class="fixed top-0 left-0 w-full p-5 lg:p-5 bg-white shadow-[0px_4px_4px_rgba(140,140,140,0.25)] z-20">
     <div class="w-full h-full box-border flex items-center justify-between">
       <h1 class="text-2xl font-bold cursor-pointer" @click="$router.push('/'), (page = '')">首頁</h1>
       <div class="flex items-center justify-end gap-2">
