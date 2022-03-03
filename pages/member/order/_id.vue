@@ -18,8 +18,8 @@
         </span>
       </span>
     </div>
-    <div class="w-[100vw] md:w-[100%] flex overflow-x-scroll md:overflow-hidden flex-nowrap">
-      <ul class="flex mt-[33px] mb-[80px] min-w-[200%] md:min-w-[100%]">
+    <div class="w-[100%] flex overflow-x-scroll md:overflow-hidden flex-nowrap">
+      <ul class="flex mt-[33px] mb-[80px] min-w-[210%] md:min-w-[100%]">
         <li class="w-[20%] flex flex-col flex-none items-center relative after:content-[''] after:absolute after:bg-[#1ebe5a] after:w-[100%] after:h-[4px] after:right-[-50%] after:top-[50%] after:z-[-1]">
           <div class="w-[70px] h-[70px] bg-[#1ebe5a] rounded-full relative after:content-[''] after:absolute after:w-[100%] after:h-[100%] after:bg-[url(~/static/images/icon/step1.svg)] after:bg-no-repeat after:top-[14px] after:left-[14px]">
           </div>

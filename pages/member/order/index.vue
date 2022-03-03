@@ -16,8 +16,8 @@
         </div>
       </div>
     </form>
-    <div class="sticky top-[35px] bg-white w-[100vw] md:w-[100%] overflow-x-scroll lg:overflow-x-hidden flex flex-nowrap z-[10]">
-      <ul class="flex min-w-[160%] md:min-w-[99%] mt-[35px] mb-[5px] mx-[4px] shadow-[0px_4px_4px_rgba(0,0,0,0.25)]">
+    <div class="sticky top-[35px] bg-white w-[100%] overflow-x-scroll lg:overflow-x-hidden flex flex-nowrap z-[10]">
+      <ul class="flex min-w-[170%] md:min-w-[99%] mt-[35px] mb-[5px] mx-[4px] shadow-[0px_4px_4px_rgba(0,0,0,0.25)]">
         <li v-for="list in orderTab" :key="list.label" class="text-center w-[16.6%] flex-none">
           <span class="duration-300 py-[12px] text-[18px] block cursor-pointer border-b-[#fff] border-b-[5px]" :class="{ 'border-b-[#FA5936]': selectedList === list.label }" @click="selectedList = list.label">
             {{ list.label }}
