@@ -222,7 +222,7 @@
       <div class="pl-[26px] space-y-[10px] mt-[15px]">
         <div class="flex">
           <div
-            class="w-[23px] h-[23px] rounded-full bg-transparent border-[1px] border-[#a3a3a3] relative flex justify-center items-center mt-[2px] mr-[20px]"
+            class="w-[23px] h-[23px] rounded-full bg-transparent border-[1px] border-[#a3a3a3] relative flex justify-center items-center mt-[2px] mr-5"
           >
             <div
               class="absolute w-[18px] h-[18px] bg-[#a3a3a3] rounded-full"
@@ -237,7 +237,7 @@
               >
               <img
                 @click="copyId()"
-                class="inline cursor-pointer ml-[4px] mr-[22px]"
+                class="inline cursor-pointer ml-1 mr-5"
                 src="~/static/images/icon/copy.svg"
                 alt=""
                 title="複製物流編號"
@@ -293,23 +293,13 @@
         class="mt-[62px] duration-150 w-[236px] py-[17px] rounded-[10px] shadow-md text-white text-[18px] tracking-widest hover:shadow-inner disabled:cursor-not-allowed disabled:opacity-80"
         :class="{
           'bg-[#a3a3a3]': order.status === '已出貨',
-          'bg-gradient-to-r': order.status !== '已出貨',
-          'from-[#FF6D3F]': order.status !== '已出貨',
-          'to-[#FA5936]': order.status !== '已出貨',
+          'bg-gradient-to-r from-[#FF6D3F] to-[#FA5936]':
+            order.status !== '已出貨',
         }"
         :disabled="order.status === '已出貨'"
         @click="isOpen = true"
       >
         取消訂單
-      </button>
-      <button
-        v-else
-        type="button"
-        data-mdb-ripple="true"
-        data-mdb-ripple-color="light"
-        class="bg-gradient-to-r from-[#FF6D3F] to-[#FA5936] mt-[62px] duration-150 w-[236px] py-[17px] rounded-[10px] shadow-md text-white text-[18px] tracking-widest hover:shadow-inner disabled:cursor-not-allowed disabled:opacity-80"
-      >
-        繼續購物 >>
       </button>
     </div>
 

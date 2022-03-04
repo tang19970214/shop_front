@@ -1,6 +1,7 @@
 <template>
   <section class="w-full lg:px-[50px]">
     <h2 class="text-[18px] mb-[16px] font-bold tracking-[0.105em]">我的訂單</h2>
+
     <form @submit.prevent="handleSearch()">
       <div class="lg:flex">
         <span class="block my-[10px] xl:inline xl:items-center xl:my-[0px]"
@@ -37,8 +38,9 @@
         </div>
       </div>
     </form>
+
     <div
-      class="sticky top-[37px] bg-white w-[100%] overflow-x-scroll lg:overflow-x-hidden flex flex-nowrap z-[10]"
+      class="sticky top-8 bg-white w-[100%] overflow-x-scroll lg:overflow-x-hidden flex flex-nowrap z-[10]"
     >
       <ul
         class="flex min-w-[170%] md:min-w-[99%] mt-[35px] mb-[5px] mx-[4px] shadow-[0px_4px_4px_rgba(0,0,0,0.25)]"
@@ -59,14 +61,14 @@
       </ul>
     </div>
 
-    <transition name="scale">
+    <transition-group tag="div" name="fade">
       <OrderList
         v-for="list in filterList"
         :key="list.id"
         :orderList="list.orderItems"
         :order="list"
       ></OrderList>
-    </transition>
+    </transition-group>
   </section>
 </template>
 <script>
@@ -209,13 +211,23 @@ export default {
   computed: {
     filterList() {
       switch (this.selectedList) {
-        case "全部":
-          return this.orderList;
-          break;
-        default:
+        case "待付款":
           return this.orderList.filter(
             (item) => item.orderType === this.selectedList
           );
+          break;
+        case "待出貨":
+          return this.orderList.filter(
+            (item) => item.orderType === this.selectedList
+          );
+          break;
+        case "不成立":
+          return this.orderList.filter(
+            (item) => item.orderType === this.selectedList
+          );
+          break;
+        default:
+          return this.orderList;
           break;
       }
     },

@@ -186,10 +186,9 @@
                 alt="Line"
                 width="24px"
               />
-              <p class="text-[18px]">Line</p>
+              <p class="text-lg">Line</p>
             </div>
             <a
-              href="#"
               class="duration-150 h-100 flex items-center pl-[17px] text-[18px] border-l-[1px] border-[#9A9999] hover:text-red-500"
               >解除連結</a
             >
