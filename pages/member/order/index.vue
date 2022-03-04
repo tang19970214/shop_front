@@ -38,9 +38,8 @@
         </div>
       </div>
     </form>
-
     <div
-      class="sticky top-8 bg-white w-[100%] overflow-x-scroll lg:overflow-x-hidden flex flex-nowrap z-[10]"
+      class="sticky top-[37px] bg-white w-[100%] overflow-x-scroll lg:overflow-x-hidden flex flex-nowrap z-[10]"
     >
       <ul
         class="flex min-w-[170%] md:min-w-[99%] mt-[35px] mb-[5px] mx-[4px] shadow-[0px_4px_4px_rgba(0,0,0,0.25)]"
@@ -61,14 +60,14 @@
       </ul>
     </div>
 
-    <transition-group tag="div" name="fade">
+    <transition name="scale">
       <OrderList
         v-for="list in filterList"
         :key="list.id"
         :orderList="list.orderItems"
         :order="list"
       ></OrderList>
-    </transition-group>
+    </transition>
   </section>
 </template>
 <script>
