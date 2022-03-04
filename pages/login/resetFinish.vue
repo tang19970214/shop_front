@@ -5,7 +5,13 @@
       <strong class="tracking-widest text-2xl">已重設密碼</strong>
     </div>
 
-    <button type="submit" class="w-full p-1.5 rounded-lg shadow-md text-white text-lg tracking-widest bg-gradient-to-r from-[#FA5936] to-[#FF6D3F] hover:shadow-inner mt-12" @click="$router.push({name: 'login'})">立即登入</button>
+    <button
+      type="submit"
+      class="w-full p-1.5 rounded-lg shadow-md text-white text-lg tracking-widest bg-gradient-to-r from-[#FA5936] to-[#FF6D3F] hover:shadow-inner mt-12"
+      @click="$router.push({ name: 'login' })"
+    >
+      立即登入
+    </button>
   </section>
 </template>
 
