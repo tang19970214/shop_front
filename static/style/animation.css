@@ -1,9 +1,26 @@
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity .5s;
+  transition: opacity 0.5s;
 }
 
 .fade-enter,
 .fade-leave-to {
   opacity: 0;
+}
+
+.scale-enter-active,
+.scale-leave-active {
+  transition: all 0.5s;
+}
+
+.scale-enter-form,
+.scale-leave-to {
+  opacity: 0;
+  transform: scale(0);
+}
+
+.scale-enter-to,
+.scale-leave-form {
+  opacity: 1;
+  transform: scale(1);
 }

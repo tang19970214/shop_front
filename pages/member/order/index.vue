@@ -17,8 +17,7 @@
         </div>
       </div>
     </form>
-
-    <div class="sticky top-8 bg-white w-[100%] overflow-x-scroll lg:overflow-x-hidden flex flex-nowrap z-[10]">
+    <div class="sticky top-[37px] bg-white w-[100%] overflow-x-scroll lg:overflow-x-hidden flex flex-nowrap z-[10]">
       <ul class="flex min-w-[170%] md:min-w-[99%] mt-[35px] mb-[5px] mx-[4px] shadow-[0px_4px_4px_rgba(0,0,0,0.25)]">
         <li v-for="list in orderTab" :key="list.label" class="text-center w-[16.6%] flex-none">
           <span class="duration-300 py-[12px] text-[18px] block cursor-pointer border-b-[#fff] border-b-[5px]" :class="{ 'border-b-[#FA5936]': selectedList === list.label }" @click="selectedList = list.label">
@@ -28,7 +27,9 @@
       </ul>
     </div>
 
-    <OrderList v-for="list in orderList" :key="list.id" :orderList="list.orderItems" :order="list"></OrderList>
+    <transition name="scale">
+      <OrderList v-for="list in filterList" :key="list.id" :orderList="list.orderItems" :order="list"></OrderList>
+    </transition>
   </section>
 </template>
 <script>
@@ -61,7 +62,7 @@ export default {
           id: 1,
           orderDate: "2021/01/30",
           orderId: 21111708328107,
-          orderType: "訂單已確認",
+          orderType: "待出貨",
           orderItems: [
             {
               imgUrl: require("~/static/images/product_example.png"),
@@ -116,7 +117,7 @@ export default {
           id: 3,
           orderDate: "2021/01/28",
           orderId: 21111708328109,
-          orderType: "訂單處理中",
+          orderType: "待付款",
           orderItems: [
             {
               imgUrl: require("~/static/images/product_example.png"),
@@ -167,6 +168,18 @@ export default {
       ],
       selectedList: "全部",
     };
+  },
+  computed: {
+    filterList() {
+      switch (this.selectedList) {
+        case "全部":
+          return this.orderList;
+          break;
+        default:
+          return this.orderList.filter((item) => item.orderType === this.selectedList);
+          break;
+      }
+    },
   },
   methods: {
     handleSearch() {

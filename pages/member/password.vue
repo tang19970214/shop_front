@@ -41,7 +41,11 @@
               data-mdb-ripple-color="light"
               class="duration-500 mt-[79px] mb-[66px] w-[236px] py-[17px] rounded-[10px] shadow-md text-white text-[18px] tracking-widest bg-[#c4c4c4] hover:shadow-inner disabled:cursor-not-allowed disabled:opacity-80"
               :disabled="invalid"
-              :class="{ 'bg-gradient-to-r': !invalid, 'from-[#FF6D3F]': !invalid, 'to-[#FA5936]': !invalid }"
+              :class="{
+                'bg-gradient-to-r': !invalid,
+                'from-[#FF6D3F]': !invalid,
+                'to-[#FA5936]': !invalid,
+              }"
             >
               儲存
             </button>
