@@ -30,6 +30,7 @@ export default {
   middleware: ["checkMemberAuth"],
   data() {
     return {
+      openModal: false,
       menuList: [
         {
           id: 1,
