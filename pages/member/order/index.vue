@@ -60,7 +60,7 @@
       </ul>
     </div>
 
-    <transition name="scale">
+    <transition name="fade">
       <OrderList
         v-for="list in filterList"
         :key="list.id"

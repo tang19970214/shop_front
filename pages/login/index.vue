@@ -148,6 +148,7 @@
 <script>
 export default {
   name: "login-index",
+  middleware: ["checkMemberAuth"],
   data() {
     return {
       pwdType: "password",

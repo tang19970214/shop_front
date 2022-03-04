@@ -5,8 +5,7 @@ import {
   setToken,
   setRefreshToken,
   removeToken,
-  removeRefreshToken
-} from './auth'
+  removeRefreshToken } from './auth'
 import Vue from 'vue'
 
 export default ({
