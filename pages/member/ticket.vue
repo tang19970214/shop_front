@@ -22,20 +22,11 @@
         </div>
       </div>
     </div>
-    <template v-if="tickets.length > 0">
-      <Ticket
-        v-for="ticket in tickets"
-        :key="ticket.id"
-        :name="ticket.name"
-        :time="ticket.time"
-        :price="ticket.price"
-        :rules="ticket.rules"
-      ></Ticket>
-    </template>
-    <div
-      v-else
-      class="flex justify-center items-center flex-col w-full h-[50vh]"
-    >
+
+    <div class="w-full flex flex-col gap-5 mt-6" v-if="tickets.length > 0">
+      <Ticket v-for="ticket in tickets" :key="ticket.id" :name="ticket.name" :time="ticket.time" :price="ticket.price" :rules="ticket.rules"></Ticket>
+    </div>
+    <div v-else class="flex justify-center items-center flex-col w-full h-[50vh]">
       <fa class="w-[100px] h-[85px] text-[#a3a3a3]" :icon="['fas', 'ticket']" />
       <span class="text-[18px] text-[#a3a3a3] select-none"> 目前無優惠券 </span>
     </div>
