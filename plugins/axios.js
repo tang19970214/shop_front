@@ -5,7 +5,8 @@ import {
   setToken,
   setRefreshToken,
   removeToken,
-  removeRefreshToken } from './auth'
+  removeRefreshToken
+} from './auth'
 import Vue from 'vue'
 
 export default ({
@@ -45,41 +46,7 @@ export default ({
           accessToken: getToken(),
           refreshToken: getRefreshToken()
         }
-        const {
-          baseURL, url, method, data
-        } = errorRes.config
-        return new Promise((resolve, reject) => {
-          Vue.prototype.api.members.refresh(tokens)
-            .then((res) => {
-              const {
-                accessToken,
-                refreshToken
-              } = res.data
-              let reGetAPI = {}
-              reGetAPI.headers = {}
-              reGetAPI.headers.Authorization = `Bearer ${accessToken}`
-              reGetAPI.url = baseURL + url
-              reGetAPI.method = method
-              $axios(reGetAPI)
-                .then((reGetRes) => {
-                  setToken(accessToken)
-                  setRefreshToken(refreshToken)
-                  resolve(reGetRes)
-                })
-                .catch((err) => {
-                  removeToken()
-                  removeRefreshToken()
-                  reject(err)
-                  redirect('/login')
-                })
-            })
-            .catch((err) => {
-              removeToken()
-              removeRefreshToken()
-              reject(err)
-              redirect('/login')
-            })
-        })
+        refreshToken(tokens, errorRes)
         break
       default:
         if (errorRes.response.code) {
@@ -97,4 +64,43 @@ export default ({
   })
 
   inject('request', service)
+
+  function refreshToken(tokens, errorRes) {
+    const {
+      baseURL, url, method
+    } = errorRes.config
+    return new Promise((resolve, reject) => {
+      Vue.prototype.api.members.refresh(tokens)
+        .then((res) => {
+          const {
+            accessToken,
+            refreshToken
+          } = res.data
+          let reGetAPI = {}
+          reGetAPI.headers = {}
+          reGetAPI.headers.Authorization = `Bearer ${accessToken}`
+          reGetAPI.url = baseURL + url
+          reGetAPI.method = method
+          $axios(reGetAPI)
+            .then((reGetRes) => {
+              setToken(accessToken)
+              setRefreshToken(refreshToken)
+              resolve(reGetRes)
+            })
+            .catch((err) => {
+              removeToken()
+              removeRefreshToken()
+              reject(err)
+              redirect('/login')
+            })
+        })
+        .catch((err) => {
+          removeToken()
+          removeRefreshToken()
+          reject(err)
+          redirect('/login')
+        })
+    })
+  }
 }
+

@@ -1,10 +1,10 @@
 <template>
   <section
-    class="w-[100vw] max-w-[1280px] mx-auto flex px-3 gap-0 md:gap-3 mt-[22px] mb-[64px] lg:mt-[67px] lg:mb-[83px]"
+    class="w-[100vw] max-w-[1280px] mx-auto flex px-3 gap-0 md:gap-3 mt-5 mb-16 lg:mt-16 lg:mb-20"
   >
     <!-- 左列menu -->
     <div class="hidden md:block">
-      <ul class="sticky top-20">
+      <ul class="sticky top-24">
         <li
           class="flex items-center py-1 text-gray-700 rounded text-lg"
           v-for="item in menuList"
@@ -43,7 +43,14 @@
       </ul>
     </div>
 
-    <Nuxt-child :profile="profile" />
+    <div class="w-full">
+      <div v-if="isLoading" class="flex w-full h-[50vh] justify-center items-center">
+        <div class="spinner-border text-[#FA5936] animate-spin inline-block w-8 h-8 border-4 rounded-full" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+      <Nuxt-child v-else :profile="profile" />
+    </div>
   </section>
 </template>
 
@@ -100,6 +107,7 @@ export default {
         },
       ],
       profile: {},
+      isLoading: true
     };
   },
   methods: {
@@ -118,9 +126,11 @@ export default {
         if (code === 200) {
           this.profile = result;
         }
+        this.isLoading = false
         // const { email, id, name, phone } = res.data.result
         // this.profile = res.data.result
       } catch (error) {
+        this.isLoading = false
         console.log(error);
       }
     },

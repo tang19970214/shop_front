@@ -1,7 +1,7 @@
 <template>
-  <section class="w-full lg:px-[50px]">
+  <section class="w-full lg:px-12">
     <div class="flex justify-between items-center">
-      <h2 class="text-[18px] font-bold tracking-[0.105em]">我的優惠券</h2>
+      <h2 class="text-lg font-bold tracking-widest">我的優惠券</h2>
       <div class="flex items-center">
         <span>到期前一週通知</span>
         <div
@@ -22,6 +22,7 @@
         </div>
       </div>
     </div>
+<<<<<<< Updated upstream
 
     <div class="w-full flex flex-col gap-5 mt-6" v-if="tickets.length > 0">
       <Ticket v-for="ticket in tickets" :key="ticket.id" :name="ticket.name" :time="ticket.time" :price="ticket.price" :rules="ticket.rules"></Ticket>
@@ -29,6 +30,24 @@
     <div v-else class="flex justify-center items-center flex-col w-full h-[50vh]">
       <fa class="w-[100px] h-[85px] text-[#a3a3a3]" :icon="['fas', 'ticket']" />
       <span class="text-[18px] text-[#a3a3a3] select-none"> 目前無優惠券 </span>
+=======
+    <template v-if="tickets.length > 0">
+      <Ticket
+        v-for="ticket in tickets"
+        :key="ticket.id"
+        :name="ticket.name"
+        :time="ticket.time"
+        :price="ticket.price"
+        :rules="ticket.rules"
+      ></Ticket>
+    </template>
+    <div
+      v-else
+      class="flex justify-center items-center flex-col w-full h-[50vh]"
+    >
+      <fa class="w-24 h-20 text-[#a3a3a3]" :icon="['fas', 'ticket']" />
+      <span class="text-lg text-[#a3a3a3] select-none"> 目前無優惠券 </span>
+>>>>>>> Stashed changes
     </div>
   </section>
 </template>

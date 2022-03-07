@@ -1,15 +1,15 @@
 <template>
-  <div class="relative w-full h-[257px] bg-gradient-to-r from-[#fff] to-[#D0D0D0] rounded-xl shadow-xl">
-    <div class="absolute left-[26px] bottom-[15px]">
+  <div class="relative w-full h-64 bg-gradient-to-r from-[#fff] to-[#D0D0D0] rounded-xl shadow-xl">
+    <div class="absolute left-6 bottom-4">
       <p>
-        <span class="text-[48px] text-[#FA5936]">{{ memberInfo.point }}</span>
+        <span class="text-5xl text-[#FA5936]">{{ point }}</span>
         點
       </p>
-      <p class="text-neutral-700">加入日期：{{ memberInfo.joinTime }}</p>
+      <p class="text-neutral-700">加入日期：{{ joinTime }}</p>
     </div>
-    <div class="absolute right-[26px] bottom-[15px]">
-      <p class="text-[18px]">
-        {{ memberInfo.type }}
+    <div class="absolute right-6 bottom-4">
+      <p class="text-lg">
+        {{ type }}
       </p>
     </div>
   </div>
@@ -18,9 +18,15 @@
 <script>
 export default {
   props: {
-    memberInfo: {
-      type: Object,
+    point: {
+      type: Number
     },
+    joinTime: {
+      type: String
+    },
+    type: {
+      type: String
+    }
   },
 };
 </script>

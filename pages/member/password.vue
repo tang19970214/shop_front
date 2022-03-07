@@ -1,13 +1,13 @@
 <template>
   <section class="w-full lg:px-[50px]">
-    <h2 class="text-[18px] mb-[16px] font-bold tracking-[0.105em]">修改密碼</h2>
+    <h2 class="text-lg mb-4 font-bold tracking-widest">修改密碼</h2>
     <div
-      class="w-full rounded-xl pb-[24px] lg:p-10 lg:pb-[24px] border-none lg:border-[1px] lg:border-[#a3a3a3] lg:border-solid"
+      class="w-full rounded-xl pb-6 lg:p-10 border-none lg:border lg:border-[#a3a3a3] lg:border-solid"
     >
       <ValidationObserver ref="form" v-slot="{ handleSubmit, invalid }">
         <form @submit.prevent="handleSubmit(handleChangePwd)">
           <label
-            class="form-label tracking-[0.105em] text-[18px] inline-block mb-2 text-gray-700"
+            class="form-label tracking-widest text-lg inline-block mb-2 text-gray-700"
             for="oldPwdId"
             >舊密碼<span class="text-[#FA5936]">*</span></label
           >
@@ -22,18 +22,18 @@
                 <input
                   id="oldPwdId"
                   type="password"
-                  class="form-control w-full lg:w-full px-3 py-1.5 text-gray-700 border-[1px] border-[#a3a3a3] rounded-[10px] transition ease-in-out focus:text-gray-700 focus:border-blue-600 focus:outline-none"
+                  class="form-control w-full lg:w-full px-3 py-1.5 text-gray-700 border border-[#a3a3a3] rounded-md transition ease-in-out focus:text-gray-700 focus:border-blue-600 focus:outline-none"
                   :class="{ 'border-[#EF4444]': errors.length > 0 }"
                   placeholder="請輸舊密碼"
                   v-model="memberPwd.oldPwd"
                 />
                 <span
                   v-if="errors.length > 0"
-                  class="absolute left-[10px] bottom-[-20px] text-red-500 text-xs"
+                  class="absolute left-2.5 bottom-5 text-red-500 text-xs"
                   >{{ errors[0] }}</span
                 >
                 <fa
-                  class="absolute right-2 top-[11px] cursor-pointer text-base text-gray-600"
+                  class="absolute right-2 top-2.5 cursor-pointer text-base text-gray-600"
                   :icon="[
                     'fas',
                     `${oldPwdType === false ? 'eye-slash' : 'eye'}`,
@@ -44,7 +44,7 @@
             </ValidationProvider>
           </div>
           <label
-            class="form-label tracking-[0.105em] text-[18px] inline-block mb-2 text-gray-700"
+            class="form-label tracking-widest text-lg inline-block mb-2 text-gray-700"
             for="newPwdId"
             >新密碼<span class="text-[#FA5936]">*</span></label
           >
@@ -60,18 +60,18 @@
                 <input
                   id="newPwdId"
                   type="password"
-                  class="form-control w-full lg:w-full px-3 py-1.5 text-gray-700 border-[1px] border-[#a3a3a3] rounded-[10px] transition ease-in-out focus:text-gray-700 focus:border-blue-600 focus:outline-none"
+                  class="form-control w-full lg:w-full px-3 py-1.5 text-gray-700 border border-[#a3a3a3] rounded-md transition ease-in-out focus:text-gray-700 focus:border-blue-600 focus:outline-none"
                   :class="{ 'border-[#EF4444]': errors.length > 0 }"
                   placeholder="請輸入至少8個字元, 數字和大小寫字母的密碼"
                   v-model="memberPwd.newPwd"
                 />
                 <span
                   v-if="errors.length > 0"
-                  class="absolute left-[10px] bottom-[-20px] text-red-500 text-xs"
+                  class="absolute left-2.5 bottom-5 text-red-500 text-xs"
                   >{{ errors[0] }}</span
                 >
                 <fa
-                  class="absolute right-2 top-[11px] cursor-pointer text-base text-gray-600"
+                  class="absolute right-2 top-2.5 cursor-pointer text-base text-gray-600"
                   :icon="[
                     'fas',
                     `${newPwdType === false ? 'eye-slash' : 'eye'}`,
@@ -82,7 +82,7 @@
             </ValidationProvider>
           </div>
           <label
-            class="form-label tracking-[0.105em] text-[18px] inline-block mb-2 text-gray-700"
+            class="form-label tracking-widest text-lg inline-block mb-2 text-gray-700"
             for="confirmPwdId"
             >確認密碼<span class="text-[#FA5936]">*</span></label
           >
@@ -97,18 +97,18 @@
                 <input
                   id="confirmPwdId"
                   type="password"
-                  class="form-control w-full lg:w-full px-3 py-1.5 text-gray-700 border-[1px] border-[#a3a3a3] rounded-[10px] transition ease-in-out focus:text-gray-700 focus:border-blue-600 focus:outline-none"
+                  class="form-control w-full lg:w-full px-3 py-1.5 text-gray-700 border border-[#a3a3a3] rounded-md transition ease-in-out focus:text-gray-700 focus:border-blue-600 focus:outline-none"
                   :class="{ 'border-[#EF4444]': errors.length > 0 }"
                   placeholder="確認新密碼"
                   v-model="memberPwd.confirmPwd"
                 />
                 <span
                   v-if="errors.length > 0"
-                  class="absolute left-[10px] bottom-[-20px] text-red-500 text-xs"
+                  class="absolute left-2.5 bottom-5 text-red-500 text-xs"
                   >{{ errors[0] }}</span
                 >
                 <fa
-                  class="absolute right-2 top-[11px] cursor-pointer text-base text-gray-600"
+                  class="absolute right-2 top-2.5 cursor-pointer text-base text-gray-600"
                   :icon="[
                     'fas',
                     `${confirmPwdType === false ? 'eye-slash' : 'eye'}`,
@@ -123,7 +123,7 @@
               type="submit"
               data-mdb-ripple="true"
               data-mdb-ripple-color="light"
-              class="duration-500 mt-[79px] mb-[66px] w-[236px] py-[17px] rounded-[10px] shadow-md text-white text-[18px] tracking-widest bg-[#c4c4c4] hover:shadow-inner disabled:cursor-not-allowed disabled:opacity-80"
+              class="duration-500 mt-20 mb-16 px-20 py-4 rounded-md shadow-md text-white text-lg tracking-widest bg-[#c4c4c4] hover:shadow-inner disabled:cursor-not-allowed disabled:opacity-80"
               :disabled="invalid"
               :class="{
                 'bg-gradient-to-r': !invalid,

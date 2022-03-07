@@ -1,28 +1,18 @@
 <template>
-  <transition>
-    <div class="fixed top-0 left-0 p-6 md:p-10 box-border w-full min-h-screen flex justify-center z-40" :class="`items-${align}`" v-show="openModal">
-      <transition name="opacityTransition">
-        <div ref="modalScroll" class="max-h-90vh bg-white rounded-md z-50 pb-2 overflow-y-auto absolute" :class="width">
+  <transition name="fade">
+    <div @click="closeModal($event)" class="fixed bg-[rgba(0,0,0,0.3)] backdrop-blur top-0 left-0 p-6 md:p-10 box-border w-screen min-h-screen flex justify-center z-40" :class="`items-${align}`" v-if="openModal">
+        <div ref="modalScroll" class="max-h-90vh bg-white rounded-xl z-50 pb-2 overflow-y-auto absolute shadow-[0px_4px_4px_rgba(0,0,0,0.25)]" :class="width">
           <!-- header -->
           <div class="px-4 pt-2 sticky top-0 z-10 bg-white">
-            <div class="w-full flex items-center justify-between border-b">
-              <strong class="text-xl border-b-4 border-primary">{{ title }}</strong>
-              <span class="cursor-pointer" @click="closeModal()">
-                <fa class="text-2xl" :icon="['fas', 'close']" />
-              </span>
+            <div class="w-full flex items-center justify-end">
+              <fa class="text-4xl cursor-pointer" :icon="['fas', 'close']" @click="closeModal($event, 'close')" />
             </div>
           </div>
-
           <!-- body -->
           <div class="px-4">
             <slot></slot>
           </div>
         </div>
-      </transition>
-
-      <transition name="opacityTransition">
-        <div class="bg-gray-700 opacity-75 fixed top-0 left-0 w-full h-full z-40"></div>
-      </transition>
     </div>
   </transition>
 </template>
@@ -34,6 +24,11 @@ export default {
       type: Boolean,
       required: true,
       default: false,
+    },
+    height:{
+      type: [Number, String],
+      require: false,
+      default: "h-1/2"
     },
     width: {
       type: [Number, String],
@@ -51,9 +46,13 @@ export default {
     },
   },
   methods: {
-    closeModal() {
-      this.$emit("closeModal");
-    },
+    closeModal(e, close = null) {
+      if (close !== null) { this.$emit("closeModal") }
+      const classList = Array.from(e.target.classList)
+      if (classList.indexOf('backdrop-blur') !== -1 || classList.indexOf('fa-xmark') !== -1) {
+        this.$emit("closeModal")
+      } else return
+    }
   },
   watch: {
     openModal(bol) {
