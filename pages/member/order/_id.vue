@@ -199,7 +199,7 @@
         <h3 class="text-2xl font-bold mb-8">訂單已取消</h3>
         <div class="flex items-center">
           <span class="text-lg">取消原因：</span>
-          <select v-model="cancelType" name="" class="text-slate-300 py-2.5 px-4 w-60 rounded-md border border-[#a3a3a3]" :class="{ 'text-black': cancelType !== '' }">
+          <select v-model="cancelType" name="" class="text-slate-300 py-2.5 px-4 w-60 rounded-md border border-[#a3a3a3]" :class="{ 'text-slate-900': cancelType !== '' }">
             <option value="" disabled selected>請選擇</option>
             <option :value="item" v-for="item in cancelOrderSelect" :key="item">
               {{ item }}
