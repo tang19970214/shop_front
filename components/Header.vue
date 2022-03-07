@@ -28,16 +28,6 @@ export default {
     };
   },
   mounted() {
-    // FIXME:@ryan
-    const path = window.location.pathname;
-    if (path.indexOf("login") !== -1) {
-      this.page = "login";
-    } else if (path.indexOf("register") !== -1) {
-      this.page = "register";
-    } else {
-      this.page = "";
-    }
-
     window.fbAsyncInit = () => {
       FB.init({
         appId: "1289081708257437",

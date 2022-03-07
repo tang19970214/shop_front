@@ -17,8 +17,8 @@
 import Cookies from "js-cookie";
 export default {
   name: "index",
-  async asyncData({ app }) {
-    // console.log(app.$api);
+  async asyncData({ app, $api }) {
+    // console.log($api.members);
     const carouselArr = [
       {
         img: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80",
@@ -41,18 +41,27 @@ export default {
       this.$router.push("/login");
     },
     async getMemberByToken() {
-      // FIXME:@ryan
-      try {
-        const token = Cookies.get("Authorization");
-        const res = await this.api.members.getMemberByToken(token);
-        const { code, message } = res.data;
-        const { email, id, name, phone } = res.data.result;
-        console.log(code, message);
-        console.log(email, id, name, phone);
-      } catch (error) {
-        console.log(error);
-      }
+      const token = Cookies.get("Authorization");
+      await this.api.members.getMemberByToken(token)
+      .then((res) => {
+        const { code, result, message } = res.data
+        if (code === 200) {
+          const { email, id, name, phone } = result
+          console.log(email, id, name, phone);
+        } else {
+          this.$swal
+          .fire({
+            icon: "error",
+            title: message,
+            timer: 1000,
+            showConfirmButton: false
+          })
+        }
+      })
+      .catch((err) => {
+        console.log(err.response)
+      })
     },
-  },
+  }
 };
 </script>

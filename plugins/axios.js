@@ -52,7 +52,7 @@ export default ({
         if (errorRes.response.code) {
           Swal.fire({
             icon: 'error',
-            title: response.data.message,
+            title: errorRes,
             showConfirmButton: false,
             timer: 1000
           })

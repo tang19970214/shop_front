@@ -152,7 +152,7 @@
                 物流編號
                 <span id="transportId">{{ order.transportId }}</span></span
               >
-              <img @click="copyId()" class="inline cursor-pointer ml-1 mr-6" src="~/static/images/icon/copy.svg" alt="" title="複製物流編號" />
+              <img @click="copyId()" class="inline cursor-pointer ml-1 mr-6" src="~/static/images/icon/copy.svg" alt="複製物流編號" title="複製物流編號" />
               <transition name="fade">
                 <div v-if="copyMessageIsShow" class="absolute top-10 rounded-xl p-2.5 right-0 md:right-1/4 bg-[rgba(0,0,0,0.27)] backdrop-blur-3 text-white">已複製到剪貼簿</div>
               </transition>
@@ -216,6 +216,27 @@
         <button @click="cancelOrder()" data-mdb-ripple="true" data-mdb-ripple-color="light" class="duration-150 mt-16 mb-14 w-60 py-3.5 px-2 rounded-lg shadow-md text-white text-lg tracking-widest bg-gradient-to-r from-[#FA5936] to-[#FF6D3F] hover:shadow-inner disabled:cursor-not-allowed disabled:opacity-80">確認</button>
       </div>
     </Modal>
+    <button type="button" class="
+            px-7
+            py-3
+            bg-red-600
+            text-white
+            font-medium
+            text-sm
+            leading-snug
+            uppercase
+            rounded
+            shadow-md
+            hover:bg-red-700 hover:shadow-lg
+            focus:bg-red-700 focus:shadow-lg focus:outline-none focus:ring-0
+            active:bg-red-800 active:shadow-lg
+            transition
+            duration-150
+            ease-in-out
+          " data-bs-toggle="popover" data-bs-title="Popover title"
+      data-bs-content="And here's some amazing content. It's very engaging. Right?">
+      Click to toggle popover
+    </button>
   </section>
 </template>
 <script>

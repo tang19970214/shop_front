@@ -257,10 +257,10 @@ export default {
           client_id: client_id,
           client_secret: client_secret,
         };
-        const { data } = await this.api.members.getLineToken(params);
-        const { access_token, expires_in, id_token, refresh_token, scope, token_type } = data;
-        console.log(access_token);
-        this.getLineProfiles(access_token);
+        const res = await this.api.members.getLineToken(params);
+        // const { access_token, expires_in, id_token, refresh_token, scope, token_type } = data;
+        console.log(res);
+        // this.getLineProfiles(access_token);
       } catch (error) {
         console.log(error);
       }
@@ -275,8 +275,7 @@ export default {
       }
     },
   },
-  // FIXME:@ryan => mounted
-  created() {
+  mounted() {
     const params = new URLSearchParams(window.location.search);
     const lineCode = params.get("code");
     if (lineCode !== null) {
