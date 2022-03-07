@@ -42,20 +42,12 @@
         </li>
       </ul>
     </div>
-
-    <div class="w-full">
-      <div v-if="isLoading" class="flex w-full h-[50vh] justify-center items-center">
-        <div class="spinner-border text-[#FA5936] animate-spin inline-block w-8 h-8 border-4 rounded-full" role="status">
-          <span class="visually-hidden">Loading...</span>
-        </div>
-      </div>
-      <Nuxt-child v-else :profile="profile" />
-    </div>
+    
+    <Nuxt-child />
   </section>
 </template>
 
 <script>
-import Cookies from "js-cookie";
 export default {
   middleware: ["checkMemberAuth"],
   data() {
@@ -105,9 +97,7 @@ export default {
           path: "/member/ticket",
           name: "member-ticket",
         },
-      ],
-      profile: {},
-      isLoading: true
+      ]
     };
   },
   methods: {
@@ -115,28 +105,7 @@ export default {
       if (this.$route.path === path) return;
 
       this.$router.push(path);
-    },
-    async getMemberByToken() {
-      // TODO:@George --save userInfo to vuex from permission
-      try {
-        const token = Cookies.get("Authorization");
-        const res = await this.api.members.getMemberByToken(token);
-        const { code, result } = res.data;
-        // console.log(code, result);
-        if (code === 200) {
-          this.profile = result;
-        }
-        this.isLoading = false
-        // const { email, id, name, phone } = res.data.result
-        // this.profile = res.data.result
-      } catch (error) {
-        this.isLoading = false
-        console.log(error);
-      }
-    },
-  },
-  mounted() {
-    this.getMemberByToken();
-  },
+    }
+  }
 };
 </script>

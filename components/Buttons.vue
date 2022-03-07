@@ -1,6 +1,6 @@
 <template>
-  <div class="inline-block w-1/2 lg:w-[180px]">
-    <button data-mdb-ripple="true" data-mdb-ripple-color="light" class="duration-150 w-full py-3.5 px-2 rounded-lg shadow-md text-white text-lg tracking-widest bg-gradient-to-r from-[#FA5936] to-[#FF6D3F] hover:shadow-inner disabled:cursor-not-allowed disabled:opacity-80" @click.prevent="openWindow(btnInfo.link)" :title="btnInfo.name">
+  <div class="inline-block overflow-hidden w-1/2 lg:w-[180px]">
+    <button data-mdb-ripple="true" data-mdb-ripple-color="light" class="w-full py-3.5 px-2 rounded-lg shadow-md text-white text-lg tracking-widest bg-gradient-to-r from-[#FA5936] to-[#FF6D3F] hover:shadow-inner disabled:cursor-not-allowed disabled:opacity-80" @click.prevent="openWindow(btnInfo.link)" :title="btnInfo.name">
       {{ btnInfo.label }}
     </button>
   </div>
@@ -15,7 +15,7 @@ export default {
   },
   methods: {
     openWindow(link) {
-      window.open(link);
+      console.log('window open')
     },
   },
 };

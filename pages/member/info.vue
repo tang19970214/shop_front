@@ -25,7 +25,7 @@
               class="form-control w-full lg:w-1/2 px-3 py-1.5 text-gray-700 border border-[#a3a3a3] rounded-lg transition ease-in-out focus:text-gray-700 focus:border-blue-600 focus:outline-none"
               :class="{ 'border-[#EF4444]': errors.length > 0 }"
               placeholder="請輸姓名"
-              v-model="profile.name"
+              v-model="member.name"
             />
             <span
               v-if="errors.length > 0"
@@ -52,7 +52,7 @@
               class="form-control w-full lg:w-1/2 px-3 py-1.5 text-gray-700 border border-[#a3a3a3] rounded-lg transition ease-in-out focus:text-gray-700 focus:border-blue-600 focus:outline-none"
               :class="{ 'border-[#EF4444]': errors.length > 0 }"
               placeholder="請輸手機號碼"
-              v-model="profile.phone"
+              v-model="member.phone"
             />
             <span
               v-if="errors.length > 0"
@@ -79,7 +79,7 @@
               class="form-control w-full lg:w-1/2 px-3 py-1.5 text-gray-700 border border-[#a3a3a3] rounded-lg transition ease-in-out focus:text-gray-700 focus:border-blue-600 focus:outline-none"
               :class="{ 'border-[#EF4444]': errors.length > 0 }"
               placeholder="請輸Email"
-              v-model="profile.email"
+              v-model="member.email"
             />
             <span
               v-if="errors.length > 0"
@@ -106,7 +106,7 @@
               lang="fr-CA"
               class="form-control w-full lg:w-1/2 px-3 py-1.5 text-gray-700 border border-[#a3a3a3] rounded-lg transition ease-in-out focus:text-gray-700 focus:border-blue-600 focus:outline-none"
               :class="{ 'border-[#EF4444]': errors.length > 0 }"
-              v-model="profile.birthday"
+              v-model="member.birthday"
             />
             <span
               v-if="errors.length > 0"
@@ -132,7 +132,7 @@
               type="text"
               class="form-control w-full lg:w-1/2 px-3 py-1.5 text-gray-700 border border-[#a3a3a3] rounded-lg transition ease-in-out focus:text-gray-700 focus:border-blue-600 focus:outline-none"
               :class="{ 'border-[#EF4444]': errors.length > 0 }"
-              v-model="profile.address"
+              v-model="member.address"
             />
             <span
               v-if="errors.length > 0"
@@ -148,7 +148,7 @@
           >
             <div class="flex items-center space-x-2.5 my-2.5">
               <img
-                src="../../static/images/icon/facebook.svg"
+                src="~/static/images/icon/facebook.svg"
                 alt="Facebook"
                 width="24px"
               />
@@ -165,7 +165,7 @@
           >
             <div class="flex items-center space-x-2.5 my-2.5">
               <img
-                src="../../static/images/icon/google.svg"
+                src="~/static/images/icon/google.svg"
                 alt="Google"
                 width="24px"
               />
@@ -182,7 +182,7 @@
           >
             <div class="flex items-center space-x-2.5 my-2.5">
               <img
-                src="../../static/images/icon/line.svg"
+                src="~/static/images/icon/line.svg"
                 alt="Line"
                 width="24px"
               />
@@ -211,15 +211,12 @@
   </section>
 </template>
 <script>
+import Cookies from 'js-cookie'
 export default {
   name: "member-info",
-  props: {
-    profile: {
-      type: Object,
-    },
-  },
   data() {
     return {
+      profile: {},
       member: {
         name: "",
         phone: "",
@@ -238,6 +235,25 @@ export default {
         showConfirmButton: false,
       });
     },
+    async getMemberByToken() {
+      // TODO:@George --save userInfo to vuex from permission
+      const token = Cookies.get("Authorization");
+      await this.api.members.getMemberByToken(token)
+      .then((res) => {
+        const { code, result } = res.data;
+        if (code === 200) {
+          this.member.name = result.name
+          this.member.email = result.email
+          this.member.phone = result.phone
+        }
+      })
+      .catch((err) => {
+        console.log(err.response)
+      })
+    }
   },
+  mounted() {
+    this.getMemberByToken()
+  }
 };
 </script>
