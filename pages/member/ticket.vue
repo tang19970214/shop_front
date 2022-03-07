@@ -5,7 +5,7 @@
       <div class="flex items-center">
         <span>到期前一週通知</span>
         <div
-          class="duration-300 relative px-[6px] ml-[7px] shadow-[0px_1px_2px_rgba(0,0,0,0.25)] w-[50px] h-[22px] rounded-[20px] bg-gradient-to-r cursor-pointer"
+          class="duration-300 relative px-2 ml-2 shadow-[0px_1px_2px_rgba(0,0,0,0.25)] w-12 h-5 rounded-5 bg-gradient-to-r cursor-pointer"
           :class="{
             'bg-[#c4c4c4]': !isNotify,
             'bg-[#4acc28]': isNotify,
@@ -13,7 +13,7 @@
           @click="isNotify = !isNotify"
         >
           <div
-            class="duration-300 absolute top-[4px] bg-[white] h-[14px] w-[14px] rounded-full shadow-[0px_4px_4px_rgba(123,116,116,0.25)]"
+            class="duration-300 absolute top-1 bg-white h-3.5 w-3.5 rounded-full shadow-[0px_4px_4px_rgba(123,116,116,0.25)]"
             :class="{
               'left-[7%]': !isNotify,
               'left-[63%]': isNotify,
@@ -23,19 +23,9 @@
       </div>
     </div>
     <div class="flex flex-col w-full space-y-6 my-5" v-if="tickets.length > 0">
-      <Ticket
-        v-for="ticket in tickets"
-        :key="ticket.id"
-        :name="ticket.name"
-        :time="ticket.time"
-        :price="ticket.price"
-        :rules="ticket.rules"
-      ></Ticket>
+      <Ticket v-for="ticket in tickets" :key="ticket.id" :name="ticket.name" :time="ticket.time" :price="ticket.price" :rules="ticket.rules"></Ticket>
     </div>
-    <div
-      v-else
-      class="flex justify-center items-center flex-col w-full h-[50vh]"
-    >
+    <div v-else class="flex justify-center items-center flex-col w-full h-[50vh]">
       <fa class="w-24 h-20 text-[#a3a3a3]" :icon="['fas', 'ticket']" />
       <span class="text-lg text-[#a3a3a3] select-none"> 目前無優惠券 </span>
     </div>
