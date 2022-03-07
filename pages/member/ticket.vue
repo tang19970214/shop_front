@@ -5,7 +5,7 @@
       <div class="flex items-center">
         <span>到期前一週通知</span>
         <div
-          class="duration-300 relative px-2 ml-2 shadow-[0px_1px_2px_rgba(0,0,0,0.25)] w-12 h-5 rounded-5 bg-gradient-to-r cursor-pointer"
+          class="duration-300 relative px-2 ml-2 shadow-[0px_1px_2px_rgba(0,0,0,0.25)] w-12 h-[22px] rounded-xl bg-gradient-to-r cursor-pointer"
           :class="{
             'bg-[#c4c4c4]': !isNotify,
             'bg-[#4acc28]': isNotify,
