@@ -1,6 +1,6 @@
 <template>
-  <section class="w-full max-w-[1280px] mx-auto flex px-3 gap-0 md:gap-3">
-    <div class="mt-2 lg:mt-16 mb-16 lg:mb-20">
+  <section class="w-full max-w-[1280px] mx-auto px-3">
+    <div class="mt-5 lg:mt-16 flex gap-0 md:gap-3">
       <!-- 左列menu -->
       <div class="hidden md:block">
         <ul class="sticky top-24">
@@ -19,8 +19,8 @@
               </div>
 
               <div v-if="item.options" class="mt-1 pl-8">
-                <ul class="flex flex-col gap-1">
-                  <li class="inline-block tracking-wider text-base last:mb-0 cursor-pointer transition duration-300 hover:text-[#FA5936]" :class="{ 'text-[#FA5936]': items.name === $route.name }" v-for="items in item.options" :key="items.id" @click="goPath(items.path)">
+                <ul>
+                  <li class="inline-block mb-1 tracking-wider text-base last:mb-0 cursor-pointer transition duration-300 hover:text-[#FA5936]" :class="{ 'text-[#FA5936]': items.name === $route.name }" v-for="items in item.options" :key="items.id" @click="goPath(items.path)">
                     {{ items.label }}
                   </li>
                 </ul>
