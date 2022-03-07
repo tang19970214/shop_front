@@ -22,7 +22,7 @@
         </div>
       </div>
     </div>
-    <template v-if="tickets.length > 0">
+    <div class="flex flex-col w-full space-y-6 my-5" v-if="tickets.length > 0">
       <Ticket
         v-for="ticket in tickets"
         :key="ticket.id"
@@ -31,7 +31,7 @@
         :price="ticket.price"
         :rules="ticket.rules"
       ></Ticket>
-    </template>
+    </div>
     <div
       v-else
       class="flex justify-center items-center flex-col w-full h-[50vh]"
