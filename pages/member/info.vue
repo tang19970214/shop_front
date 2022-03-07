@@ -155,8 +155,7 @@
               <p class="text-lg">Facebook</p>
             </div>
             <a
-              href="#"
-              class="duration-150 h-100 flex items-center px-4 text-lg border-l border-[#9A9999] hover:text-red-500"
+              class="duration-150 cursor-pointer h-100 flex items-center px-4 text-lg border-l border-[#9A9999] hover:text-red-500"
               >解除連結</a
             >
           </div>
@@ -172,8 +171,7 @@
               <p class="text-lg">Google</p>
             </div>
             <a
-              href="#"
-              class="duration-150 h-100 flex items-center px-4 text-lg border-l border-[#9A9999] hover:text-red-500"
+              class="duration-150 cursor-pointer h-100 flex items-center px-4 text-lg border-l border-[#9A9999] hover:text-red-500"
               >解除連結</a
             >
           </div>
@@ -189,8 +187,7 @@
               <p class="text-lg">Line</p>
             </div>
             <a
-              href="#"
-              class="duration-150 h-100 flex items-center px-4 text-lg border-l border-[#9A9999] hover:text-red-500"
+              class="duration-150 cursor-pointer h-100 flex items-center px-4 text-lg border-l border-[#9A9999] hover:text-red-500"
               >解除連結</a
             >
           </div>
