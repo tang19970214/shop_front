@@ -29,7 +29,7 @@
                 />
                 <span
                   v-if="errors.length > 0"
-                  class="absolute left-2.5 bottom-5 text-red-500 text-xs"
+                  class="absolute left-2.5 -bottom-5 text-red-500 text-xs"
                   >{{ errors[0] }}</span
                 >
                 <fa
@@ -67,7 +67,7 @@
                 />
                 <span
                   v-if="errors.length > 0"
-                  class="absolute left-2.5 bottom-5 text-red-500 text-xs"
+                  class="absolute left-2.5 -bottom-5 text-red-500 text-xs"
                   >{{ errors[0] }}</span
                 >
                 <fa
@@ -104,7 +104,7 @@
                 />
                 <span
                   v-if="errors.length > 0"
-                  class="absolute left-2.5 bottom-5 text-red-500 text-xs"
+                  class="absolute left-2.5 -bottom-5 text-red-500 text-xs"
                   >{{ errors[0] }}</span
                 >
                 <fa
