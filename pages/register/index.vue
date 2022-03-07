@@ -245,41 +245,47 @@ export default {
       link += `&client_id=${client_id}&redirect_uri=${redirect_uri}&state=login&scope=profile%20openid%20email`;
       window.location.href = link;
     },
-    async getLineToken(lineCode) {
-      try {
-        let client_id = "1656841233";
-        let client_secret = "83d6a4c1fc49c5f9dac7e29b017cd0c0";
-        let redirect_uri = `${process.env.VUE_APP_REDIRECTURI}`;
-        let params = {
-          grant_type: "authorization_code",
-          code: lineCode,
-          redirect_uri: redirect_uri,
-          client_id: client_id,
-          client_secret: client_secret,
-        };
-        const res = await this.api.members.getLineToken(params);
-        // const { access_token, expires_in, id_token, refresh_token, scope, token_type } = data;
-        console.log(res);
-        // this.getLineProfiles(access_token);
-      } catch (error) {
-        console.log(error);
-      }
+    async getLineToken() {
+      const params = {
+        grant_type: "authorization_code",
+        code: this.$route.query.code,
+        redirect_uri: process.env.VUE_APP_REDIRECTURI,
+        client_id: "1656841233",
+        client_secret: "83d6a4c1fc49c5f9dac7e29b017cd0c0",
+      };
+
+      await this.api.members
+        .getLineToken(params)
+        .then((res) => {
+          console.log("res", res);
+          // TODO: 獲取res才進行下一步
+          // this.getLineProfiles(access_token)
+        })
+        .catch((err) => {
+          console.log("err", err);
+        });
+      // const { access_token, expires_in, id_token, refresh_token, scope, token_type } = data;
+      // console.log(access_token);
+      // this.getLineProfiles(access_token);
+
+      // } catch (error) {
+      //   console.log(error);
+      // }
     },
     async getLineProfiles(idToken) {
-      try {
-        const { data } = await this.api.members.getLineProfiles(idToken);
-        const { userId, displayName, pictureUrl, statusMessage } = data;
-        console.log(displayName, pictureUrl, userId);
-      } catch (error) {
-        console.log(error);
-      }
+      await this.api.members
+        .getLineProfiles(idToken)
+        .then((res) => {
+          console.log("獲取line使用者資訊", res);
+        })
+        .catch(() => {
+          console.log("error");
+        });
     },
   },
   mounted() {
-    const params = new URLSearchParams(window.location.search);
-    const lineCode = params.get("code");
-    if (lineCode !== null) {
-      this.getLineToken(lineCode);
+    if (this.$route.query?.code) {
+      this.getLineToken();
     }
   },
 };

@@ -169,6 +169,7 @@ export default {
       link += `&client_id=${client_id}&redirect_uri=${redirect_uri}&state=login&scope=profile%20openid%20email`;
       window.location.href = link;
     },
+    // FIXME:@ryan => fix try catch
     async getLineToken(lineCode) {
       try {
         let client_id = "1656841233";
@@ -189,6 +190,7 @@ export default {
         console.log(error);
       }
     },
+    // FIXME:@ryan => fix try catch
     async getLineProfiles(idToken) {
       try {
         const { data } = await this.api.members.getLineProfiles(idToken);
