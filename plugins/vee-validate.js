@@ -28,11 +28,11 @@ extend('confirmed', {
   message: (filed) => `${filed}須和新密碼一致`
 })
 
-// 自定義包含英文加數字
+// 自定義判斷是否包含大小寫英文加數字
 extend('requireAlphaNum', {
-  message: (filed) =>`${filed} 須包含英文及數字`,
+  message: (filed) =>`${filed} 須包含大小寫英文及數字`,
   validate: (val) => {
-    if (/^(?:[0-9]+[a-z]|[a-z]+[0-9])[a-z0-9]*$/i.test(val)) {
+    if (val.match(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/)) {
       return true
     } else {
       return false

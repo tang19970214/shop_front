@@ -3,7 +3,7 @@
     <h2 class="text-[18px] mb-[16px] font-bold tracking-[0.105em]">我的訂單</h2>
 
     <form @submit.prevent="handleSearch()">
-      <div class="lg:flex">
+      <div class="lg:flex items-center">
         <span class="block my-[10px] xl:inline xl:items-center xl:my-[0px]"
           >日期：</span
         >
@@ -60,14 +60,14 @@
       </ul>
     </div>
 
-    <transition name="fade">
+    <transition-group tag="div" name="fade">
       <OrderList
         v-for="list in filterList"
         :key="list.id"
         :orderList="list.orderItems"
         :order="list"
       ></OrderList>
-    </transition>
+    </transition-group>
   </section>
 </template>
 <script>
@@ -89,10 +89,10 @@ export default {
           label: "待收貨",
         },
         {
-          label: "完成",
+          label: "已完成",
         },
         {
-          label: "不成立",
+          label: "已取消",
         },
       ],
       orderList: [
@@ -210,6 +210,9 @@ export default {
   computed: {
     filterList() {
       switch (this.selectedList) {
+        case "全部":
+          return this.orderList;
+          break;
         case "待付款":
           return this.orderList.filter(
             (item) => item.orderType === this.selectedList
@@ -220,13 +223,15 @@ export default {
             (item) => item.orderType === this.selectedList
           );
           break;
-        case "不成立":
+        case "已取消":
           return this.orderList.filter(
             (item) => item.orderType === this.selectedList
           );
           break;
-        default:
-          return this.orderList;
+        case "已完成":
+          return this.orderList.filter(
+            (item) => item.orderType === this.selectedList
+          );
           break;
       }
     },
