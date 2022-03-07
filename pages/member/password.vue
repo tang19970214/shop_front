@@ -1,120 +1,36 @@
 <template>
-  <section class="w-full lg:px-[50px]">
+  <section class="w-full lg:px-12">
     <h2 class="text-lg mb-4 font-bold tracking-widest">修改密碼</h2>
-    <div
-      class="w-full rounded-xl pb-6 lg:p-10 border-none lg:border lg:border-[#a3a3a3] lg:border-solid"
-    >
+    <div class="w-full rounded-xl pb-6 lg:p-10 border-none lg:border lg:border-[#a3a3a3] lg:border-solid">
       <ValidationObserver ref="form" v-slot="{ handleSubmit, invalid }">
         <form @submit.prevent="handleSubmit(handleChangePwd)">
-          <label
-            class="form-label tracking-widest text-lg inline-block mb-2 text-gray-700"
-            for="oldPwdId"
-            >舊密碼<span class="text-[#FA5936]">*</span></label
-          >
+          <label class="form-label tracking-widest text-lg inline-block mb-2 text-gray-700" for="oldPwdId">舊密碼<span class="text-[#FA5936]">*</span></label>
           <div class="form-group relative pb-6">
-            <ValidationProvider
-              name="舊密碼"
-              rules="required"
-              v-slot="{ errors }"
-              class="w-full"
-            >
+            <ValidationProvider name="舊密碼" rules="required" v-slot="{ errors }" class="w-full">
               <div class="w-full lg:w-1/2 relative">
-                <input
-                  id="oldPwdId"
-                  type="password"
-                  class="form-control w-full lg:w-full px-3 py-1.5 text-gray-700 border border-[#a3a3a3] rounded-md transition ease-in-out focus:text-gray-700 focus:border-blue-600 focus:outline-none"
-                  :class="{ 'border-[#EF4444]': errors.length > 0 }"
-                  placeholder="請輸舊密碼"
-                  v-model="memberPwd.oldPwd"
-                />
-                <span
-                  v-if="errors.length > 0"
-                  class="absolute left-2.5 bottom-5 text-red-500 text-xs"
-                  >{{ errors[0] }}</span
-                >
-                <fa
-                  class="absolute right-2 top-2.5 cursor-pointer text-base text-gray-600"
-                  :icon="[
-                    'fas',
-                    `${oldPwdType === false ? 'eye-slash' : 'eye'}`,
-                  ]"
-                  @click="changePwdInputType('oldPwd')"
-                />
+                <input id="oldPwdId" type="password" class="form-control w-full lg:w-full px-3 py-1.5 text-gray-700 border border-[#a3a3a3] rounded-md transition ease-in-out focus:text-gray-700 focus:border-blue-600 focus:outline-none" :class="{ 'border-[#EF4444]': errors.length > 0 }" placeholder="請輸舊密碼" v-model="memberPwd.oldPwd" />
+                <span v-if="errors.length > 0" class="absolute left-2.5 bottom-5 text-red-500 text-xs">{{ errors[0] }}</span>
+                <fa class="absolute right-2 top-2.5 cursor-pointer text-base text-gray-600" :icon="['fas', `${oldPwdType === false ? 'eye-slash' : 'eye'}`]" @click="changePwdInputType('oldPwd')" />
               </div>
             </ValidationProvider>
           </div>
-          <label
-            class="form-label tracking-widest text-lg inline-block mb-2 text-gray-700"
-            for="newPwdId"
-            >新密碼<span class="text-[#FA5936]">*</span></label
-          >
+          <label class="form-label tracking-widest text-lg inline-block mb-2 text-gray-700" for="newPwdId">新密碼<span class="text-[#FA5936]">*</span></label>
           <div class="form-group relative pb-6">
-            <ValidationProvider
-              name="新密碼"
-              rules="required|min:8|max:15|requireAlphaNum"
-              v-slot="{ errors }"
-              class="w-full"
-              ref="新密碼"
-            >
+            <ValidationProvider name="新密碼" rules="required|min:8|max:15|requireAlphaNum" v-slot="{ errors }" class="w-full" ref="新密碼">
               <div class="w-full lg:w-1/2 relative">
-                <input
-                  id="newPwdId"
-                  type="password"
-                  class="form-control w-full lg:w-full px-3 py-1.5 text-gray-700 border border-[#a3a3a3] rounded-md transition ease-in-out focus:text-gray-700 focus:border-blue-600 focus:outline-none"
-                  :class="{ 'border-[#EF4444]': errors.length > 0 }"
-                  placeholder="請輸入至少8個字元, 數字和大小寫字母的密碼"
-                  v-model="memberPwd.newPwd"
-                />
-                <span
-                  v-if="errors.length > 0"
-                  class="absolute left-2.5 bottom-5 text-red-500 text-xs"
-                  >{{ errors[0] }}</span
-                >
-                <fa
-                  class="absolute right-2 top-2.5 cursor-pointer text-base text-gray-600"
-                  :icon="[
-                    'fas',
-                    `${newPwdType === false ? 'eye-slash' : 'eye'}`,
-                  ]"
-                  @click="changePwdInputType('newPwd')"
-                />
+                <input id="newPwdId" type="password" class="form-control w-full lg:w-full px-3 py-1.5 text-gray-700 border border-[#a3a3a3] rounded-md transition ease-in-out focus:text-gray-700 focus:border-blue-600 focus:outline-none" :class="{ 'border-[#EF4444]': errors.length > 0 }" placeholder="請輸入至少8個字元, 數字和大小寫字母的密碼" v-model="memberPwd.newPwd" />
+                <span v-if="errors.length > 0" class="absolute left-2.5 bottom-5 text-red-500 text-xs">{{ errors[0] }}</span>
+                <fa class="absolute right-2 top-2.5 cursor-pointer text-base text-gray-600" :icon="['fas', `${newPwdType === false ? 'eye-slash' : 'eye'}`]" @click="changePwdInputType('newPwd')" />
               </div>
             </ValidationProvider>
           </div>
-          <label
-            class="form-label tracking-widest text-lg inline-block mb-2 text-gray-700"
-            for="confirmPwdId"
-            >確認密碼<span class="text-[#FA5936]">*</span></label
-          >
+          <label class="form-label tracking-widest text-lg inline-block mb-2 text-gray-700" for="confirmPwdId">確認密碼<span class="text-[#FA5936]">*</span></label>
           <div class="form-group relative">
-            <ValidationProvider
-              name="確認密碼"
-              rules="required|confirmed:新密碼"
-              v-slot="{ errors }"
-              class="w-full"
-            >
+            <ValidationProvider name="確認密碼" rules="required|confirmed:新密碼" v-slot="{ errors }" class="w-full">
               <div class="w-full lg:w-1/2 relative">
-                <input
-                  id="confirmPwdId"
-                  type="password"
-                  class="form-control w-full lg:w-full px-3 py-1.5 text-gray-700 border border-[#a3a3a3] rounded-md transition ease-in-out focus:text-gray-700 focus:border-blue-600 focus:outline-none"
-                  :class="{ 'border-[#EF4444]': errors.length > 0 }"
-                  placeholder="確認新密碼"
-                  v-model="memberPwd.confirmPwd"
-                />
-                <span
-                  v-if="errors.length > 0"
-                  class="absolute left-2.5 bottom-5 text-red-500 text-xs"
-                  >{{ errors[0] }}</span
-                >
-                <fa
-                  class="absolute right-2 top-2.5 cursor-pointer text-base text-gray-600"
-                  :icon="[
-                    'fas',
-                    `${confirmPwdType === false ? 'eye-slash' : 'eye'}`,
-                  ]"
-                  @click="changePwdInputType('confirmPwd')"
-                />
+                <input id="confirmPwdId" type="password" class="form-control w-full lg:w-full px-3 py-1.5 text-gray-700 border border-[#a3a3a3] rounded-md transition ease-in-out focus:text-gray-700 focus:border-blue-600 focus:outline-none" :class="{ 'border-[#EF4444]': errors.length > 0 }" placeholder="確認新密碼" v-model="memberPwd.confirmPwd" />
+                <span v-if="errors.length > 0" class="absolute left-2.5 bottom-5 text-red-500 text-xs">{{ errors[0] }}</span>
+                <fa class="absolute right-2 top-2.5 cursor-pointer text-base text-gray-600" :icon="['fas', `${confirmPwdType === false ? 'eye-slash' : 'eye'}`]" @click="changePwdInputType('confirmPwd')" />
               </div>
             </ValidationProvider>
           </div>
@@ -160,23 +76,17 @@ export default {
         case "oldPwd":
           this.oldPwdType = !this.oldPwdType;
           const oldPwdInput = document.querySelector("#oldPwdId");
-          this.oldPwdType === true
-            ? (oldPwdInput.type = "text")
-            : (oldPwdInput.type = "password");
+          this.oldPwdType === true ? (oldPwdInput.type = "text") : (oldPwdInput.type = "password");
           break;
         case "newPwd":
           this.newPwdType = !this.newPwdType;
           const newPwdInput = document.querySelector("#newPwdId");
-          this.newPwdType === true
-            ? (newPwdInput.type = "text")
-            : (newPwdInput.type = "password");
+          this.newPwdType === true ? (newPwdInput.type = "text") : (newPwdInput.type = "password");
           break;
         case "confirmPwd":
           this.confirmPwdType = !this.confirmPwdType;
           const confirmPwdInput = document.querySelector("#confirmPwdId");
-          this.confirmPwdType === true
-            ? (confirmPwdInput.type = "text")
-            : (confirmPwdInput.type = "password");
+          this.confirmPwdType === true ? (confirmPwdInput.type = "text") : (confirmPwdInput.type = "password");
           break;
       }
     },

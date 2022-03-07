@@ -1,5 +1,5 @@
 <template>
-  <div class="relative w-full h-64 bg-gradient-to-r from-[#fff] to-[#D0D0D0] rounded-xl shadow-xl">
+  <div class="relative w-full h-64 bg-gradient-to-r from-white to-[#D0D0D0] rounded-xl shadow-xl">
     <div class="absolute left-6 bottom-4">
       <p>
         <span class="text-5xl text-[#FA5936]">{{ point }}</span>
@@ -19,14 +19,14 @@
 export default {
   props: {
     point: {
-      type: Number
+      type: Number,
     },
     joinTime: {
-      type: String
+      type: String,
     },
     type: {
-      type: String
-    }
+      type: String,
+    },
   },
 };
 </script>
