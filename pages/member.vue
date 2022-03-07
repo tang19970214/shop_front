@@ -1,23 +1,15 @@
 <template>
-  <section
-    class="w-[100vw] max-w-[1280px] mx-auto flex px-3 gap-0 md:gap-3 mt-5 mb-16 lg:mt-16 lg:mb-20"
-  >
+  <section class="w-full max-w-[1280px] mx-auto flex px-3 gap-0 md:gap-3 mt-5 mb-16 lg:mt-16 lg:mb-20">
     <!-- 左列menu -->
     <div class="hidden md:block">
       <ul class="sticky top-24">
-        <li
-          class="flex items-center py-1 text-gray-700 rounded text-lg"
-          v-for="item in menuList"
-          :key="item.id"
-        >
+        <li class="flex items-center py-1 text-gray-700 rounded text-lg" v-for="item in menuList" :key="item.id">
           <div class="w-auto flex flex-col">
             <div
               class="flex items-center gap-2 transition duration-300"
               :class="{
-                'text-[#FA5936]':
-                  item.name === $route.name || item.secondName === $route.name,
-                'hover:text-[#FA5936] cursor-pointer':
-                  item.name !== $route.name || item.secondName !== $route.name,
+                'text-[#FA5936]': item.name === $route.name || item.secondName === $route.name,
+                'hover:text-[#FA5936] cursor-pointer': item.name !== $route.name || item.secondName !== $route.name,
               }"
               @click="goPath(item.path)"
             >
@@ -27,13 +19,7 @@
 
             <div v-if="item.options" class="mt-1 pl-8">
               <ul>
-                <li
-                  class="inline-block mb-1 tracking-wider text-base last:mb-0 cursor-pointer transition duration-300 hover:text-[#FA5936]"
-                  :class="{ 'text-[#FA5936]': items.name === $route.name }"
-                  v-for="items in item.options"
-                  :key="items.id"
-                  @click="goPath(items.path)"
-                >
+                <li class="inline-block mb-1 tracking-wider text-base last:mb-0 cursor-pointer transition duration-300 hover:text-[#FA5936]" :class="{ 'text-[#FA5936]': items.name === $route.name }" v-for="items in item.options" :key="items.id" @click="goPath(items.path)">
                   {{ items.label }}
                 </li>
               </ul>
@@ -42,13 +28,14 @@
         </li>
       </ul>
     </div>
-    
+
     <Nuxt-child />
   </section>
 </template>
 
 <script>
 export default {
+  name: "member",
   middleware: ["checkMemberAuth"],
   data() {
     return {
@@ -97,7 +84,7 @@ export default {
           path: "/member/ticket",
           name: "member-ticket",
         },
-      ]
+      ],
     };
   },
   methods: {
@@ -105,7 +92,7 @@ export default {
       if (this.$route.path === path) return;
 
       this.$router.push(path);
-    }
-  }
+    },
+  },
 };
 </script>

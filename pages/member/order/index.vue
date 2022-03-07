@@ -20,7 +20,7 @@
     <div class="sticky top-9 bg-white w-full overflow-x-scroll lg:overflow-x-hidden flex flex-nowrap z-10">
       <ul class="flex min-w-[170%] md:min-w-[99%] mt-8 mb-1 mx-1 shadow-[0px_4px_4px_rgba(0,0,0,0.25)]">
         <li v-for="list in orderTab" :key="list.label" class="text-center w-1/6 flex-none">
-          <span class="duration-300 py-3 text-lg block cursor-pointer border-b-white border-b-4 hover:border-b-[#FA5936]" :class="{ 'border-b-[#FA5936]': selectedList === list.label }" @click="selectedList = list.label">
+          <span class="duration-300 py-3 text-lg block cursor-pointer border-b-4 hover:border-b-[#FA5936]" :class="{ 'border-b-[#FA5936]': selectedList === list.label, 'border-b-white': selectedList !== list.label }" @click="selectedList = list.label">
             {{ list.label }}
           </span>
         </li>
