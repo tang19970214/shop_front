@@ -19,7 +19,7 @@
     </div>
     <div v-if="order.status !== '已取消'" class="w-full flex overflow-x-scroll md:overflow-hidden flex-nowrap">
       <ul class="flex mt-8 mb-20 min-w-[210%] md:min-w-full">
-        <li class="w-1/5 flex flex-col flex-none items-center relative after:content-[''] after:absolute after:bg-[#1ebe5a] after:w-[100%] after:h-1 after:right-[-50%] after:top-1/2 after:z-[-1]">
+        <li class="w-1/5 flex flex-col flex-none items-center relative after:content-[''] after:absolute after:bg-[#1ebe5a] after:w-full after:h-1 after:-right-1/2 after:top-1/2 after:z-[-1]">
           <div class="w-[70px] h-[70px] bg-[#1ebe5a] rounded-full relative after:content-[''] after:absolute after:w-full after:h-full after:bg-[url(~/static/images/icon/step1.svg)] after:bg-no-repeat after:top-3.5 after:left-3.5"></div>
           <p class="absolute text-center -bottom-8">訂單已成立</p>
           <p class="absolute text-center -bottom-14 text-[#A3A3A3]">2022-02-02 12:32</p>
@@ -154,7 +154,7 @@
               >
               <img @click="copyId()" class="inline cursor-pointer ml-1 mr-6" src="~/static/images/icon/copy.svg" alt="" title="複製物流編號" />
               <transition name="fade">
-                <div v-if="copyMessageIsShow" class="absolute top-10 rounded-xl p-2.5 right-0 md:right-[25%] bg-[rgba(0,0,0,0.27)] backdrop-blur-3 text-white">已複製到剪貼簿</div>
+                <div v-if="copyMessageIsShow" class="absolute top-10 rounded-xl p-2.5 right-0 md:right-1/4 bg-[rgba(0,0,0,0.27)] backdrop-blur-3 text-white">已複製到剪貼簿</div>
               </transition>
               <button data-mdb-ripple="true" data-mdb-ripple-color="light" class="py-1.5 px-5 duration-300 bg-[#1ebe5a] hover:bg-[#1aa54f] text-white text-sm rounded-sm mt-2.5 lg:mt-0">訂單查詢</button>
             </div>
