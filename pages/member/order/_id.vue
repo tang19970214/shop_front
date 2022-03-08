@@ -83,7 +83,7 @@
           <div class="grid grid-cols-6 w-full">
             <div class="col-span-4 lg:col-span-5 flex flex-col items-end space-y-2.5">
               <p>
-                <span class="text-sm text-[#c4c4c4] mr-2.5">({{ order.orderItems.length }}件商品)</span>商品小計
+                <span class="text-sm text-[#c4c4c4] mr-2.5">({{ totalQuantity }}件商品)</span>商品小計
               </p>
               <p>運費</p>
               <div class="flex justify-end">
@@ -216,27 +216,6 @@
         <button @click="cancelOrder()" data-mdb-ripple="true" data-mdb-ripple-color="light" class="duration-150 mt-16 mb-14 w-60 py-3.5 px-2 rounded-lg shadow-md text-white text-lg tracking-widest bg-gradient-to-r from-[#FA5936] to-[#FF6D3F] hover:shadow-inner disabled:cursor-not-allowed disabled:opacity-80">確認</button>
       </div>
     </Modal>
-    <button type="button" class="
-            px-7
-            py-3
-            bg-red-600
-            text-white
-            font-medium
-            text-sm
-            leading-snug
-            uppercase
-            rounded
-            shadow-md
-            hover:bg-red-700 hover:shadow-lg
-            focus:bg-red-700 focus:shadow-lg focus:outline-none focus:ring-0
-            active:bg-red-800 active:shadow-lg
-            transition
-            duration-150
-            ease-in-out
-          " data-bs-toggle="popover" data-bs-title="Popover title"
-      data-bs-content="And here's some amazing content. It's very engaging. Right?">
-      Click to toggle popover
-    </button>
   </section>
 </template>
 <script>
@@ -249,7 +228,7 @@ export default {
         time: "2021/01/28",
         status: "已付款",
         price: 12000,
-        total: 11800,
+        total: 17800,
         transportPrice: 60,
         point: 110,
         coupon: 150,
@@ -265,8 +244,8 @@ export default {
             id: 2,
             imgUrl: require("~/static/images/product_example.png"),
             title: "春季的初戀微甜｜金牌紅烏龍禮盒",
-            quantity: 1,
-            sale: 6000,
+            quantity: 2,
+            sale: 12000,
           },
         ],
         name: "陳OO",
@@ -283,6 +262,15 @@ export default {
       isOpen: false,
       copyMessageIsShow: false,
     };
+  },
+  computed: {
+    totalQuantity() {
+      let total = 0
+      this.order.orderItems.forEach((item) => {
+        total += item.quantity
+      })
+      return total
+    }
   },
   methods: {
     copyId() {

@@ -3,30 +3,41 @@
     <table class="w-full mb-6">
       <tr class="bg-[#FFF0E5] text-lg hidden lg:table-row">
         <th class="p-2.5 w-16">
-          <label class="block relative w-6 h-6 cursor-pointer text-white duration-300 bg-white rounded-md border-2 select-none"
-          :class="{'bg-[#FA5936]': isAllChecked, 'border-[#a3a3a3]': !isAllChecked, 'border-[#FA5936]': isAllChecked}"
+          <div
+          class="w-6 h-6 border-2 rounded-md cursor-pointer"
+          :class="{'border-[#a3a3a3]': !isAllChecked, 'border-[#FA5936]': isAllChecked}"
           @click.prevent="selectAll()"
           >
-            <input v-model="isAllChecked" type="checkbox" class="hidden appearance-none">
-            <fa class="absolute text-sm top-1/2 left-1/2 -translate-x-1.5 -translate-y-1.5" icon="fa-solid fa-check"></fa>
-          </label>
+            <label class="block relative w-full h-full cursor-pointer text-white duration-300 bg-white select-none scale-0"
+            :class="{'bg-[#FA5936]': isAllChecked, 'border-[#FA5936]': isAllChecked, 'scale-100': isAllChecked}"
+            >
+              <input v-model="isAllChecked" type="checkbox" class="hidden appearance-none">
+              <fa class="absolute text-sm top-1/2 left-1/2 -translate-x-1.5 -translate-y-1.5" icon="fa-solid fa-check"></fa>
+            </label>
+          </div>
         </th>
-        <th class="p-2.5 text-left w-8/12"><span>商品名稱</span></th>
-        <th class="p-2.5 text-center"><span>數量</span></th>
-        <th class="p-2.5 text-center"><span>價錢</span></th>
-        <th class="p-2.5 text-center w-20"><span>刪除</span></th>
+        <th class="p-2.5 select-none text-left w-8/12"><span>商品名稱</span></th>
+        <th class="p-2.5 select-none text-center"><span>數量</span></th>
+        <th class="p-2.5 select-none text-center"><span>價錢</span></th>
+        <th class="p-2.5 select-none text-center w-20"><span>刪除</span></th>
       </tr>
-      <tr class="border-b border-b[#BBBBBB] hidden lg:table-row" v-for="(cart, idx) in cartList" :key="cart.id">
+      <tr class="border-b border-b[#BBBBBB] hidden md:table-row" v-for="(cart, idx) in cartList" :key="cart.id">
         <td class="p-2.5 w-16">
-          <label class="block relative w-6 h-6 cursor-pointer text-white duration-300 bg-white rounded-md border-2 select-none"
-          :class="{'bg-[#FA5936]': cart.checked, 'border-[#a3a3a3]': !cart.checked, 'border-[#FA5936]': cart.checked}"
+          <div
+          class="w-6 h-6 border-2 rounded-md cursor-pointer"
+          :class="{'border-[#a3a3a3]': !cart.checked, 'border-[#FA5936]': cart.checked}"
+          @click.prevent="cart.checked = !cart.checked"
           >
-            <input v-model="cart.checked" type="checkbox" class="hidden appearance-none">
-            <fa class="absolute text-sm top-1/2 left-1/2 -translate-x-1.5 -translate-y-1.5" icon="fa-solid fa-check"></fa>
-          </label>
+            <label class="block relative w-full h-full cursor-pointer text-white duration-300 bg-white select-none scale-0"
+            :class="{'bg-[#FA5936]': cart.checked, 'border-[#FA5936]': cart.checked, 'scale-100': cart.checked}"
+            >
+              <input v-model="cart.checked" type="checkbox" class="hidden appearance-none">
+              <fa class="absolute text-sm top-1/2 left-1/2 -translate-x-1.5 -translate-y-1.5" icon="fa-solid fa-check"></fa>
+            </label>
+          </div>
         </td>
         <td class="p-2.5">
-          <div class="flex flex-col lg:flex-row items-center space-x-5">
+          <div class="flex items-center space-x-5">
             <img class="w-24 h-24" :src="cart.imgUrl" :alt="cart.title">
             <div class="flex flex-col">
               <h3 class="text-lg">{{ cart.title }}</h3>
@@ -43,13 +54,13 @@
         <td class="text-center hidden lg:table-cell">
           <span class="text-[#FA5936]">${{ cart.sale }}</span>
         </td>
-        <td>
+        <td class="text-center">
           <a class="cursor-pointer" @click.prevent="deleteCart(cart.id)">
             <fa class="text-[#FA5936] text-xl duration-300 hover:text-[#df4f2f]" icon="fa-solid fa-trash-can"></fa>
           </a>
         </td>
       </tr>
-      <tr  class="border-b border-b[#BBBBBB] table-row lg:hidden" v-for="(cart, idx) in cartList" :key="cart.id">
+      <tr class="border-b border-b[#BBBBBB] table-row md:hidden" v-for="(cart, idx) in cartList" :key="cart.id">
         <td class="p-2.5 w-12 flex items-start">
           <label class="block relative w-6 h-6 cursor-pointer text-white duration-300 bg-white rounded-md border-2 select-none"
           :class="{'bg-[#FA5936]': cart.checked, 'border-[#a3a3a3]': !cart.checked, 'border-[#FA5936]': cart.checked}"
@@ -61,7 +72,7 @@
         <td class="p-2.5 pl-0 pb-5">
           <div class="flex space-x-4">
             <img class="w-24 h-24" :src="cart.imgUrl" :alt="cart.title">
-            <div class="flex flex-col space-y-4">
+            <div class="flex flex-col space-y-4 w-full">
               <h3 class="text-lg">
                 {{ cart.title }}
               </h3>
@@ -80,7 +91,7 @@
     <table class="w-full">
       <tr>
         <td class="flex justify-end items-center px-2.5">
-          <span class="text-sm text-[#a3a3a3]">({{ cartList.length }}件商品)</span>
+          <span class="text-sm text-[#a3a3a3]">({{ totalQuantity }}件商品)</span>
           <span class="text-lg font-bold ml-2.5 mr-3.5">商品小計</span>
           <span class="text-xl text-[#FA5936] font-bold">${{ totalPrice }}</span>
         </td>
@@ -117,6 +128,13 @@ export default {
         this.allChecked = false
         return false
       }
+    },
+    totalQuantity() {
+      let total = 0
+      this.cartList.forEach((item) => {
+        total += item.quantity
+      })
+      return total
     },
     totalPrice() {
       let totalPrice = 0

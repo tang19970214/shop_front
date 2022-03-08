@@ -33,6 +33,14 @@ export default {
           title: '縱谷間的茶・經典有機紅烏龍',
           quantity: 2,
           sale: 980
+        },
+        {
+          id: 3,
+          checked: false,
+          imgUrl: require('~/static/images/product_example.png'),
+          title: '縱谷間的茶・經典有機紅烏龍',
+          quantity: 5,
+          sale: 690
         }
       ]
     }

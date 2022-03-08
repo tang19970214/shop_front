@@ -1,5 +1,6 @@
 <template>
   <section class="w-full md:px-8">
+    <h3 class="mt-2 text-lg mb-4 font-bold tracking-widest">結帳</h3>
     <button data-mdb-ripple="true" data-mdb-ripple-color="light" class="py-3.5 px-20 rounded-xl shadow-md text-white text-lg tracking-widest bg-gradient-to-r from-[#FA5936] to-[#FF6D3F] hover:shadow-inner disabled:cursor-not-allowed disabled:opacity-80" @click="$router.push({ name: 'cart-finish' })">確認結帳</button>
   </section>
 </template>
