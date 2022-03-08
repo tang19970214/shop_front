@@ -9,6 +9,11 @@ import {
 } from './auth'
 import Vue from 'vue'
 
+const lineResponseUrl = [
+  'https://api.line.me/oauth2/v2.1/token',
+  'https://api.line.me/v2/profile'
+]
+
 export default ({
   $axios,
   redirect
@@ -26,14 +31,15 @@ export default ({
   service.setBaseURL(process.env.VUE_APP_BASE_API)
 
   service.interceptors.response.use((response) => {
-    if (response.data.code !== 200) {
+    if (lineResponseUrl.includes(response.url)) {
+      return response
+    } else {
       Swal.fire({
         icon: 'error',
         title: response.data.message,
         showConfirmButton: false,
         timer: 1500
       })
-    } else {
       return response
     }
   }, (errorRes) => {

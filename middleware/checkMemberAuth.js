@@ -9,7 +9,7 @@ export default ({ req, redirect, route }) => {
   if (process.server) {
     // 假如 cookie 一個 key值都沒有的話會是 undefined，所以要先判斷
     const getToken = req.headers.cookie
-    if (getToken !== undefined) {
+    if (getToken) {
       token = req.headers.cookie.replace(/(?:(?:^|.*;\s*)Authorization\s*\=\s*([^;]*).*$)|^.*$/, "$1");
       if (!token) {
         if (whiteList.includes(route.name) || whiteList.includes(route.matched[0]?.path)) return;
@@ -19,25 +19,14 @@ export default ({ req, redirect, route }) => {
           redirect('/')
         }
       }
-      // if (token === '' || token === null || token === undefined) {
-      //   if (route.name === 'login' || route.name === 'register' || route.name === 'register-mail' || route.name === 'register-finish') { return }
-      //   redirect(`/login`);
-      // } else if (token !== '') {
-      //   if (route.name === 'login' || route.name === 'register' || route.name === 'register-mail' || route.name === 'register-finish') {
-      //     redirect(`/`);
-      //   }
-      // }
     } else {
       if (whiteList.includes(route.name) || whiteList.includes(route.matched[0]?.path)) return;
       redirect('/login');
-      // if (route.name === 'login' || route.name === 'register' || route.name === 'register-mail' || route.name === 'register-finish') { return }
-      // redirect(`/login`)
     }
   }
   // 判斷 client端
   if (process.client) {
     token = Cookies.get('Authorization')
-    console.log('route', route);
     if (!token) {
       if (whiteList.includes(route.name) || whiteList.includes(route.matched[0]?.path)) return;
       redirect('/login')
@@ -46,19 +35,10 @@ export default ({ req, redirect, route }) => {
         redirect('/')
         Swal.fire({
           icon: "warning",
-          title: "請先登入！",
-          timer: 1500,
+          title: "已是登入狀態！",
+          timer: 1200,
           showConfirmButton: false
         })
-      }
-    }
-
-    if (token === '' || token === null || token === undefined) {
-      if (route.name === 'login' || route.name === 'register' || route.name === 'register-mail' || route.name === 'register-finish') { return }
-      redirect(`/login`);
-    } else if (token !== undefined) {
-      if (route.name === 'login' || route.name === 'register' || route.name === 'register-mail' || route.name === 'register-finish') {
-        redirect(`/`);
       }
     }
   }

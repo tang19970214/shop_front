@@ -8,7 +8,7 @@
       <p>訂單編號：21111708328107</p>
     </div>
 
-    <button data-mdb-ripple="true" data-mdb-ripple-color="light" class="py-3.5 px-20 shadow-md text-white text-lg tracking-widest bg-gradient-to-r from-[#FA5936] to-[#FF6D3F] hover:shadow-inner disabled:cursor-not-allowed disabled:opacity-80" @click="viewOrder()">查看我的訂單</button>
+    <button data-mdb-ripple="true" data-mdb-ripple-color="light" class="py-3.5 px-20 rounded-xl shadow-md text-white text-lg tracking-widest bg-gradient-to-r from-[#FA5936] to-[#FF6D3F] hover:shadow-inner disabled:cursor-not-allowed disabled:opacity-80" @click="viewOrder()">查看我的訂單</button>
   </section>
 </template>
 
@@ -17,6 +17,7 @@ export default {
   name: "cart=finish",
   methods: {
     viewOrder() {
+      this.$router.push('/member/order')
       console.log("查看訂單");
     },
   },

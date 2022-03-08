@@ -65,8 +65,8 @@ export default ({ $request }, inject) => {
           data
         })
       },
-      getLineToken(data) {
-        return $request({
+      async getLineToken(data) {
+        return await $request({
           url: "https://api.line.me/oauth2/v2.1/token",
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded'

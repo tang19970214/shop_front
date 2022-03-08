@@ -254,23 +254,23 @@ export default {
         client_secret: "83d6a4c1fc49c5f9dac7e29b017cd0c0",
       };
 
-      await this.api.members
-        .getLineToken(params)
-        .then((res) => {
-          console.log("res", res);
-          // TODO: 獲取res才進行下一步
-          // this.getLineProfiles(access_token)
-        })
-        .catch((err) => {
-          console.log("err", err);
-        });
-      // const { access_token, expires_in, id_token, refresh_token, scope, token_type } = data;
-      // console.log(access_token);
-      // this.getLineProfiles(access_token);
-
-      // } catch (error) {
-      //   console.log(error);
-      // }
+      await this.api.members.getLineToken(params)
+      .then((res) => {
+        const {
+          access_token,
+          expires_in,
+          id_token,
+          refresh_token,
+          scope,
+          token_type
+        } = res.data
+        console.log('獲取 Line Token', res)
+        // TODO: 獲取res才進行下一步
+        this.getLineProfiles(access_token)
+      })
+      .catch((err) => {
+        console.log("err", err);
+      });
     },
     async getLineProfiles(idToken) {
       await this.api.members
@@ -284,6 +284,7 @@ export default {
     },
   },
   mounted() {
+    // 判斷有無 Line 回傳的 Code
     if (this.$route.query?.code) {
       this.getLineToken();
     }
