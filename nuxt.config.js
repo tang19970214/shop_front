@@ -5,7 +5,7 @@ export default {
   router: {
     // middleware: [],
     scrollBehavior() {
-      return { x: 0, y:0 }
+      return { x: 0, y: 0 }
     }
   },
   head: {
@@ -20,7 +20,7 @@ export default {
       { name: 'format-detection', content: 'telephone=no' }
     ],
     script: [
-      { src: "//apis.google.com/js/api:client.js" }
+      { src: "//apis.google.com/js/api:client.js" },
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
@@ -43,20 +43,20 @@ export default {
     { src: '~/plugins/g-signin', ssr: false },
     { src: '~/plugins/aos', ssr: false },
     { src: '~/plugins/tw-elements-path', ssr: false },
-    
+
     { src: '~/static/application', ssr: false },
   ],
 
   components: true,
 
-  transition:{
-    name:'fade',
-    mode:'out-in'
+  transition: {
+    name: 'fade',
+    mode: 'out-in'
   },
 
   buildModules: [
     '@nuxt/postcss8',
-    ["@nuxtjs/dotenv", {filename: ".env." + process.env.NODE_ENV}]
+    ["@nuxtjs/dotenv", { filename: ".env." + process.env.NODE_ENV }]
   ],
 
   modules: [

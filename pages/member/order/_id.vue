@@ -152,7 +152,7 @@
                 物流編號
                 <span id="transportId">{{ order.transportId }}</span></span
               >
-              <img @click="copyId()" class="inline cursor-pointer ml-1 mr-6" src="~/static/images/icon/copy.svg" alt="" title="複製物流編號" />
+              <img @click="copyId()" class="inline cursor-pointer ml-1 mr-6" src="~/static/images/icon/copy.svg" alt="複製物流編號" title="複製物流編號" />
               <transition name="fade">
                 <div v-if="copyMessageIsShow" class="absolute top-10 rounded-xl p-2.5 right-0 md:right-1/4 bg-[rgba(0,0,0,0.27)] backdrop-blur-3 text-white">已複製到剪貼簿</div>
               </transition>
@@ -194,21 +194,49 @@
     </div>
 
     <!-- 取消訂單彈出視窗 -->
-    <Modal :openModal="isOpen" @closeModal="closeModal">
+    <Modal :openModal="isOpen" :width="'w-11/12 lg:w-1/2'" @closeModal="closeModal">
       <div class="flex flex-col items-center">
-        <h3 class="text-2xl font-bold mb-8">訂單已取消</h3>
+        <div class="flex">
+          <h3 class="text-2xl font-bold mb-8">訂單已取消</h3>
+          <div class="ml-4 flex justify-center w-8 h-8 items-center rounded-full border-2 border-[#16A34A]">
+            <fa class="text-sm text-[#16A34A] font-bold" icon="fa-sold fa-check" />
+          </div>
+        </div>
         <div class="flex items-center">
-          <span class="text-lg">取消原因：</span>
-          <select v-model="cancelType" name="" class="text-slate-300 py-2.5 px-4 w-60 rounded-md border border-[#a3a3a3]" :class="{ 'text-slate-900': cancelType !== '' }">
-            <option value="" disabled selected>請選擇</option>
-            <option :value="item" v-for="item in cancelOrderSelect" :key="item">
-              {{ item }}
-            </option>
-          </select>
+          <span class="text-sm lg:text-lg">取消原因：</span>
+          <div class="w-60 relative after:absolute after:pointer-events-none after:w-6 after:h-full after:content-[''] after:top-4 after:right-3 after:bg-[url(~/static/images/icon/arrow-bottom.svg)] after:bg-no-repeat">
+            <select v-model="cancelType" name="" class="appearance-none py-2.5 px-4 w-full rounded-md border border-[#a3a3a3]" :class="{ 'text-slate-400': cancelType === '','text-slate-900': cancelType !== '' }">
+              <option value="" disabled selected>請選擇</option>
+              <option :value="item" v-for="item in cancelOrderSelect" :key="item">
+                {{ item }}
+              </option>
+            </select>
+          </div>
         </div>
         <button @click="cancelOrder()" data-mdb-ripple="true" data-mdb-ripple-color="light" class="duration-150 mt-16 mb-14 w-60 py-3.5 px-2 rounded-lg shadow-md text-white text-lg tracking-widest bg-gradient-to-r from-[#FA5936] to-[#FF6D3F] hover:shadow-inner disabled:cursor-not-allowed disabled:opacity-80">確認</button>
       </div>
     </Modal>
+    <button type="button" class="
+            px-7
+            py-3
+            bg-red-600
+            text-white
+            font-medium
+            text-sm
+            leading-snug
+            uppercase
+            rounded
+            shadow-md
+            hover:bg-red-700 hover:shadow-lg
+            focus:bg-red-700 focus:shadow-lg focus:outline-none focus:ring-0
+            active:bg-red-800 active:shadow-lg
+            transition
+            duration-150
+            ease-in-out
+          " data-bs-toggle="popover" data-bs-title="Popover title"
+      data-bs-content="And here's some amazing content. It's very engaging. Right?">
+      Click to toggle popover
+    </button>
   </section>
 </template>
 <script>

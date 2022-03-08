@@ -201,8 +201,7 @@ export default {
       }
     },
   },
-  // FIXME:@ryan => mounted
-  created() {
+  mounted() {
     const params = new URLSearchParams(window.location.search);
     const lineCode = params.get("code");
     if (lineCode !== null) {
