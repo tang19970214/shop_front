@@ -17,7 +17,7 @@
         <td class="p-2 md:p-5">
           <div class="flex flex-col justify-start">
             <div class="flex items-center space-x-5">
-              <img class="w-24 h-24" :src="cart.imgUrl" :alt="cart.title">
+              <img class="w-24 h-24" :src="cart.imgUrl" :alt="cart.title" />
               <div class="flex flex-col text-lg pt-1 lg:pt-0">
                 <span>{{ cart.title }}</span>
                 <span class="block lg:hidden">X{{ cart.quantity }}</span>
@@ -45,22 +45,16 @@
               </div>
               <span class="text-lg">運費</span>
               <div class="flex items-center space-x-2">
-                <div
-                class="w-6 h-6 border-2 rounded-md cursor-pointer select-none"
-                :class="{'border-[#a3a3a3]': !checkoutInfo.usePoint, 'border-[#FA5936]': checkoutInfo.usePoint}"
-                @click.prevent="checkoutInfo.usePoint = !checkoutInfo.usePoint"
-                >
-                  <label class="block relative w-full h-full cursor-pointer text-white duration-300 bg-white select-none scale-0"
-                  :class="{'bg-[#FA5936]': checkoutInfo.usePoint, 'border-[#FA5936]': checkoutInfo.usePoint, 'scale-100': checkoutInfo.usePoint}"
-                  >
-                    <input v-model="checkoutInfo.usePoint" type="checkbox" class="hidden appearance-none" id="pointCheckbox">
+                <div class="w-6 h-6 border-2 rounded-md cursor-pointer select-none" :class="{ 'border-[#a3a3a3]': !checkoutInfo.usePoint, 'border-[#FA5936]': checkoutInfo.usePoint }" @click.prevent="checkoutInfo.usePoint = !checkoutInfo.usePoint">
+                  <label class="block relative w-full h-full cursor-pointer text-white duration-300 bg-white select-none scale-0" :class="{ 'bg-[#FA5936]': checkoutInfo.usePoint, 'border-[#FA5936]': checkoutInfo.usePoint, 'scale-100': checkoutInfo.usePoint }">
+                    <input v-model="checkoutInfo.usePoint" type="checkbox" class="hidden appearance-none" id="pointCheckbox" />
                     <fa class="absolute text-sm top-1/2 left-1/2 -translate-x-1.5 -translate-y-1.5" icon="fa-solid fa-check"></fa>
                   </label>
                 </div>
                 <label class="text-lg select-none cursor-pointer" for="pointCheckbox">使用紅利金</label>
               </div>
               <button @click="openModal = true" class="w-full md:w-auto border-2 border-[#16a34a] rounded-xl p-3 flex items-center text-lg mt-4">
-                <img class="mr-4" src="~/static/images/icon/coupon-green.svg" alt="優惠碼/折價券">
+                <img class="mr-4" src="~/static/images/icon/coupon-green.svg" alt="優惠碼/折價券" />
                 使用優惠碼/折價券
               </button>
             </div>
@@ -68,7 +62,7 @@
           <div class="col-span-3 md:col-span-2 flex flex-col text-right">
             <span class="text-lg text-[#FA5936]">${{ cartPrice }}</span>
             <span class="text-lg text-[#FA5936]">$60</span>
-            <div :class="{'pt-1': !checkoutInfo.usePoint, 'md:pt-0': !checkoutInfo.usePoint}">
+            <div :class="{ 'pt-1': !checkoutInfo.usePoint, 'md:pt-0': !checkoutInfo.usePoint }">
               <span v-if="!checkoutInfo.usePoint" class="text-sm md:text-lg text-[#a3a3a3]">可用{{ checkoutInfo.point }}點</span>
               <span v-else class="text-lg text-[#FA5936]">-${{ checkoutInfo.point }}</span>
             </div>
@@ -130,65 +124,61 @@
         <div class="px-6 mt-6">
           <div class="form-group relative pb-6">
             <ValidationProvider name="寄送方式" rules="required" v-slot="{ errors }" class="w-full flex flex-col space-y-2">
-              <label for="sevenInput" class="cursor-pointer hover:bg-[#e7e7e7] relative bg-[#f3f3f3] text-lg py-3 px-8 rounded-md" :class="{'border-[#ff4444]': errors.length > 0, 'border': errors.length > 0}">
+              <label for="sevenInput" class="cursor-pointer hover:bg-[#e7e7e7] relative bg-[#f3f3f3] text-lg py-3 px-8 rounded-md" :class="{ 'border-[#ff4444]': errors.length > 0, border: errors.length > 0 }">
                 7-11
-                <img class="duration-300 absolute right-6 top-1/2 -translate-y-3 scale-0" :class="{'scale-100': checkoutInfo.deliveryType === 'seven'}" src="~/static/images/icon/check.svg" alt="check">
+                <img class="duration-300 absolute right-6 top-1/2 -translate-y-3 scale-0" :class="{ 'scale-100': checkoutInfo.deliveryType === 'seven' }" src="~/static/images/icon/check.svg" alt="check" />
               </label>
-              <input id="sevenInput" type="radio" class="hidden" v-model="checkoutInfo.deliveryType" value="seven" >
-              <div class="max-h-0 duration-300 overflow-hidden flex flex-col" :class="{'max-h-64': checkoutInfo.deliveryType === 'seven'}">
+              <input id="sevenInput" type="radio" class="hidden" v-model="checkoutInfo.deliveryType" value="seven" />
+              <div class="max-h-0 duration-300 overflow-hidden flex flex-col" :class="{ 'max-h-64': checkoutInfo.deliveryType === 'seven' }">
                 <div class="flex items-center relative my-3" v-for="(item, idx) in checkoutInfo.sevenStore" :key="idx">
                   <ValidationProvider class="relative" v-if="checkoutInfo.deliveryType === 'seven'" name="地址" rules="required" v-slot="{ errors }">
                     <div class="absolute w-5 h-5 left-0 top-1/2 -translate-y-3 rounded-full border border-[#c4c4c4] flex justify-center items-center">
-                      <div class="w-4 h-4 duration-300 rounded-full bg-[#FA5936] scale-0" :class="{'scale-100': item.address === checkoutInfo.deliveryAddress}"></div>
+                      <div class="w-4 h-4 duration-300 rounded-full bg-[#FA5936] scale-0" :class="{ 'scale-100': item.address === checkoutInfo.deliveryAddress }"></div>
                     </div>
-                    <label :for="item.address" class="pl-6 cursor-pointer">
-                      {{ item.name }} {{ item.address }}
-                    </label>
-                    <input class="hidden" v-model="checkoutInfo.deliveryAddress" type="radio" :id="item.address" :value="item.address">
+                    <label :for="item.address" class="pl-6 cursor-pointer"> {{ item.name }} {{ item.address }} </label>
+                    <input class="hidden" v-model="checkoutInfo.deliveryAddress" type="radio" :id="item.address" :value="item.address" />
                     <span v-if="errors.length > 0" class="absolute left-6 -bottom-5 text-red-500 text-xs">{{ errors[0] }}</span>
                   </ValidationProvider>
                 </div>
-                <button type="button" class="rounded-xl duration-300 w-32 py-2 px-5 my-3 bg-white hover:bg-[#FA5936] hover:text-white border-2 border-[#FA5936] tracking-widest opacity-0" :class="{'opacity-100': checkoutInfo.deliveryType === 'seven'}">+新增地址</button>
+                <button type="button" class="rounded-xl duration-300 w-32 py-2 px-5 my-3 bg-white hover:bg-[#FA5936] hover:text-white border-2 border-[#FA5936] tracking-widest opacity-0" :class="{ 'opacity-100': checkoutInfo.deliveryType === 'seven' }">+新增地址</button>
               </div>
-              <label for="familyInput" class="cursor-pointer hover:bg-[#e7e7e7] relative bg-[#f3f3f3] text-lg py-3 px-8 rounded-md" :class="{'border-[#ff4444]': errors.length > 0, 'border': errors.length > 0}">
+              <label for="familyInput" class="cursor-pointer hover:bg-[#e7e7e7] relative bg-[#f3f3f3] text-lg py-3 px-8 rounded-md" :class="{ 'border-[#ff4444]': errors.length > 0, border: errors.length > 0 }">
                 全家
-                <img class="duration-300 absolute right-6 top-1/2 -translate-y-3 scale-0" :class="{'scale-100': checkoutInfo.deliveryType === 'family'}" src="~/static/images/icon/check.svg" alt="check">
+                <img class="duration-300 absolute right-6 top-1/2 -translate-y-3 scale-0" :class="{ 'scale-100': checkoutInfo.deliveryType === 'family' }" src="~/static/images/icon/check.svg" alt="check" />
               </label>
-              <input id="familyInput" type="radio" class="hidden" v-model="checkoutInfo.deliveryType" value="family">
-              <div class="max-h-0 duration-300 overflow-hidden" :class="{'max-h-64': checkoutInfo.deliveryType === 'family'}">
+              <input id="familyInput" type="radio" class="hidden" v-model="checkoutInfo.deliveryType" value="family" />
+              <div class="max-h-0 duration-300 overflow-hidden" :class="{ 'max-h-64': checkoutInfo.deliveryType === 'family' }">
                 <div class="flex items-center relative my-3" v-for="(item, idx) in checkoutInfo.familyStore" :key="idx">
-                  <ValidationProvider class="relative"  v-if="checkoutInfo.deliveryType === 'family'" name="地址" rules="required" v-slot="{ errors }">
+                  <ValidationProvider class="relative" v-if="checkoutInfo.deliveryType === 'family'" name="地址" rules="required" v-slot="{ errors }">
                     <div class="absolute w-5 h-5 left-0 top-1/2 -translate-y-3 rounded-full border border-[#c4c4c4] flex justify-center items-center">
-                      <div class="w-4 h-4 duration-300 rounded-full bg-[#FA5936] scale-0" :class="{'scale-100': item.address === checkoutInfo.deliveryAddress}"></div>
+                      <div class="w-4 h-4 duration-300 rounded-full bg-[#FA5936] scale-0" :class="{ 'scale-100': item.address === checkoutInfo.deliveryAddress }"></div>
                     </div>
-                    <label :for="item.address" class="pl-6 cursor-pointer">
-                      {{ item.name }} {{ item.address }}
-                    </label>
-                    <input class="hidden" v-model="checkoutInfo.deliveryAddress" type="radio" :id="item.address" :value="item.address">
+                    <label :for="item.address" class="pl-6 cursor-pointer"> {{ item.name }} {{ item.address }} </label>
+                    <input class="hidden" v-model="checkoutInfo.deliveryAddress" type="radio" :id="item.address" :value="item.address" />
                     <span v-if="errors.length > 0" class="absolute left-6 -bottom-5 text-red-500 text-xs">{{ errors[0] }}</span>
                   </ValidationProvider>
                 </div>
-                <button type="button" class="rounded-xl duration-300 w-32 py-2 px-5 bg-white hover:bg-[#FA5936] hover:text-white border-2 border-[#FA5936] tracking-widest opacity-0" :class="{'opacity-100': checkoutInfo.deliveryType === 'family'}">+新增地址</button>
+                <button type="button" class="rounded-xl duration-300 w-32 py-2 px-5 bg-white hover:bg-[#FA5936] hover:text-white border-2 border-[#FA5936] tracking-widest opacity-0" :class="{ 'opacity-100': checkoutInfo.deliveryType === 'family' }">+新增地址</button>
               </div>
-              <label for="deliveryInput" class="cursor-pointer hover:bg-[#e7e7e7] relative bg-[#f3f3f3] text-lg py-3 px-8 rounded-md" :class="{'border-[#ff4444]': errors.length > 0, 'border': errors.length > 0}">
+              <label for="deliveryInput" class="cursor-pointer hover:bg-[#e7e7e7] relative bg-[#f3f3f3] text-lg py-3 px-8 rounded-md" :class="{ 'border-[#ff4444]': errors.length > 0, border: errors.length > 0 }">
                 宅配
-                <img class="duration-300 absolute right-6 top-1/2 -translate-y-3 scale-0" :class="{'scale-100': checkoutInfo.deliveryType === 'home'}" src="~/static/images/icon/check.svg" alt="check">
+                <img class="duration-300 absolute right-6 top-1/2 -translate-y-3 scale-0" :class="{ 'scale-100': checkoutInfo.deliveryType === 'home' }" src="~/static/images/icon/check.svg" alt="check" />
               </label>
-              <input id="deliveryInput" type="radio" class="hidden" v-model="checkoutInfo.deliveryType" value="home">
-              <div class="max-h-0 duration-300 overflow-hidden" :class="{'max-h-64': checkoutInfo.deliveryType === 'home'}">
+              <input id="deliveryInput" type="radio" class="hidden" v-model="checkoutInfo.deliveryType" value="home" />
+              <div class="max-h-0 duration-300 overflow-hidden" :class="{ 'max-h-64': checkoutInfo.deliveryType === 'home' }">
                 <div class="flex items-center relative my-3" v-for="(item, idx) in checkoutInfo.home" :key="idx">
-                  <ValidationProvider class="relative"  v-if="checkoutInfo.deliveryType === 'home'" name="地址" rules="required" v-slot="{ errors }">
+                  <ValidationProvider class="relative" v-if="checkoutInfo.deliveryType === 'home'" name="地址" rules="required" v-slot="{ errors }">
                     <div class="absolute w-5 h-5 left-0 top-1/2 -translate-y-3 rounded-full border border-[#c4c4c4] flex justify-center items-center">
-                      <div class="w-4 h-4 duration-300 rounded-full bg-[#FA5936] scale-0" :class="{'scale-100': item.address === checkoutInfo.deliveryAddress}"></div>
+                      <div class="w-4 h-4 duration-300 rounded-full bg-[#FA5936] scale-0" :class="{ 'scale-100': item.address === checkoutInfo.deliveryAddress }"></div>
                     </div>
                     <label :for="item.address" class="pl-6 cursor-pointer">
                       {{ item.address }}
                     </label>
-                    <input class="hidden" v-model="checkoutInfo.deliveryAddress" type="radio" :id="item.address" :value="item.address">
+                    <input class="hidden" v-model="checkoutInfo.deliveryAddress" type="radio" :id="item.address" :value="item.address" />
                     <span v-if="errors.length > 0" class="absolute left-6 -bottom-5 text-red-500 text-xs">{{ errors[0] }}</span>
                   </ValidationProvider>
                 </div>
-                <button type="button" class="rounded-xl duration-300 w-32 py-2 px-5 bg-white hover:bg-[#FA5936] hover:text-white border-2 border-[#FA5936] tracking-widest opacity-0" :class="{'opacity-100': checkoutInfo.deliveryType === 'home'}">+新增地址</button>
+                <button type="button" class="rounded-xl duration-300 w-32 py-2 px-5 bg-white hover:bg-[#FA5936] hover:text-white border-2 border-[#FA5936] tracking-widest opacity-0" :class="{ 'opacity-100': checkoutInfo.deliveryType === 'home' }">+新增地址</button>
               </div>
               <span v-if="errors.length > 0" class="absolute left-5 -bottom-1 text-red-500 text-xs">{{ errors[0] }}</span>
             </ValidationProvider>
@@ -205,7 +195,7 @@
       <div class="p-0 lg:px-5 lg:py-0">
         <h4 class="text-2xl font-bold mb-6">使用優惠碼</h4>
         <div class="relative w-full lg:w-1/2">
-          <input type="text" ref="addCouponInput" v-model="addCouponInput" @keyup.enter="handleAddCoupon()" class="focus:ring-1 focus:ring-[#FA5936] focus:outline-none border w-full border-[#c4c4c4] rounded-xl p-3" placeholder="請輸入優惠碼">
+          <input type="text" ref="addCouponInput" v-model="addCouponInput" @keyup.enter="handleAddCoupon()" class="focus:ring-1 focus:ring-[#FA5936] focus:outline-none border w-full border-[#c4c4c4] rounded-xl p-3" placeholder="請輸入優惠碼" />
           <button @click="handleAddCoupon()" data-mdb-ripple="true" data-mdb-ripple-color="light" class="duration-300 absolute flex justify-center cursor-pointer items-center w-3/12 h-full top-0 right-0 rounded-tr-xl rounded-br-xl bg-[#FA5936] hover:bg-[#f15734]">
             <span class="text-white">新增</span>
           </button>
@@ -234,34 +224,34 @@ export default {
   data() {
     return {
       checkoutInfo: {
-        name: '',
-        phone: '',
-        email: '',
-        note: '',
+        name: "",
+        phone: "",
+        email: "",
+        note: "",
         sevenStore: [
           {
-            name: '7-11大興門市',
-            address: '241新北市三重區仁華街80巷27號'
+            name: "7-11大興門市",
+            address: "241新北市三重區仁華街80巷27號",
           },
           {
-            name: '7-11大興門市2',
-            address: '241新北市三重區仁華街80巷28號'
+            name: "7-11大興門市2",
+            address: "241新北市三重區仁華街80巷28號",
           },
         ],
         familyStore: [
           {
-            name: '全家正隆店',
-            address: '220新北市板橋區三民路二段正隆巷34號'
-          }
+            name: "全家正隆店",
+            address: "220新北市板橋區三民路二段正隆巷34號",
+          },
         ],
         home: [
           {
-            address: '台北市大安區大安森林公園'
-          }
+            address: "台北市大安區大安森林公園",
+          },
         ],
-        deliveryAddress: '',
-        deliveryType: '',
-        paymentType: '',
+        deliveryAddress: "",
+        deliveryType: "",
+        paymentType: "",
         usePoint: false,
         point: 110,
         useCoupon: false,
@@ -270,116 +260,122 @@ export default {
         checkoutList: [
           {
             id: 1,
-            imgUrl: require('~/static/images/product_example.png'),
-            title: '縱谷間的茶・經典有機紅烏龍',
+            imgUrl: require("~/static/images/product_example.png"),
+            title: "縱谷間的茶・經典有機紅烏龍",
             quantity: 1,
-            sale: 890
+            sale: 890,
           },
           {
             id: 2,
-            imgUrl: require('~/static/images/product_example.png'),
-            title: '縱谷間的茶・經典有機紅烏龍2',
+            imgUrl: require("~/static/images/product_example.png"),
+            title: "縱谷間的茶・經典有機紅烏龍2",
             quantity: 3,
-            sale: 790
+            sale: 790,
           },
-        ]
+        ],
       },
+      // 物流
+      sendList: [
+        { id: 1, label: "7-11", value: "711", enable: true, options: [] },
+        { id: 2, label: "全家", value: "family", enable: false, options: [] },
+        { id: 3, label: "宅配", value: "home", enable: false, options: [] },
+      ],
+
       tickets: [
         {
           id: 1,
-          type: 'cash',
+          type: "cash",
           countOff: 150,
-          name: '首購折價券',
-          time: '2021/01/20-2022/04/01',
-          rules: ['說明說明說明'],
-          isCanUse: true
+          name: "首購折價券",
+          time: "2021/01/20-2022/04/01",
+          rules: ["說明說明說明"],
+          isCanUse: true,
         },
         {
           id: 2,
-          type: 'discount',
+          type: "discount",
           countOff: 95,
-          name: '周年慶折價券',
-          time: '2021/01/20-2022/04/01',
-          rules: ['說明說明說明'],
-          isCanUse: true
+          name: "周年慶折價券",
+          time: "2021/01/20-2022/04/01",
+          rules: ["說明說明說明"],
+          isCanUse: true,
         },
         {
           id: 3,
-          type: 'cash',
+          type: "cash",
           countOff: 200,
-          name: '生日折價券',
-          time: '2021/01/20-2022/04/01',
-          rules: ['說明說明說明'],
-          isCanUse: false
-        }
+          name: "生日折價券",
+          time: "2021/01/20-2022/04/01",
+          rules: ["說明說明說明"],
+          isCanUse: false,
+        },
       ],
       selectedId: 0,
       openModal: false,
       openCouponDetailModal: false,
-      addCouponInput: ''
-    }
+      addCouponInput: "",
+    };
   },
   computed: {
     totalQuantity() {
-      let total = 0
+      let total = 0;
       this.checkoutInfo.checkoutList.forEach((item) => {
-        total += item.quantity
-      })
-      return total
+        total += item.quantity;
+      });
+      return total;
     },
     cartPrice() {
-      let total = 0
+      let total = 0;
       this.checkoutInfo.checkoutList.forEach((item) => {
-        total += (item.sale * item.quantity)
-      })
-      return total
-    }
+        total += item.sale * item.quantity;
+      });
+      return total;
+    },
   },
   methods: {
     closeModal() {
-      this.openModal = false
+      this.openModal = false;
     },
     selectCoupon(id, isCanUse) {
-      if (!isCanUse) return
-      this.selectedId === id ? this.selectedId = 0 : this.selectedId = id
+      if (!isCanUse) return;
+      this.selectedId === id ? (this.selectedId = 0) : (this.selectedId = id);
     },
     openCouponDetail() {
-      this.openCouponDetailModal = true
+      this.openCouponDetailModal = true;
     },
     handleUseCoupon() {
       if (this.selectedId !== 0) {
-        this.checkoutInfo.useCoupon = true
+        this.checkoutInfo.useCoupon = true;
       } else {
-        this.checkoutInfo.useCoupon = false
+        this.checkoutInfo.useCoupon = false;
       }
-      this.closeModal()
+      this.closeModal();
     },
     handleAddCoupon() {
-      this.addCouponInput = this.addCouponInput.trim()
-      if (!this.addCouponInput) return
-      this.$swal
-      .fire({
+      this.addCouponInput = this.addCouponInput.trim();
+      if (!this.addCouponInput) return;
+      this.$swal.fire({
         icon: "success",
-        title: '新增優惠券成功',
+        title: "新增優惠券成功",
         timer: 1000,
         showConfirmButton: false,
-      })
+      });
       const ticket = {
         id: Math.floor(Date.now()),
-        type: 'cash',
+        type: "cash",
         countOff: 299,
-        name: '新增的折價券',
-        time: '2021/01/20-2022/04/01',
-        rules: ['新增的Ticket'],
-        isCanUse: true
-      }
-      this.tickets.push(ticket)
-      this.addCouponInput = ''
-      this.$refs.addCouponInput.blur()
+        name: "新增的折價券",
+        time: "2021/01/20-2022/04/01",
+        rules: ["新增的Ticket"],
+        isCanUse: true,
+      };
+      this.tickets.push(ticket);
+      this.addCouponInput = "";
+      this.$refs.addCouponInput.blur();
     },
     submitCheckout() {
-      console.log('送出結帳')
-    }
-  }
+      console.log("送出結帳");
+    },
+  },
 };
 </script>
