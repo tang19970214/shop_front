@@ -1,6 +1,6 @@
 <template>
   <transition name="fade">
-    <div @click="closeModal($event)" class="fixed bg-[rgba(0,0,0,0.3)] backdrop-blur top-0 left-0 p-6 md:p-10 box-border w-screen min-h-screen flex justify-center z-40" :class="`items-${align}`" v-if="openModal">
+    <div @click="closeModal($event)" class="fixed bg-[rgba(0,0,0,0.3)] backdrop-blur top-0 left-0 p-6 md:p-10 box-border w-screen min-h-screen flex justify-center z-40 overflow-y-scroll" :class="`items-${align}`" v-if="openModal">
         <div ref="modalScroll" class="max-h-90vh bg-white rounded-xl z-50 pb-2 overflow-y-auto absolute shadow-[0px_4px_4px_rgba(0,0,0,0.25)]" :class="width">
           <!-- header -->
           <div class="px-4 pt-2 sticky top-0 z-10 bg-white">
