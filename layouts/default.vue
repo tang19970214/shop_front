@@ -3,7 +3,7 @@
     <section class="w-full min-h-screen font-sans">
       <!-- <Loading /> -->
       <Header />
-      <Nuxt class="pt-20 lg:pt-20 pb-4 min-h-[calc(100vh-88px)]" />
+      <Nuxt class="pt-16 lg:pt-[132px] pb-4 min-h-[calc(100vh-88px)]" />
       <Footer />
     </section>
   </client-only>

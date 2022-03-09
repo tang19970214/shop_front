@@ -36,6 +36,7 @@ export default {
     '~/plugins/auth',
     '~/plugins/axios',
     '~/plugins/api',
+    { src: '~/plugins/permission', ssr: false },
 
     { src: '~/plugins/sweet-alert', ssr: false },
     { src: '~/plugins/vee-validate', ssr: false },
