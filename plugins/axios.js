@@ -31,16 +31,23 @@ export default ({
   service.setBaseURL(process.env.VUE_APP_BASE_API)
 
   service.interceptors.response.use((response) => {
-    if (lineResponseUrl.includes(response.url)) {
+    if (lineResponseUrl.includes(response.config.url)) {
       return response
     } else {
-      Swal.fire({
-        icon: 'error',
-        title: response.data.message,
-        showConfirmButton: false,
-        timer: 1500
-      })
-      return response
+      switch (response.data.code) {
+        case 200:
+          return response
+          break
+        default:
+          Swal.fire({
+            icon: 'error',
+            title: response.data.message,
+            showConfirmButton: false,
+            timer: 1500
+          })
+          return response
+          break
+      }
     }
   }, (errorRes) => {
     switch (errorRes.response.status) {

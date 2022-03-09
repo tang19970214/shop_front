@@ -33,12 +33,12 @@ export default ({ req, redirect, route }) => {
     } else {
       if (whiteList.includes(route.name) || whiteList.includes(route.matched[0]?.path)) {
         redirect('/')
-        Swal.fire({
-          icon: "warning",
-          title: "已是登入狀態！",
-          timer: 1200,
-          showConfirmButton: false
-        })
+        // Swal.fire({
+        //   icon: "error",
+        //   title: "已是登入狀態！",
+        //   timer: 1000,
+        //   showConfirmButton: false
+        // })
       }
     }
   }

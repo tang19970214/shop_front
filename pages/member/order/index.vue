@@ -3,8 +3,8 @@
     <h2 class="text-lg mb-4 font-bold tracking-widest">我的訂單</h2>
 
     <form @submit.prevent="handleSearch()">
-      <div class="lg:flex items-center">
-        <span class="block my-2.5 xl:inline xl:items-center xl:my-0">日期：</span>
+      <div class="xl:flex items-center">
+        <span class="block my-2.5 xl:inline lg:items-center xl:my-0">日期：</span>
         <div class="flex items-center lg:mr-auto">
           <input type="date" class="border border-[#c4c4c4] rounded-md px-2 py-1" />
           <span class="mx-1.5">至</span>
@@ -13,7 +13,7 @@
         <div class="xl:flex">
           <span class="block my-2.5 xl:flex xl:items-center xl:my-0">訂單編號：</span>
           <input type="text" class="border border-[#c4c4c4] rounded-md px-2 py-1" placeholder="請輸入訂單編號" />
-          <button type="submit" data-mdb-ripple="true" data-mdb-ripple-color="light" class="py-1.5 px-5 ml-2.5 lg:ml-20 bg-gradient-to-r from-[#FF6D3F] to-[#FA5936] rounded-xl text-white text-lg">查詢</button>
+          <button type="submit" data-mdb-ripple="true" data-mdb-ripple-color="light" class="py-1.5 px-5 ml-2.5 xl:ml-20 bg-gradient-to-r from-[#FF6D3F] to-[#FA5936] rounded-xl text-white text-lg">查詢</button>
         </div>
       </div>
     </form>
@@ -190,12 +190,7 @@ export default {
   },
   methods: {
     handleSearch() {
-      this.$swal.fire({
-        icon: "success",
-        title: "查詢成功",
-        timer: 1000,
-        showConfirmButton: false,
-      });
+      console.log('搜尋訂單')
     },
   },
 };

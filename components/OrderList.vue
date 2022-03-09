@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="w-full block lg:flex text-lg mt-7 py-3 px-4" :class="{ 'bg-[#FFF0E5]': order.orderType !== '已取消', 'bg-[#EAEAEA]': order.orderType === '已取消' }">
+    <div class="w-full block lg:flex text-lg mt-7 py-3 px-4 lg:sticky lg:top-32 z-[1]" :class="{ 'bg-[#FFF0E5]': order.orderType !== '已取消', 'bg-[#EAEAEA]': order.orderType === '已取消' }">
       <div class="flex my-auto">
         <span> 日期：{{ order.orderDate }} </span>
       </div>
