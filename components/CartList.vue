@@ -6,7 +6,7 @@
           <th class="p-2.5 w-1/12">
             <div
             class="w-6 h-6 border-2 rounded-md cursor-pointer bg-white overflow-hidden"
-            :class="{'border-[#a3a3a3]': !isAllChecked || isAllChecked === 'minus', 'border-[#FA5936]': isAllChecked === true}"
+            :class="{'border-[#a3a3a3]': !isAllChecked, 'border-[#FA5936]': isAllChecked}"
             @click.prevent="selectAll()"
             >
               <label class="block relative w-full h-full cursor-pointer text-white duration-300 select-none"
@@ -14,12 +14,12 @@
                 <input v-model="isAllChecked" type="checkbox" class="hidden appearance-none">
                 <fa
                 class="absolute duration-300 text-sm w-full h-full top-0 left-0 scale-0 opacity-0"
-                :class="{'bg-[#FA5936]': isAllChecked, 'border-[#FA5936]': isAllChecked, 'scale-100': isAllChecked, 'opacity-100': isAllChecked === true}"
+                :class="{'bg-[#FA5936]': isAllChecked, 'border-[#FA5936] scale-100': isAllChecked, 'opacity-100': isAllChecked === true}"
                 icon="fa-solid fa-check">
                 </fa>
                 <fa
-                class="absolute duration-300 text-sm w-full h-full top-0 left-0 text-[#a3a3a3] rounded-xl scale-0 opacity-0"
-                :class="{'scale-100': isAllChecked, 'opacity-100': isAllChecked === 'minus'}"
+                class="absolute duration-300 text-sm w-full h-full top-0 left-0 text-white scale-0 opacity-0"
+                :class="{'scale-100': isAllChecked, 'opacity-100 bg-[#FA5936]': isAllChecked === 'minus'}"
                 icon="fa-solid fa-minus"
                 ></fa>
               </label>
@@ -115,6 +115,7 @@
 <script>
 export default {
   props: {
+    // 購物車列表
     cartList: {
       type: Array,
       default: []
@@ -126,6 +127,7 @@ export default {
     }
   },
   computed: {
+    // 判斷是否全選
     isAllChecked() {
       let checkedNum = 0
       this.cartList.forEach((item) => {
@@ -144,6 +146,7 @@ export default {
         return false
       }
     },
+    // 判斷總共幾件商品
     totalQuantity() {
       let total = 0
       this.cartList.forEach((item) => {
@@ -151,6 +154,7 @@ export default {
       })
       return total
     },
+    // 判斷總金額
     totalPrice() {
       let totalPrice = 0
       this.cartList.forEach((item) => {
@@ -160,6 +164,7 @@ export default {
     }
   },
   methods: {
+    // 全選功能
     selectAll() {
       this.allChecked = !this.allChecked
       this.cartList.forEach((item) => {
@@ -170,6 +175,7 @@ export default {
         }
       })
     },
+    // 變更購物車商品數量
     changeQuantity(bool, idx) {
       if (bool) {
         this.cartList[idx].quantity += 1
@@ -178,6 +184,7 @@ export default {
         this.cartList[idx].quantity -= 1
       }
     },
+    // 刪除購物車商品
     deleteCart(id, title) {
       this.$swal.fire({
         icon: 'warning',
