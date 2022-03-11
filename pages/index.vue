@@ -9,7 +9,10 @@
 
       <button @click="getMemberByToken()" class="shadow-md duration-150 text-pink-400 border-2 border-pink-400 rounded-2xl p-3 mt-5 hover:bg-pink-400 hover:text-white">GET_MEMBER_BY_TOKEN</button>
     </div>
-    <BannerCarousel :carouselArr="carouselArr"></BannerCarousel>
+
+    <div class="w-full" v-for="item in blockList" :key="item.id">
+      <component :is="item.name" :carouselArr="carouselArr" />
+    </div>
   </section>
 </template>
 
@@ -30,7 +33,12 @@ export default {
       },
     ];
 
-    return { carouselArr };
+    const blockList = [
+      { id: 1, name: "Banner" },
+      { id: 2, name: "News" },
+    ];
+
+    return { carouselArr, blockList };
   },
   middleware: ["checkLineCode"],
   data() {
@@ -42,26 +50,26 @@ export default {
     },
     async getMemberByToken() {
       const token = Cookies.get("Authorization");
-      await this.api.members.getMemberByToken(token)
-      .then((res) => {
-        const { code, result, message } = res.data
-        if (code === 200) {
-          const { email, id, name, phone } = result
-          console.log(email, id, name, phone);
-        } else {
-          this.$swal
-          .fire({
-            icon: "error",
-            title: message,
-            timer: 1000,
-            showConfirmButton: false
-          })
-        }
-      })
-      .catch((err) => {
-        console.log(err.response)
-      })
+      await this.api.members
+        .getMemberByToken(token)
+        .then((res) => {
+          const { code, result, message } = res.data;
+          if (code === 200) {
+            const { email, id, name, phone } = result;
+            console.log(email, id, name, phone);
+          } else {
+            this.$swal.fire({
+              icon: "error",
+              title: message,
+              timer: 1000,
+              showConfirmButton: false,
+            });
+          }
+        })
+        .catch((err) => {
+          console.log(err.response);
+        });
     },
-  }
+  },
 };
 </script>
