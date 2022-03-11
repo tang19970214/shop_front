@@ -3,7 +3,7 @@
     <div class="mt-5 lg:mt-16 flex gap-0 md:gap-3">
       <!-- 左列menu -->
       <div class="hidden md:block">
-        <ul class="sticky top-24">
+        <ul class="sticky top-40">
           <li class="flex items-center py-1 text-gray-700 rounded text-lg" v-for="item in menuList" :key="item.id">
             <div class="w-auto flex flex-col">
               <div

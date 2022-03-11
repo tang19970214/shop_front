@@ -17,6 +17,8 @@
         </span>
       </span>
     </div>
+
+    <!-- STEP BAR -->
     <div v-if="order.status !== '已取消'" class="w-full flex overflow-x-scroll md:overflow-hidden flex-nowrap">
       <ul class="flex mt-8 mb-20 min-w-[210%] md:min-w-full">
         <li class="w-1/5 flex flex-col flex-none items-center relative after:content-[''] after:absolute after:bg-[#1ebe5a] after:w-full after:h-1 after:-right-1/2 after:top-1/2 after:z-[-1]">
@@ -42,6 +44,7 @@
         </li>
       </ul>
     </div>
+    
     <div v-else class="w-full bg-[#FFF5C2] p-5 text-center">
       <div class="flex justify-center">
         <p class="font-bold text-2xl">訂單已取消</p>
@@ -51,82 +54,109 @@
       </div>
       <p class="text-lg text-[#404040]">訂單編號：{{ order.id }}</p>
     </div>
-    <table class="w-full">
-      <tr class="border-b-[#c4c4c4] border-b text-lg" v-for="order in order.orderItems" :key="order.id">
+    
+    <table class="w-full mt-6">
+      
+      <!-- 商品列表 -->
+      <tr v-for="list in order.orderItems" :key="list.id" class="border-b border-b-[#c4c4c4]">
         <td class="p-4">
-          <div class="grid grid-cols-5">
-            <div class="col-span-5 lg:col-span-4">
-              <div class="flex lg:items-center">
-                <img class="w-24 h-24" :src="order.imgUrl" :alt="order.title" />
-                <div class="flex flex-col lg:inline ml-7 space-y-2.5 lg:space-y-0">
-                  <span>
-                    {{ order.title }}
-                  </span>
-                  <p class="block lg:hidden">X{{ order.quantity }}</p>
-                  <span class="text-[#FA5936] block lg:hidden"> ${{ order.sale }} </span>
-                </div>
-                <div class="flex items-center justify-between ml-auto">
-                  <span class="hidden lg:inline"> X{{ order.quantity }} </span>
-                </div>
+          <div class="flex md:items-center space-x-5">
+            <img class="h-24 w-24" :src="list.imgUrl" :alt="list.title">
+            <div class="flex flex-col space-y-2 text-lg">
+              <h3>{{ list.title }}</h3>
+              <span>X{{ list.quantity }}</span>
+              <span class="text-[#FA5936]">${{ list.sale }}</span>
+            </div>
+          </div>
+        </td>
+        <td class="text-right md:w-4/12 xl:w-3/12 hidden md:table-cell">
+          <span>X{{ list.quantity }}</span>
+        </td>
+        <td class="text-right md:w-3/12 xl:w-2/12 pr-5 hidden md:table-cell">
+          <span class="text-lg text-[#FA5936]">${{ list.sale }}</span>
+        </td>
+      </tr>
+
+      <!-- 商品小計 -->
+      <tr class="border-b border-b-[#c4c4c4] hidden md:table-row">
+        <td></td>
+        <td class="text-right">
+          <div class="flex flex-col space-y-2">
+            <p class="text-lg">
+              <span class="text-sm text-[#a3a3a3]">({{ totalQuantity }}件商品)</span>
+              商品小計
+            </p>
+            <p class="text-lg">運費</p>
+            <div class="flex justify-end space-x-2 items-center">
+              <div class="border border-[#a3a3a3] rounded-md w-5 h-5 flex items-center justify-center bg-[#a3a3a3]" :class="{'bg-[#fff]': order.point === 0}">
+                <fa class="text-white text-xs" icon="fa-solid fa-check"></fa>
+              </div>
+              <p class="text-lg relative">使用紅利金</p>
+            </div>
+            <div class="flex items-center justify-end space-x-3">
+              <img src="~/static/images/icon/coupon.svg" alt="優惠碼/折價券">
+              <p class="text-lg">使用優惠碼/折價券</p>
+            </div>
+          </div>
+        </td>
+        <td class="text-right pr-5">
+          <div class="flex flex-col space-y-2 py-5">
+            <p class="text-lg text-[#FA5936]">${{ totalPrice }}</p>
+            <p class="text-lg text-[#FA5936]">${{ order.transportPrice }}</p>
+            <p class="text-lg text-[#FA5936]">-${{ order.point }}</p>
+            <p class="text-lg text-[#FA5936]">-${{ order.coupon }}</p>
+          </div>
+        </td>
+      </tr>
+      <!-- 商品小計手機版 -->
+      <tr class="border-b border-b-[#c4c4c4] table-row md:hidden">
+        <td class="px-4">
+          <div class="grid grid-cols-12">
+            <div class="col-span-8">
+              <div class="flex flex-col items-end space-y-3 py-3 text-lg">
+                <span><span class="text-sm text-[#a3a3a3] mr-2">({{ totalQuantity }}件商品)</span>商品小計</span>
+                <span>運費</span>
+                <span>使用紅利金</span>
+                <span class="p-2 w-full border border-[#16A34A] text-[#16A34A] rounded-md text-right relative">
+                  <img class="absolute top-1/2 left-2 -translate-y-3" src="~/static/images/icon/coupon-green.svg" alt="使用優惠碼/折價券">
+                  使用優惠碼/折價券
+                </span>
               </div>
             </div>
-            <div class="col-span-1 hidden items-center justify-end lg:flex">
-              <span class="text-[#FA5936]"> ${{ order.sale }} </span>
+            <div class="col-span-4">
+              <div class="flex flex-col items-end py-3 space-y-3 text-lg text-[#fa5936]">
+                <span>${{ order.total }}</span>
+                <span>${{ order.transportPrice }}</span>
+                <span>-${{ order.point }}</span>
+                <span class="py-2">-${{ order.coupon }}</span>
+              </div>
+            </div>
+          </div>
+        </td>
+      </tr>
+
+      <!-- 訂單金額 -->
+      <tr class="hidden md:table-row">
+        <td></td>
+        <td class="text-right"><span class="text-lg font-bold">訂單金額</span></td>
+        <td class="text-right pr-5 py-5"><span class="text-3xl text-[#FA5936] font-bold">${{ order.total }}</span></td>
+      </tr>
+      <!-- 訂單金額手機版 -->
+      <tr class="table-row md:hidden">
+        <td class="px-4 py-5">
+          <div class="grid grid-cols-12 items-center">
+            <div class="col-span-8 text-right">
+              <span class="text-lg font-bold">訂單金額</span>
+            </div>
+            <div class="col-span-4 text-right">
+              <span class="text-2xl font-bold text-[#FA5936]">${{ order.total }}</span>
             </div>
           </div>
         </td>
       </tr>
     </table>
-    <table class="w-full">
-      <tr class="border-b-[#c4c4c4] border-b text-lg w-full text-right">
-        <td class="space-y-2.5 p-4">
-          <div class="grid grid-cols-6 w-full">
-            <div class="col-span-4 lg:col-span-5 flex flex-col items-end space-y-2.5">
-              <p>
-                <span class="text-sm text-[#c4c4c4] mr-2.5">({{ totalQuantity }}件商品)</span>商品小計
-              </p>
-              <p>運費</p>
-              <div class="flex justify-end">
-                <div class="w-6 h-6 flex justify-center items-center rounded-sm bg-[#A3A3A3] mr-2.5">
-                  <img src="~/static/images/icon/point.svg" alt="紅利金" />
-                </div>
-                <p>使用紅利金</p>
-              </div>
-              <div class="flex justify-end w-full">
-                <div class="hidden lg:flex">
-                  <img class="mr-2.5" src="~/static/images/icon/coupon.svg" alt="優惠碼/折價券" />
-                  <p>使用優惠碼/折價券</p>
-                </div>
-                <div class="block lg:hidden w-full">
-                  <button class="flex justify-center items-center border border-[#319253] rounded-xl p-2.5 px-1 w-[calc(100%+15px)] -ml-4">
-                    <img class="mr-2.5" src="~/static/images/icon/coupon-green.svg" alt="優惠碼/折價券" />
-                    使用優惠碼/折價券
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div class="col-span-2 lg:col-span-1 space-y-2.5">
-              <p class="text-[#FA5936]">${{ order.price }}</p>
-              <p class="text-[#FA5936]">${{ order.transportPrice }}</p>
-              <p class="text-[#FA5936]"><span class="text-sm">-</span> ${{ order.point }}</p>
-              <p class="text-[#FA5936] pt-3 lg:pt-0"><span class="text-sm">-</span> ${{ order.coupon }}</p>
-            </div>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td class="text-right p-4">
-          <div class="grid grid-cols-5">
-            <div class="col-span-3 lg:col-span-4 flex items-center justify-end">
-              <span class="font-bold text-lg">訂單金額</span>
-            </div>
-            <div class="col-span-2 lg:col-span-1">
-              <span class="font-bold text-3xl text-[#fa5936]">${{ order.total }}</span>
-            </div>
-          </div>
-        </td>
-      </tr>
-    </table>
+
+    <!-- 訂購人資料 -->
     <div class="mt-11 text-lg">
       <h3 class="font-bold border-l-8 border-l-[#fa5936] pl-4">訂購人資料</h3>
       <div class="pl-6 space-y-2.5 mt-4">
@@ -174,6 +204,8 @@
         </div>
       </div>
     </div>
+
+    <!-- 取消訂單按鈕 -->
     <div class="flex justify-center">
       <button
         v-if="order.status !== '已取消'"
