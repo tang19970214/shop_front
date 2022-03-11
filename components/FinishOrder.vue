@@ -26,8 +26,8 @@
             <img class="h-24 w-24" :src="list.imgUrl" :alt="list.title">
             <div class="flex flex-col space-y-2 text-lg">
               <h3>{{ list.title }}</h3>
-              <span>X{{ list.quantity }}</span>
-              <span class="text-[#FA5936]">${{ list.sale }}</span>
+              <span class="block md:hidden">X{{ list.quantity }}</span>
+              <span class="text-[#FA5936] block md:hidden">${{ list.sale * list.quantity }}</span>
             </div>
           </div>
         </td>
@@ -35,7 +35,7 @@
           <span>X{{ list.quantity }}</span>
         </td>
         <td class="text-right pr-5 hidden md:table-cell">
-          <span class="text-lg text-[#FA5936]">${{ list.sale }}</span>
+          <span class="text-lg text-[#FA5936]">${{ list.sale * list.quantity }}</span>
         </td>
       </tr>
 
@@ -63,7 +63,7 @@
         </td>
         <td class="text-right pr-5">
           <div class="flex flex-col space-y-2 py-5">
-            <p class="text-lg text-[#FA5936]">${{ totalPrice }}</p>
+            <p class="text-lg text-[#FA5936]">${{ order.price }}</p>
             <p class="text-lg text-[#FA5936]">${{ order.transportPrice }}</p>
             <p class="text-lg text-[#FA5936]">-${{ order.point }}</p>
             <p class="text-lg text-[#FA5936]">-${{ order.coupon }}</p>
@@ -87,7 +87,7 @@
             </div>
             <div class="col-span-4">
               <div class="flex flex-col items-end py-3 space-y-3 text-lg text-[#fa5936]">
-                <span>${{ order.total }}</span>
+                <span>${{ order.price }}</span>
                 <span>${{ order.transportPrice }}</span>
                 <span>-${{ order.point }}</span>
                 <span class="py-2">-${{ order.coupon }}</span>
@@ -175,8 +175,8 @@ export default {
         id: 21111708328107,
         time: "2021/01/28",
         status: "已取消",
-        price: 12000,
-        total: 17800,
+        price: 30000,
+        total: 29800,
         transportPrice: 60,
         point: 110,
         coupon: 150,
