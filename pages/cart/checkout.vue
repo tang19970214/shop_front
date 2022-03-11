@@ -239,13 +239,13 @@
                 <div class="block md:hidden col-span-12">
                   <div class="grid grid-cols-2">
                     <label class="table-cell" for="expiredMonth">有效日期 : </label>
-                    <label class="table-cell" for="expiredMonth">CVV : </label>
+                    <label class="table-cell translate-x-2" for="expiredMonth">CVV : </label>
                   </div>
                 </div>
                 <div class="col-span-12 md:col-span-10 -translate-y-3 md:-translate-y-0">
                   <div class="grid grid-cols-4 gap-4 md:gap-6">
                     <div>
-                      <ValidationProvider name="月份" rules="required|onlyNumber" v-slot="{ errors }" class="relative">
+                      <ValidationProvider name="有效日期" rules="required|onlyNumber" v-slot="{ errors }" class="relative">
                         <input id="expiredMonth" minlength="2" ref="expiredMonth" @input="autoTab($event)" type="tel" placeholder="MM" maxlength="2" v-model="creditCardInfo.expiredMonth" class="w-full focus:border-0 focus:ring-blue-500 focus:ring-1 px-3 py-1.5 text-gray-700 border border-[#a3a3a3] rounded-md transition ease-in-out focus:text-gray-700 focus:border-blue-600 focus:outline-none" :class="{'outline outline-[#ff4444] border-0': errors.length > 0}">
                         <span v-if="errors.length > 0" class="text-red-500 text-xs absolute -bottom-7 left-0 whitespace-pre">{{ errors[0] }}</span>
                       </ValidationProvider>
@@ -253,16 +253,15 @@
                     <div>
                       <ValidationProvider name="年份" rules="required|onlyNumber" v-slot="{ errors }" class="relative">
                         <input id="expiredYear" minlength="2" ref="expiredYear" @input="autoTab($event)" type="tel" placeholder="YY" maxlength="2" v-model="creditCardInfo.expiredYear" class="w-full focus:border-0 focus:ring-blue-500 focus:ring-1 px-3 py-1.5 text-gray-700 border border-[#a3a3a3] rounded-md transition ease-in-out focus:text-gray-700 focus:border-blue-600 focus:outline-none" :class="{'outline outline-[#ff4444] border-0': errors.length > 0}">
-                        <span v-if="errors.length > 0" class="text-red-500 text-xs absolute -bottom-7 left-4 whitespace-pre">{{ errors[0] }}</span>
                       </ValidationProvider>
                     </div>
                     <div class="hidden md:flex items-center">
                       <label for="cvv">CVV : </label>
                     </div>
-                    <div>
+                    <div class="md:-translate-x-20">
                       <ValidationProvider name="CVV" rules="required|onlyNumber" v-slot="{ errors }" class="relative">
                         <input id="cvv" ref="cvv" minlength="3" type="tel" v-model="creditCardInfo.cvv" maxlength="3" class="w-full focus:border-0 focus:ring-blue-500 focus:ring-1 px-3 py-1.5 text-gray-700 border border-[#a3a3a3] rounded-md transition ease-in-out focus:text-gray-700 focus:border-blue-600 focus:outline-none" :class="{'outline outline-[#ff4444] border-0': errors.length > 0}">
-                        <span v-if="errors.length > 0" class="text-red-500 text-xs absolute -bottom-7 left-4 whitespace-pre">{{ errors[0] }}</span>
+                        <span v-if="errors.length > 0" class="text-red-500 text-xs absolute -bottom-7 left-0 whitespace-pre">{{ errors[0] }}</span>
                       </ValidationProvider>
                     </div>
                   </div>
