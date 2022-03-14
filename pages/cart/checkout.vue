@@ -378,7 +378,7 @@
           <label v-else class="form-label tracking-widest text-lg inline-block mb-2 text-gray-700 md:px-6" for="address">地址</label>
           <div class="form-group relative pb-6" :class="{'md:pl-6 md:pr-16': checkoutInfo.deliveryType !== 'home'}">
             <ValidationProvider v-if="checkoutInfo.deliveryType !== 'home'" name="門市" rules="required" v-slot="{ errors }" class="w-full">
-              <div class="w-full lg:w-1/2 relative px-3 border border-[#a3a3a3] rounded-md py-1 cursor-pointer group">
+              <div class="w-full lg:w-1/2 relative px-3 border border-[#a3a3a3] rounded-md py-1 cursor-pointer group" :class="{ 'border-[#EF4444]': errors.length > 0 }">
                 <input id="store" type="text" class="hidden" v-model="deliveryInfo.address" />
                 <div class="flex items-center space-x-2.5">
                   <img v-if="checkoutInfo.deliveryType === '711'" src="~/static/images/icon/seven.svg" alt="7-11">

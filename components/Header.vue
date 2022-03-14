@@ -66,7 +66,7 @@ export default {
     return {
       menuList: [
         { id: 1, label: "特店取貨店點", value: "/pickup" },
-        { id: 2, label: "商品分類", value: "/product" },
+        { id: 2, label: "商品分類", value: "/product?category=1&page=1" },
         { id: 3, label: "專欄分享", value: "/share" },
       ],
     };

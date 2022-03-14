@@ -30,6 +30,7 @@ export default {
   css: [
     '~/static/style/animation.css',
     '@/assets/scss/main.scss',
+    'vue-slick-carousel/dist/vue-slick-carousel.css'
   ],
 
   plugins: [
@@ -44,6 +45,7 @@ export default {
     { src: '~/plugins/g-signin', ssr: false },
     { src: '~/plugins/aos', ssr: false },
     { src: '~/plugins/tw-elements-path', ssr: false },
+    { src: '~plugins/vue-slick-carousel', ssr: false },
 
     { src: '~/static/application', ssr: false },
   ],

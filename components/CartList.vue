@@ -32,70 +32,53 @@
         </tr>
       </thead>
       <transition-group tag="tbody" name="slide">
-        <tr class="border-b border-b[#BBBBBB] hidden md:table-row" v-for="(cart, idx) in cartList" :key="cart.id">
-          <td class="p-2.5 w-16">
+        <tr class="border-b border-b[#BBBBBB]" v-for="(cart) in cartList" :key="cart.id">
+          <td class="p-2.5 w-12 md:w-16 flex md:table-cell">
             <div
             class="w-6 h-6 border-2 rounded-md cursor-pointer"
             :class="{'border-[#a3a3a3]': !cart.checked, 'border-[#FA5936]': cart.checked}"
             @click.prevent="cart.checked = !cart.checked"
             >
-              <label class="block relative w-full h-full cursor-pointer text-white duration-300 bg-white select-none scale-0"
-              :class="{'bg-[#FA5936]': cart.checked, 'border-[#FA5936]': cart.checked, 'scale-100': cart.checked}"
-              >
-                <input v-model="cart.checked" type="checkbox" class="hidden appearance-none">
-                <fa class="absolute text-sm w-full h-full top-0 left-0" icon="fa-solid fa-check"></fa>
+              <label class="block relative w-full h-full cursor-pointer text-white duration-300 bg-white select-none rounded-md scale-0" :class="{ 'bg-[#FA5936] border-[#FA5936] scale-110': cart.checked}">
+                <input v-model="cart.checked" type="checkbox" class="hidden appearance-none" id="pointCheckbox" />
+                <fa class="absolute text-sm top-1/2 left-1/2 -translate-x-1.5 -translate-y-1.5" icon="fa-solid fa-check"></fa>
               </label>
             </div>
           </td>
           <td class="p-2.5">
-            <div class="flex items-center space-x-5">
+            <div class="flex md:items-center space-x-5">
               <img class="w-24 h-24 select-none" :src="cart.imgUrl" :alt="cart.title">
-              <div class="flex flex-col">
+              <h3 class="text-lg hidden md:block">{{ cart.title }}</h3>
+              <div class="flex flex-col space-y-4 md:hidden">
                 <h3 class="text-lg">{{ cart.title }}</h3>
+                <div class="flex justify-between border border-[#c4c4c4] w-24">
+                  <button class="text-center w-full select-none" :class="{'cursor-not-allowed': cart.quantity === 1}" :disabled="cart.quantity === 1" @click="changeQuantity(false, cart.id)">-</button>
+                  <label class="border-x border-x-[#c4c4c4] px-3 w-full text-center select-none">{{ cart.quantity }}</label>
+                  <button class="text-center w-full select-none" @click="changeQuantity(true, cart.id)">+</button>
+                </div>
+                <span class="text-[#FA5936]">${{ cart.sale }}</span>
+                <div class="flex justify-end">
+                  <a class="cursor-pointer" @click.prevent="deleteCart(cart.id, cart.title)">
+                    <fa class="text-[#FA5936] text-xl duration-300 hover:text-[#df4f2f]" icon="fa-solid fa-trash-can"></fa>
+                  </a>
+                </div>
               </div>
             </div>
           </td>
-          <td class="p-2.5">
+          <td class="p-2.5 hidden md:table-cell">
             <div class="flex mx-auto justify-between border border-[#c4c4c4] w-24">
-              <button class="text-center w-full select-none" :class="{'cursor-not-allowed': cart.quantity === 1}" :disabled="cart.quantity === 1" @click="changeQuantity(false, idx)">-</button>
+              <button class="text-center w-full select-none" :class="{'cursor-not-allowed': cart.quantity === 1}" :disabled="cart.quantity === 1" @click="changeQuantity(false, cart.id)">-</button>
               <label class="border-x border-x-[#c4c4c4] px-3 w-full text-center select-none">{{ cart.quantity }}</label>
-              <button class="text-center w-full select-none" @click="changeQuantity(true, idx)">+</button>
+              <button class="text-center w-full select-none" @click="changeQuantity(true, cart.id)">+</button>
             </div>
           </td>
-          <td class="text-center p-2.5 hidden lg:table-cell">
+          <td class="text-center p-2.5 hidden md:table-cell">
             <span class="text-[#FA5936]">${{ cart.sale }}</span>
           </td>
-          <td class="text-center p-2.5">
+          <td class="text-center p-2.5 hidden md:table-cell">
             <a class="cursor-pointer" @click.prevent="deleteCart(cart.id, cart.title)">
               <fa class="text-[#FA5936] text-xl duration-300 hover:text-[#df4f2f]" icon="fa-solid fa-trash-can"></fa>
             </a>
-          </td>
-        </tr>
-        <tr class="border-b border-b[#BBBBBB] table-row md:hidden" v-for="(cart, idx) in cartList" :key="cart.id">
-          <td class="p-2.5 w-12 flex items-start">
-            <label class="block relative w-6 h-6 cursor-pointer text-white duration-300 bg-white rounded-md border-2 select-none"
-            :class="{'bg-[#FA5936]': cart.checked, 'border-[#a3a3a3]': !cart.checked, 'border-[#FA5936]': cart.checked}"
-            >
-              <input v-model="cart.checked" type="checkbox" class="hidden appearance-none">
-              <fa class="absolute text-sm top-1/2 left-1/2 -translate-x-1.5 -translate-y-1.5" icon="fa-solid fa-check"></fa>
-            </label>
-          </td>
-          <td class="p-2.5 pl-0 pb-5">
-            <div class="flex space-x-4">
-              <img class="w-24 h-24" :src="cart.imgUrl" :alt="cart.title">
-              <div class="flex flex-col space-y-4 w-full">
-                <h3 class="text-lg">
-                  {{ cart.title }}
-                </h3>
-                <div class="flex justify-between border border-[#c4c4c4] w-24">
-                  <button class="text-center w-full select-none" @click="changeQuantity(false, idx)">-</button>
-                  <label class="border-x border-x-[#c4c4c4] px-3 w-full text-center select-none">{{ cart.quantity }}</label>
-                  <button class="text-center w-full select-none" @click="changeQuantity(true, idx)">+</button>
-                </div>
-                <span class="text-[#FA5936] text-lg">${{ cart.sale }}</span>
-                <fa @click="deleteCart(cart.id, cart.title)" class="duration-300 text-[#EF4444] hover:text-[#d43c3c] text-2xl ml-auto cursor-pointer" icon="fa-solid fa-trash-can"></fa>
-              </div>
-            </div>
           </td>
         </tr>
       </transition-group>
@@ -148,18 +131,14 @@ export default {
     },
     // 判斷總共幾件商品
     totalQuantity() {
-      let total = 0
-      this.cartList.forEach((item) => {
-        total += item.quantity
-      })
-      return total
+      const totalQuantity = this.cartList.map((item) => item.quantity)
+                                         .reduce((preQuantity, newQuantity) => preQuantity + newQuantity)
+      return totalQuantity
     },
     // 判斷總金額
     totalPrice() {
-      let totalPrice = 0
-      this.cartList.forEach((item) => {
-        totalPrice += (item.sale * item.quantity)
-      })
+      const totalPrice = this.cartList.map((item) => item.quantity * item.sale)
+                                      .reduce((prePrice, newPrice) => prePrice + newPrice)
       return totalPrice
     }
   },
@@ -168,20 +147,18 @@ export default {
     selectAll() {
       this.allChecked = !this.allChecked
       this.cartList.forEach((item) => {
-        if (this.allChecked) {
-          item.checked = true
-        } else {
-          item.checked = false
-        }
+        item.checked = this.allChecked
       })
     },
     // 變更購物車商品數量
-    changeQuantity(bool, idx) {
+    changeQuantity(bool, id) {
       if (bool) {
-        this.cartList[idx].quantity += 1
+        const item = this.cartList.find(item => item.id === id)
+        item.quantity += 1
       } else {
-        if (this.cartList[idx].quantity === 1) return
-        this.cartList[idx].quantity -= 1
+        const item = this.cartList.find(item => item.id === id)
+        if (item.quantity === 1) return
+        item.quantity -= 1
       }
     },
     // 刪除購物車商品
