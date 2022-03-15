@@ -1,25 +1,130 @@
 <template>
   <section class="w-full">
-    <span>{{ product.category }} /</span><span>{{ product.title }}</span>
-    <div class="grid grid-cols-12 min-h-[400px]">
+    <span>{{ product.category }} / </span><span>{{ product.title }}</span>
+    <!-- 上半部 -->
+    <div class="grid grid-cols-12 min-h-[400px] mt-5 gap-5">
+      <!-- 左側 -->
       <div class="col-span-6 min-h-[400px]">
-        <VueSlickCarousel v-bind="settings">
+        <VueSlickCarousel v-bind="settings" ref="c1" :asNavFor="$refs.c2" :focusOnSelect="true">
           <div v-for="item in product.images" :key="item.id" class="h-[400px]">
-            <img class="w-full pointer-events-none" :src="item.imgUrl" alt="">
+            <img class="w-full h-full object-cover pointer-events-none" :src="item.imgUrl" alt="">
           </div>
-          /*...*/
         </VueSlickCarousel>
+        <div class="relative w-full">
+          <VueSlickCarousel :arrows="true" :slidesToShow="4" ref="c2" :asNavFor="$refs.c1" :focusOnSelect="true" class="mt-5 -mx-1">
+            <div v-for="(item, idx) in product.images" :key="item.id" class="pr-2" @click="changeImg(idx)">
+              <img class="w-full h-24 object-cover ml-1 pointer-events-none" :src="item.imgUrl" :alt="product.title">
+            </div>
+          </VueSlickCarousel>
+          <button @click="changeImg(false)" class="absolute left-1 top-1/2 -translate-y-4 w-8 h-8 rounded-full bg-[rgba(231,231,231,0.79)] p-2.5 flex justify-center items-center duration-300 hover:bg-[#FA5936] group">
+            <fa icon="fa-solid fa-angle-left" class="text-black duration-300 group-hover:text-white"></fa>
+          </button>
+          <button @click="changeImg(true)" class="absolute right-1 top-1/2 -translate-y-4 w-8 h-8 rounded-full bg-[rgba(231,231,231,0.79)] p-2.5 flex justify-center items-center duration-300 hover:bg-[#FA5936] group">
+            <fa icon="fa-solid fa-angle-right" class="text-black duration-300 group-hover:text-white"></fa>
+          </button>
+        </div>
+        <div class="flex items-center my-6 space-x-2.5">
+          <span>分享</span>
+          <img class="h-9 w-9 cursor-pointer" src="~/static/images/icon/line.svg" alt="分享到Line">
+          <img class="h-8 w-8 cursor-pointer" src="~/static/images/icon/facebook.svg" alt="分享到Facebook">
+          <img class="h-7 w-7 cursor-pointer" src="~/static/images/icon/link.svg" alt="分享連結">
+        </div>
+      </div>
+      <!-- 右側 -->
+      <div class="col-span-6">
+        <!-- 商品標題、價格 -->
+        <div class="flex flex-col border-b border-b-[#c4c4c4] pb-2.5">
+          <h3 class="font-bold mb-3">{{ product.title }}</h3>
+          <span class="text-2xl font-bold text-[#FA5936]">${{ productSale }}</span>
+          <div class="flex justify-end">
+            <div class="flex items-center space-x-3" v-show="isFavorite">
+              <fa icon="fa-solid fa-heart" @click="addFavorite(true)" class="text-[#ef4444] cursor-pointer text-xl animate-pulse"></fa>
+              <span>已加入收藏</span>
+            </div>
+            <div class="flex items-center space-x-3" v-show="!isFavorite">
+              <fa icon="fa-regular fa-heart" @click="addFavorite(false)" class="text-[#ef4444] cursor-pointer text-xl animate-pulse"></fa>
+              <span>加入收藏</span>
+            </div>
+          </div>
+        </div>
+        <!-- 商品數量 -->
+        <div class="grid grid-cols-12 mt-6 items-center">
+          <div class="col-span-3">
+            <div class="flex flex-col space-y-3">
+              <span>商品數量</span>
+            </div>
+          </div>
+          <div class="col-span-9">
+            <div class="flex items-center space-x-3 -translate-x-4">
+              <div class="flex items-center border border-[#c4c4c4]">
+                <button @click="changeQuantity(false)" class="py-1 px-3 border-r border-r-[#c4c4c4]" :class="{'cursor-not-allowed': userSelected.quantity === 1}">-</button>
+                <span class="px-5">{{ userSelected.quantity }}</span>
+                <button @click="changeQuantity(true)" class="py-1 px-3 border-l border-l-[#c4c4c4]" :class="{'cursor-not-allowed': userSelected.quantity === inventoryNum}">+</button>
+              </div>
+              <span class="text-[#a3a3a3] text-sm">還剩 {{ inventoryNum }} 件</span>
+            </div>
+          </div>
+        </div>
+        <!-- 規格 -->
+        <div class="grid grid-cols-12 mt-6 items-center">
+          <div class="col-span-3">
+            <span>規格</span>
+          </div>
+          <div class="col-span-9">
+            <div class="flex space-x-3 -translate-x-4">
+              <button v-for="spec in product.spec" :key="spec.id" @click="userSelected.spec = spec.id, userSelected.quantity = 1" class="border border-[#a3a3a3] py-2 px-4 rounded-md duration-300" :class="{'border-[#FA5936] bg-[#FA5936] text-white': userSelected.spec === spec.id}">{{ spec.label }}</button>
+            </div>
+          </div>
+        </div>
+        <!-- 折價券 -->
+        <div class="grid grid-cols-12 mt-6 items-center">
+          <div class="col-span-3">
+            <span>折價券</span>
+          </div>
+          <div class="col-span-9">
+            <div class="flex space-x-3 -translate-x-4">
+              <button v-for="coupon in coupons" :key="coupon.id" @click="userSelected.coupon === coupon.id ? userSelected.coupon = 0 : userSelected.coupon = coupon.id" class="duration-300 py-2 px-4 text-sky-500 border border-[#c4c4c4] rounded-xl" :class="{'bg-sky-500 text-[#fff] border-sky-500': userSelected.coupon === coupon.id}">
+                {{ coupon.label }}
+              </button>
+            </div>
+          </div>
+        </div>
+        <!-- 加入購物車、立即購買 -->
+        <div class="grid grid-cols-12 mt-6 items-center">
+          <div class="col-span-12">
+            <div class="flex space-x-3">
+              <button class="duration-300 ring-1 ring-inset ring-[#FA5936] px-16 py-2 rounded-xl hover:bg-[#FA5936] hover:text-white">加入購物車</button>
+              <button class="px-16 py-2 rounded-xl text-white bg-gradient-to-r from-[rgba(255,109,63,0.84)] to-[#FA5936]">立即購買</button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
+    <!-- 下半部 -->
+    <div class="w-full sticky top-[132px] z-10">
+      <ul class="flex w-full mb-10 shadow-[0px_4px_4px_rgba(0,0,0,0.25)] relative">
+        <li v-for="list in tabList" :key="list.id" @click="selectedTab = list.label" class="duration-300 text-center text-lg w-1/2 py-3 bg-white cursor-pointer hover:text-[#FA5936]">{{ list.label }}</li>
+        <div class="absolute duration-300 left-0 bottom-0 w-1/2 h-2 bg-[#FA5936]" :class="{'left-[50%]': selectedTab == '評價'}"></div>
+      </ul>
+    </div>
+    <transition name="fade">
+      <div v-html="product.content" v-if="selectedTab === '商品詳情'"></div>
+    </transition>
+    <transition name="fade">
+      <div v-if="selectedTab !== '商品詳情'">
+        <Estimate :estimateArr="product.estimate" />
+      </div>
+    </transition>
   </section>
 </template>
 
 <script>
 export default {
-  asyncData() {
+  asyncData(context) {
     const product = {
+      id: parseInt(context.params.id),
       title: '春季的初戀微甜｜金牌紅烏龍禮盒',
-      spec: [{id: 1, label: '500g', sale: 5000}, {id: 2, label: '800g', sale: 6000}],
+      spec: [{id: 1, label: '500g', sale: 5000, price: 6000, inventory: 5}, {id: 2, label: '800g', sale: 6000, price: 6500, inventory: 3}],
       images: [
         {
           id: 1,
@@ -35,25 +140,148 @@ export default {
         },
         {
           id: 4,
-          imgUrl: require("~/static/images/product_example.png")
+          imgUrl: 'https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80'
+        },
+        {
+          id: 5,
+          imgUrl: 'https://images.unsplash.com/photo-1567922045116-2a00fae2ed03?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80'
         },
       ],
       category: '調飲系列茶包',
-      inventory: 95
+      content: '<img src="https://images.unsplash.com/photo-1561296180-e8100fd714e2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1868&q=80" width="100%"> <p class="py-10 text-center">品飲意象 輕快穿過午後的音樂聚落，肆無忌憚的迷戀菓物與豐收的季節，一起雙人搖擺舞。入口明亮華麗的層次迸現，以愉悅的果香收尾，盛夏之際，風格飲食已經開始。風味標籤 熱帶果物、柑橘果皮、香草軟糖、鳳梨、低含水蜂蜜、牛奶商品介紹</p> <img src="https://images.unsplash.com/photo-1558160074-4d7d8bdf4256?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80" width="100%">',
+      estimate: [
+        {
+          id: 1,
+          profileImg: 'https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1769&q=80',
+          account: 'u*****4',
+          rate: 5,
+          time: '2022/03/14',
+          wasBuy: '500g',
+          content: '評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價',
+          images: [
+            {id: 1, imgUrl: require("~/static/images/product_example3.png")},
+            {id: 2, imgUrl: require("~/static/images/product_example2.png")}
+          ]
+        },
+        {
+          id: 2,
+          profileImg: 'https://images.unsplash.com/photo-1533738363-b7f9aef128ce?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80',
+          account: 'u*****4',
+          rate: 4,
+          time: '2022/03/14',
+          wasBuy: '800g',
+          content: '評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價',
+          images: [
+            {id: 1, imgUrl: require("~/static/images/product_example3.png")},
+            {id: 2, imgUrl: require("~/static/images/product_example2.png")}
+          ]
+        },
+        {
+          id: 3,
+          profileImg: 'https://images.unsplash.com/photo-1574158622682-e40e69881006?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1180&q=80',
+          account: 'u*****4',
+          rate: 5,
+          time: '2022/03/14',
+          wasBuy: '500g',
+          content: '評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價',
+          images: [
+            {id: 1, imgUrl: require("~/static/images/product_example3.png")},
+            {id: 2, imgUrl: require("~/static/images/product_example2.png")}
+          ]
+        },
+      ]
     }
-    return { product }
+    const coupons = [
+      {id: 1, label: '滿999享85折'},
+      {id: 2, label: '首購免運'}
+    ]
+    const userSelected = {
+      id: parseInt(context.params.id),
+      spec: 1,
+      quantity: 1,
+      coupon: 0
+    }
+    return { product, coupons, userSelected }
   },
   data() {
     return {
       settings: {
-        "dots": false,
+        "lazyLoad": "ondemand",
         "arrows": false,
-        "dotsClass": "slick-dots custom-dot-class",
         "edgeFriction": 0.35,
-        "infinite": false,
+        "infinite": true,
         "speed": 500,
         "slidesToShow": 1,
         "slidesToScroll": 1
+      },
+      // 收藏清單
+      favoriteList: JSON.parse(window.localStorage.getItem('favoriteList')) || [],
+      tabList: [{id: 1, label: '商品詳情'}, {id: 2, label: '評價'}],
+      selectedTab: '商品詳情'
+    }
+  },
+  computed: {
+    // 判斷商品價格
+    productSale() {
+      const sale = this.product.spec.filter((item) => item.id == this.userSelected.spec)
+                                    .map((item2) => item2.sale)
+      return sale[0]
+    },
+    // 判斷是否加入收藏
+    isFavorite() {
+      const isFavorite = this.favoriteList.map((item) => item.id)
+                                          .includes(this.product.id)
+      return isFavorite
+    },
+    // 判斷庫存數量
+    inventoryNum() {
+      const inventory = this.product.spec.filter((item) => item.id === this.userSelected.spec)
+                                         .map((item2) => item2.inventory)
+      return inventory[0]
+    }
+  },
+  methods: {
+    // 圖片輪播
+    changeImg(bool, idx) {
+      if (idx) {
+        this.$refs.c1.goTo(idx, true)
+        this.$refs.c2.goTo(idx, true)
+      } else {
+        if (!bool) {
+          this.$refs.c1.prev()
+          this.$refs.c2.prev()
+        } else {
+          this.$refs.c1.next()
+          this.$refs.c2.next()
+        }
+      }
+    },
+    // 加入最愛
+    addFavorite(bool) {
+      if (bool) {
+        this.favoriteList = this.favoriteList.filter((item) => item.id !== this.product.id)
+        window.localStorage.setItem('favoriteList', JSON.stringify(this.favoriteList))
+      } else {
+        const product = {
+          id: this.product.id,
+          imgUrl: this.product.images[0].imgUrl,
+          isSoldOut: false,
+          price: this.product.spec[0].price,
+          sale: this.product.spec[0].sale,
+          title: this.product.title
+        }
+        this.favoriteList.push(product)
+        window.localStorage.setItem('favoriteList', JSON.stringify(this.favoriteList))
+      }
+    },
+    // 變更商品數量
+    changeQuantity(bool) {
+      if (bool) {
+        if (this.userSelected.quantity >= this.inventoryNum) return
+        this.userSelected.quantity += 1
+      } else {
+        if (this.userSelected.quantity === 1) return
+        this.userSelected.quantity -= 1
       }
     }
   }

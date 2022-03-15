@@ -1,18 +1,19 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-html::-webkit-scrollbar-track, body::-webkit-scrollbar-track {
-  background-color: transparent;
-}
-
-body::-webkit-scrollbar, html::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-	background-color: transparent;
-}
-
-body::-webkit-scrollbar-thumb, html::-webkit-scrollbar-thumb {
-  background-color: #c4c4c4;
-  border-radius: 25px;
-}
+  
+// .slick-slide {
+//   opacity:0;
+//   transition-delay: 0s;
+//   transition-duration: 0.2s;
+//   transition-property: opacity;
+//   transition-timing-function: ease-out;
+// }
+  
+// .slick-slide.slick-active {
+//   opacity:1;
+//   transition-delay: 0.3s;
+//   transition-duration: 0.2s;
+//   transition-property: opacity;
+//   transition-timing-function: ease-in;
+// }

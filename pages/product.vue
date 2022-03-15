@@ -1,6 +1,6 @@
 <template>
   <section class="w-full max-w-[1280px] mx-auto flex flex-col px-5 lg:px-20 gap-0 md:gap-3">
-    <div class="w-full grid grid-cols-5">
+    <div class="w-full grid grid-cols-6">
       <div class="hidden md:block md:col-span-1 mt-16">
         <ul class="sticky top-40">
           <li v-for="list in menuList" :key="list.id" class="pb-7 text-lg cursor-pointer group" :class="{'text-[#FA5936]': $route.query.category == list.id}" @click="$router.push({path: '/product', query: {category: list.id, page: 1}}), selectedCategory = list.label, list.enable = !list.enable">
@@ -16,7 +16,7 @@
         </ul>
       </div>
 
-      <div class="col-span-5 md:col-span-4 mt-14">
+      <div class="col-span-6 md:col-span-5 mt-8 md:mt-14">
         <Nuxt-child :categoryTitle="selectedCategory" />
       </div>
     </div>

@@ -1,30 +1,26 @@
 <template>
   <section class="w-full">
     <h3 class="text-lg font-bold">{{ categoryTitle }}</h3>
-    <transition-group class="mt-4 grid grid-cols-2 md:grid-cols-3 gap-6" tag="div">
-      <div class="col-span-1" v-for="product in products" :key="product.id">
-        <a @click="$router.push(`/product/${product.id}`)" class="group" :class="{'cursor-not-allowed': product.isSoldOut, 'cursor-pointer': !product.isSoldOut}">
-          <div class="h-[180px] md:h-[300px] w-full overflow-hidden relative">
-            <div v-if="product.isSoldOut" class="absolute w-full h-full top-0 left-0 bg-[rgba(62,62,62,0.44)] flex justify-center items-center z-10">
-              <div class="w-24 h-24 rounded-full bg-[#717171] flex items-center justify-center">
-                <span class="font-bold text-lg text-white">已售完</span>
-              </div>
-            </div>
-            <img :src="product.imgUrl" :alt="product.title" class="h-full w-full duration-300 group-hover:scale-110 group-hover:z-0">
-          </div>
-          <div class="flex flex-col my-3 space-y-3">
-            <h4 v-if="!product.isSoldOut" class="duration-150 group-hover:text-[#EF4444]">{{ product.title }}</h4>
-            <h4 v-else>{{ product.title }}</h4>
-            <div class="flex justify-between">
-              <div class="flex space-x-3">
-                <span class="text-[#EF4444]">${{ product.sale }}</span>
-                <span class="text-[#a3a3a3]">${{ product.price }}</span>
-              </div>
-              <fa v-if="isFavorite(product.id)" @click.prevent="addFavorite(true, product)" class="text-[#EF4444] text-lg" icon="fa-solid fa-heart"></fa>
-              <fa v-else @click.prevent="addFavorite(false, product)" class="text-[#EF4444] text-lg" icon="fa-regular fa-heart"></fa>
+    <transition-group class="mt-4 grid grid-cols-2 md:grid-cols-3 gap-6" tag="div" name="fade">
+      <div class="col-span-1 h-full group relative mb-4 md:mb-0" v-for="product in products" :key="product.id">
+        <div class="h-[170px] md:h-[300px] w-full overflow-hidden relative">
+          <div v-if="product.isSoldOut" class="absolute w-full h-full top-0 left-0 bg-[rgba(62,62,62,0.44)] flex justify-center items-center z-10">
+            <div class="w-24 h-24 rounded-full bg-[#717171] flex items-center justify-center">
+              <span class="font-bold text-lg text-white">已售完</span>
             </div>
           </div>
-        </a>
+          <img :src="product.imgUrl" :alt="product.title" @click="$router.push(`/product/${product.id}`)" class="h-full w-full duration-300 group-hover:scale-110 group-hover:z-0 cursor-pointer">
+        </div>
+        <a href="#" v-if="!product.isSoldOut" @click.prevent="$router.push(`/product/${product.id}`)" class="duration-150 group-hover:text-[#FA5936] line-clamp-2 mb-8 mt-3">{{ product.title }}</a>
+        <a href="#" v-else class="pointer-events-none line-clamp-2 mb-8 mt-3">{{ product.title }}</a>
+        <div class="absolute w-full left-0 bottom-0 flex flex-col md:flex-row items-start md:justify-between">
+          <div class="flex space-x-3">
+            <span class="text-[#EF4444]">${{ product.sale }}</span>
+            <span class="text-[#a3a3a3] line-through">${{ product.price }}</span>
+          </div>
+          <fa v-show="isFavorite(product.id)" @click.prevent="addFavorite(true, product)" class="text-[#EF4444] text-xl cursor-pointer animate-pulse" icon="fa-solid fa-heart"></fa>
+          <fa v-show="!isFavorite(product.id)" @click.prevent="addFavorite(false, product)" class="text-[#EF4444] text-xl cursor-pointer animate-pulse" icon="fa-regular fa-heart"></fa>
+        </div>
       </div>
     </transition-group>
   </section>
@@ -50,7 +46,7 @@ export default {
       {
         id: 1,
         imgUrl: require("~/static/images/product_example.png"),
-        title: '春季的初戀微甜｜金牌紅烏龍禮盒',
+        title: '春季的初戀微甜｜金牌紅烏龍禮盒 春季的初戀微甜｜金牌紅烏龍禮盒 春季的初戀微甜｜金牌紅烏龍禮盒',
         price: 6520,
         sale: 6000,
         isSoldOut: false
@@ -66,7 +62,7 @@ export default {
       {
         id: 3,
         imgUrl: require("~/static/images/product_example.png"),
-        title: '春季的初戀微甜｜金牌紅烏龍禮盒',
+        title: '春季的初戀微甜｜金牌紅烏龍禮盒 春季的初戀微甜｜金牌紅烏龍禮盒 春季的初戀微甜｜金牌紅烏龍禮盒',
         price: 6520,
         sale: 6000,
         isSoldOut: true
