@@ -29,8 +29,7 @@ export default {
 
   css: [
     '~/static/style/animation.css',
-    '@/assets/scss/main.scss',
-    'vue-slick-carousel/dist/vue-slick-carousel.css'
+    '@/assets/scss/main.scss'
   ],
 
   plugins: [
