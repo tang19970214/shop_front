@@ -3,8 +3,9 @@ export default {
     port: 1803
   },
   router: {
-    // middleware: [],
-    scrollBehavior() {
+    scrollBehavior(route) {
+      const whiteList = ['product-id', 'product-id-rate']
+      if (whiteList.includes(route.name)) return
       return { x: 0, y: 0 }
     }
   },
