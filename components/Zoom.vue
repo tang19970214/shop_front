@@ -1,13 +1,12 @@
 <template>
   <section v-if="isOpen">
-    <div class="fixed w-screen h-screen top-0 left-0 bg-[rgba(64,64,64,0.6)] z-40 flex items-center justify-center">
+    <div @click="closeZoom($event)" class="fixed w-screen h-screen top-0 left-0 bg-[rgba(64,64,64,0.6)] z-40 flex items-center justify-center">
       <div class="w-72 md:w-[400px] relative">
         <VueSlickCarousel v-bind="settings" class="relative" ref="c1" :asNavFor="$refs.c2">
           <div v-for="item in imgArr" :key="item.id">
             <img class="w-full h-72 md:h-[400px] object-cover pointer-events-none" :src="item.imgUrl" alt="">
           </div>
         </VueSlickCarousel>
-        <fa @click="closeZoom()" icon="fa-solid fa-xmark" class="text-4xl text-white absolute right-3 top-3 cursor-pointer drop-shadow-lg"></fa>
         <button @click="changeImg(false)" class="absolute  -left-10 top-1/3 w-8 h-8 rounded-full bg-[rgba(231,231,231,0.79)] p-2.5 flex justify-center items-center duration-300 hover:bg-[#FA5936] group">
           <fa icon="fa-solid fa-angle-left" class="text-black duration-300 group-hover:text-white"></fa>
         </button>
@@ -66,7 +65,9 @@ export default {
         }
       }
     },
-    closeZoom() {
+    closeZoom(e) {
+      const classList = Array.from(e.target.classList)
+      if (!classList.includes('bg-[rgba(64,64,64,0.6)]')) return
       this.$emit('closeZoom')
     }
   }

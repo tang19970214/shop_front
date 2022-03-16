@@ -26,7 +26,7 @@
         <p class="my-3 line-clamp-3" :class="{'line-clamp-none': showHiddenLine}">{{ list.content }}</p>
         <p v-if="list.content.length >= 200 && !showHiddenLine" @click="showHiddenLine = true" class="mb-3 text-sm cursor-pointer inline-block group">... <span class="text-sky-500 group-hover:text-sky-700">更多</span></p>
         <div class="flex space-x-3" v-if="list.images.length > 0">
-          <img @click="handleOpenImgZoom(list.images)" v-for="img in list.images" :key="img.id" :src="img.imgUrl" alt="" class="h-24 w-24">
+          <img @click="handleOpenImgZoom(list.images)" v-for="img in list.images" :key="img.id" :src="img.imgUrl" alt="" class="h-24 w-24 object-cover cursor-pointer">
         </div>
       </li>
     </ul>

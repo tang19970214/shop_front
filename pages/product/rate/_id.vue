@@ -128,7 +128,8 @@ export default {
     return {
       showHiddenLine: false,
       currentPage: 1,
-      openImgZoom: false
+      openImgZoom: false,
+      imgArr: []
     }
   },
   methods: {
