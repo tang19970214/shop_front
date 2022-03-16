@@ -3,6 +3,7 @@
     <span>{{ product.category }} / </span><span>{{ product.title }}</span>
     <!-- 上半部 -->
     <div class="grid grid-cols-12 min-h-[400px] mt-5 gap-5">
+
       <!-- 左側 -->
       <div class="col-span-6 min-h-[400px]">
         <VueSlickCarousel v-bind="settings" ref="c1" :asNavFor="$refs.c2" :focusOnSelect="true">
@@ -30,8 +31,10 @@
           <img class="h-7 w-7 cursor-pointer" src="~/static/images/icon/link.svg" alt="分享連結">
         </div>
       </div>
+
       <!-- 右側 -->
       <div class="col-span-6">
+
         <!-- 商品標題、價格 -->
         <div class="flex flex-col border-b border-b-[#c4c4c4] pb-2.5">
           <h3 class="font-bold mb-3">{{ product.title }}</h3>
@@ -47,6 +50,7 @@
             </div>
           </div>
         </div>
+
         <!-- 商品數量 -->
         <div class="grid grid-cols-12 mt-6 items-center">
           <div class="col-span-3">
@@ -65,6 +69,7 @@
             </div>
           </div>
         </div>
+
         <!-- 規格 -->
         <div class="grid grid-cols-12 mt-6 items-center">
           <div class="col-span-3">
@@ -76,6 +81,7 @@
             </div>
           </div>
         </div>
+
         <!-- 折價券 -->
         <div class="grid grid-cols-12 mt-6 items-center">
           <div class="col-span-3">
@@ -89,6 +95,7 @@
             </div>
           </div>
         </div>
+
         <!-- 加入購物車、立即購買 -->
         <div class="grid grid-cols-12 mt-6 items-center">
           <div class="col-span-12">
@@ -98,23 +105,64 @@
             </div>
           </div>
         </div>
+
       </div>
     </div>
+    
     <!-- 下半部 -->
+    <!-- 商品詳情、評價 tabMenu -->
     <div class="w-full sticky top-[132px] z-10">
-      <ul class="flex w-full mb-10 shadow-[0px_4px_4px_rgba(0,0,0,0.25)] relative">
+      <ul class="flex w-full mb-10 shadow-[0px_4px_4px_rgba(0,0,0,0.25)] relative overflow-hidden">
         <li v-for="list in tabList" :key="list.id" @click="selectedTab = list.label" class="duration-300 text-center text-lg w-1/2 py-3 bg-white cursor-pointer hover:text-[#FA5936]">{{ list.label }}</li>
-        <div class="absolute duration-300 left-0 bottom-0 w-1/2 h-2 bg-[#FA5936]" :class="{'left-[50%]': selectedTab == '評價'}"></div>
+        <div class="absolute ease-in-out duration-700 left-0 bottom-0 w-1/2 h-2 bg-[#FA5936]" :class="{'left-[50%]': selectedTab == '評價'}"></div>
       </ul>
     </div>
+
+    <!-- 商品詳情 -->
     <transition name="fade">
       <div v-html="product.content" v-if="selectedTab === '商品詳情'"></div>
     </transition>
+
+    <!-- 評價 -->
     <transition name="fade">
       <div v-if="selectedTab !== '商品詳情'">
-        <Estimate :estimateArr="product.estimate" />
+        <ul class="w-full">
+          <div class="w-full px-12 pt-4 pb-12 bg-[#FFF5C2] text-red-500">
+            <span class="text-4xl">{{ estimate.avgRate }}</span>
+            <span class="text-sm"> / 5</span>
+            <span class="text-[#a3a3a3] text-sm ml-3">{{ estimate.totalResult }}則評論</span>
+          </div>
+          <li v-for="list in estimate.items" :key="list.id" class="py-5 border-b border-b-[#c4c4c4]">
+            <div class="flex space-x-5">
+              <img :src="list.profileImg" alt="" class="w-16 h-16 rounded-full object-cover">
+              <div class="flex flex-col space-y-2">
+                <p>{{ list.account }}</p>
+                <div class="flex space-x-2">
+                  <div v-for="star in 5" :key="star" class="text-[#FFC107]">
+                    <fa v-if="star <= list.rate" icon="fa-solid fa-star"></fa>
+                    <fa v-else icon="fa-regular fa-star"></fa>
+                  </div>
+                </div>
+                <div class="flex items-center space-x-3 text-[#a3a3a3] text-sm">
+                  <span>{{ list.time }}</span>
+                  <span>規格：{{ list.spec }}</span>
+                </div>
+              </div>
+            </div>
+            <p class="my-3 line-clamp-3" :class="{'line-clamp-none': showHiddenLine}">{{ list.content }}</p>
+            <p v-if="list.content.length >= 200 && !showHiddenLine" @click="showHiddenLine = true" class="mb-3 text-sm cursor-pointer inline-block group">... <span class="text-sky-500 group-hover:text-sky-700">更多</span></p>
+            <div class="flex space-x-3" v-if="list.images.length > 0">
+              <img v-for="img in list.images" :key="img.id" :src="img.imgUrl" alt="" class="h-24 w-24">
+            </div>
+          </li>
+        </ul>
+
+        <!-- 評價分頁 -->
+        <Pagination :totalPage="estimate.totalPage" @changePage="changePage($event)" />
+
       </div>
     </transition>
+
   </section>
 </template>
 
@@ -149,15 +197,20 @@ export default {
       ],
       category: '調飲系列茶包',
       content: '<img src="https://images.unsplash.com/photo-1561296180-e8100fd714e2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1868&q=80" width="100%"> <p class="py-10 text-center">品飲意象 輕快穿過午後的音樂聚落，肆無忌憚的迷戀菓物與豐收的季節，一起雙人搖擺舞。入口明亮華麗的層次迸現，以愉悅的果香收尾，盛夏之際，風格飲食已經開始。風味標籤 熱帶果物、柑橘果皮、香草軟糖、鳳梨、低含水蜂蜜、牛奶商品介紹</p> <img src="https://images.unsplash.com/photo-1558160074-4d7d8bdf4256?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80" width="100%">',
-      estimate: [
+    }
+    const estimate = {
+      avgRate: 4.6,
+      totalResult: 523,
+      totalPage: 8,
+      items: [
         {
           id: 1,
           profileImg: 'https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1769&q=80',
           account: 'u*****4',
-          rate: 5,
+          rate: 1,
           time: '2022/03/14',
-          wasBuy: '500g',
-          content: '評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價',
+          spec: '500g',
+          content: 'fuck you',
           images: [
             {id: 1, imgUrl: require("~/static/images/product_example3.png")},
             {id: 2, imgUrl: require("~/static/images/product_example2.png")}
@@ -169,7 +222,7 @@ export default {
           account: 'u*****4',
           rate: 4,
           time: '2022/03/14',
-          wasBuy: '800g',
+          spec: '800g',
           content: '評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價',
           images: [
             {id: 1, imgUrl: require("~/static/images/product_example3.png")},
@@ -179,11 +232,50 @@ export default {
         {
           id: 3,
           profileImg: 'https://images.unsplash.com/photo-1574158622682-e40e69881006?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1180&q=80',
+          account: 'w*****f',
+          rate: 5,
+          time: '2022/03/14',
+          spec: '500g',
+          content: '評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價',
+          images: [
+            {id: 1, imgUrl: require("~/static/images/product_example3.png")},
+            {id: 2, imgUrl: require("~/static/images/product_example2.png")}
+          ]
+        },
+        {
+          id: 4,
+          profileImg: 'https://images.unsplash.com/photo-1541364983171-a8ba01e95cfc?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80',
           account: 'u*****4',
           rate: 5,
           time: '2022/03/14',
-          wasBuy: '500g',
+          spec: '500g',
           content: '評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價',
+          images: [
+            {id: 1, imgUrl: require("~/static/images/product_example3.png")},
+            {id: 2, imgUrl: require("~/static/images/product_example2.png")}
+          ]
+        },
+        {
+          id: 5,
+          profileImg: 'https://images.unsplash.com/photo-1569591159212-b02ea8a9f239?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80',
+          account: 'b****7',
+          rate: 5,
+          time: '2022/03/14',
+          spec: '500g',
+          content: '評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價',
+          images: [
+            {id: 1, imgUrl: require("~/static/images/product_example3.png")},
+            {id: 2, imgUrl: require("~/static/images/product_example2.png")}
+          ]
+        },
+        {
+          id: 6,
+          profileImg: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1686&q=80',
+          account: 'a*******3',
+          rate: 5,
+          time: '2022/03/14',
+          spec: '500g',
+          content: '評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價',
           images: [
             {id: 1, imgUrl: require("~/static/images/product_example3.png")},
             {id: 2, imgUrl: require("~/static/images/product_example2.png")}
@@ -201,7 +293,7 @@ export default {
       quantity: 1,
       coupon: 0
     }
-    return { product, coupons, userSelected }
+    return { product, estimate, coupons, userSelected }
   },
   data() {
     return {
@@ -217,13 +309,15 @@ export default {
       // 收藏清單
       favoriteList: JSON.parse(window.localStorage.getItem('favoriteList')) || [],
       tabList: [{id: 1, label: '商品詳情'}, {id: 2, label: '評價'}],
-      selectedTab: '商品詳情'
+      selectedTab: '商品詳情',
+      showHiddenLine: false,
+      currentPage: 1
     }
   },
   computed: {
     // 判斷商品價格
     productSale() {
-      const sale = this.product.spec.filter((item) => item.id == this.userSelected.spec)
+      const sale = this.product.spec.filter((item) => item.id === this.userSelected.spec)
                                     .map((item2) => item2.sale)
       return sale[0]
     },
@@ -283,6 +377,11 @@ export default {
         if (this.userSelected.quantity === 1) return
         this.userSelected.quantity -= 1
       }
+    },
+    // 變更分頁
+    changePage(page) {
+      this.currentPage = page
+      console.log(page)
     }
   }
 }
