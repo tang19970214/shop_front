@@ -1,9 +1,9 @@
 <template>
   <section class="w-full">
-    <div v-if="order.status !== '已取消'" class="w-full py-4 px-6 shadow-[0px_4px_4px_rgba(0,0,0,0.25)]">
+    <div v-if="order.status !== 9" class="w-full py-4 px-6 shadow-[0px_4px_4px_rgba(0,0,0,0.25)]">
       <nuxt-link class="block" to="/member/order"><fa class="w-4 mr-5" :icon="['fa-solid', 'fa-angle-left']" />回上一頁</nuxt-link>
     </div>
-    <div v-if="order.status !== '已取消'" class="w-full py-3 px-4 bg-[#FFF0E6] mt-6 text-lg">
+    <div v-if="order.status !== 9" class="w-full py-3 px-4 bg-[#FFF0E6] mt-6 text-lg">
       <span>
         日期：
         <span class="tracking-wide lg:tracking-normal">
@@ -19,7 +19,7 @@
     </div>
 
     <!-- STEP BAR -->
-    <div v-if="order.status !== '已取消'" class="w-full flex overflow-x-scroll md:overflow-hidden flex-nowrap">
+    <div v-if="order.status !== 9" class="w-full flex overflow-x-scroll md:overflow-hidden flex-nowrap">
       <ul class="flex mt-8 mb-20 min-w-[210%] md:min-w-full">
         <li class="w-1/5 flex flex-col flex-none items-center relative after:content-[''] after:absolute after:bg-[#1ebe5a] after:w-full after:h-1 after:-right-1/2 after:top-1/2 after:z-[-1]">
           <div class="w-[70px] h-[70px] bg-[#1ebe5a] rounded-full relative after:content-[''] after:absolute after:w-full after:h-full after:bg-[url(~/static/images/icon/step1.svg)] after:bg-no-repeat after:top-3.5 after:left-3.5"></div>
@@ -27,19 +27,19 @@
           <p class="absolute text-center -bottom-14 text-[#A3A3A3]">2022-02-02 12:32</p>
         </li>
         <li class="w-1/5 flex flex-col flex-none items-center relative after:content-[''] after:absolute after:bg-[#1ebe5a] after:w-full after:h-1 after:-right-1/2 after:top-1/2 after:z-[-1]">
-          <div class="w-[70px] h-[70px] border-4 border-[#1ebe5a] rounded-full bg-white relative after:content-[''] after:absolute after:w-full after:h-full after:bg-[url(~/static/images/icon/step2.svg)] after:bg-no-repeat after:top-3.5 after:left-3.5"></div>
+          <div class="w-[70px] h-[70px] border-4 border-[#1ebe5a] rounded-full bg-white relative after:content-[''] after:absolute after:w-full after:h-full after:bg-[url(~/static/images/icon/step2.svg)] after:bg-no-repeat after:top-3.5 after:left-3.5" :class="{'bg-[#1ebe5a] after:bg-[url(~/static/images/icon/step2-done.svg)]': order.status >= 2}"></div>
           <p class="absolute text-center -bottom-8">訂單已付款</p>
         </li>
         <li class="w-1/5 flex flex-col flex-none items-center relative after:content-[''] after:absolute after:bg-[#1ebe5a] after:w-full after:h-1 after:-right-1/2 after:top-1/2 after:z-[-1]">
-          <div class="w-[70px] h-[70px] border-4 border-[#1ebe5a] rounded-full bg-white relative after:content-[''] after:absolute after:w-full after:h-full after:bg-[url(~/static/images/icon/step3.svg)] after:bg-no-repeat after:top-3.5 after:left-3.5"></div>
+          <div class="w-[70px] h-[70px] border-4 border-[#1ebe5a] rounded-full bg-white relative after:content-[''] after:absolute after:w-full after:h-full after:bg-[url(~/static/images/icon/step3.svg)] after:bg-no-repeat after:top-3.5 after:left-3.5" :class="{'bg-[#1ebe5a] after:bg-[url(~/static/images/icon/step3-done.svg)]': order.status >= 3}"></div>
           <p class="absolute text-center -bottom-8">訂單已出貨</p>
         </li>
         <li class="w-1/5 flex flex-col flex-none items-center relative after:content-[''] after:absolute after:bg-[#1ebe5a] after:w-full after:h-1 after:-right-1/2 after:top-1/2 after:z-[-1]">
-          <div class="w-[70px] h-[70px] border-4 border-[#1ebe5a] rounded-full bg-white relative after:content-[''] after:absolute after:w-full after:h-full after:bg-[url(~/static/images/icon/step4.svg)] after:bg-no-repeat after:top-3.5 after:left-3.5"></div>
+          <div class="w-[70px] h-[70px] border-4 border-[#1ebe5a] rounded-full bg-white relative after:content-[''] after:absolute after:w-full after:h-full after:bg-[url(~/static/images/icon/step4.svg)] after:bg-no-repeat after:top-3.5 after:left-3.5" :class="{'bg-[#1ebe5a] after:bg-[url(~/static/images/icon/step4-done.svg)]': order.status >= 4}"></div>
           <p class="absolute text-center -bottom-8">待收貨</p>
         </li>
         <li class="w-1/5 flex flex-col flex-none items-center relative">
-          <div class="w-[70px] h-[70px] border-4 border-[#1ebe5a] rounded-full bg-white relative after:content-[''] after:absolute after:w-full after:h-full after:bg-[url(~/static/images/icon/step5.svg)] after:bg-no-repeat after:top-3.5 after:left-3.5"></div>
+          <div class="w-[70px] h-[70px] border-4 border-[#1ebe5a] rounded-full bg-white relative after:content-[''] after:absolute after:w-full after:h-full after:bg-[url(~/static/images/icon/step5.svg)] after:bg-no-repeat after:top-3.5 after:left-3.5" :class="{'bg-[#1ebe5a] after:bg-[url(~/static/images/icon/step5-done.svg)]': order.status === 5}"></div>
           <p class="absolute text-center -bottom-8">待評價</p>
         </li>
       </ul>
@@ -208,21 +208,18 @@
     <!-- 取消訂單按鈕 -->
     <div class="flex justify-center">
       <button
-        v-if="order.status !== '已取消'"
+        v-if="order.status < 5"
         type="button"
         data-mdb-ripple="true"
         data-mdb-ripple-color="light"
         class="mt-16 duration-150 w-60 py-4 rounded-xl shadow-md text-white text-lg tracking-widest hover:shadow-inner disabled:cursor-not-allowed disabled:opacity-80"
-        :class="{
-          'bg-[#a3a3a3]': order.status === '已出貨',
-          'bg-gradient-to-r from-[#FF6D3F] to-[#FA5936]': order.status !== '已出貨',
-        }"
-        :disabled="order.status === '已出貨'"
+        :class="{'bg-[#a3a3a3] cursor-not-allowed': order.status >= 3, 'bg-gradient-to-r from-[#FF6D3F] to-[#FA5936]': order.status < 3,}"
+        :disabled="order.status >= 3"
         @click="isOpen = true"
       >
         取消訂單
       </button>
-      <button v-else type="button" data-mdb-ripple="true" data-mdb-ripple-color="light" class="bg-gradient-to-r from-[#FF6D3F] to-[#FA5936] mt-16 duration-150 w-60 py-4 rounded-xl shadow-md text-white text-lg tracking-widest hover:shadow-inner disabled:cursor-not-allowed disabled:opacity-80">繼續購物 >></button>
+      <button v-if="order.status >= 5" type="button" data-mdb-ripple="true" data-mdb-ripple-color="light" class="bg-gradient-to-r from-[#FF6D3F] to-[#FA5936] mt-16 duration-150 w-60 py-4 rounded-xl shadow-md text-white text-lg tracking-widest hover:shadow-inner disabled:cursor-not-allowed disabled:opacity-80">繼續購物 >></button>
     </div>
 
     <!-- 取消訂單彈出視窗 -->
@@ -258,7 +255,7 @@ export default {
       order: {
         id: 21111708328107,
         time: "2021/01/28",
-        status: "已付款",
+        status: 5,
         price: 30000,
         total: 29800,
         transportPrice: 60,
@@ -330,7 +327,7 @@ export default {
       }
     },
     cancelOrder() {
-      if (this.order.status !== "已出貨") {
+      if (this.order.status >= 3) {
         if (!this.cancelType) {
           this.$swal.fire({
             icon: "error",

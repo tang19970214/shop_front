@@ -2,14 +2,14 @@
   <section class="w-full">
     <h3 class="text-lg font-bold">{{ categoryTitle }}</h3>
     <transition-group class="mt-4 grid grid-cols-2 md:grid-cols-3 gap-6" tag="div" name="fade">
-      <div class="col-span-1 h-full group relative mb-4 md:mb-0" v-for="product in products" :key="product.id">
+      <div v-for="product in products" :key="product.id" class="col-span-1 h-full group relative mb-4 md:mb-0" :class="{'cursor-not-allowed': product.isSoldOut}">
         <div class="h-[170px] md:h-[300px] w-full overflow-hidden relative">
           <div v-if="product.isSoldOut" class="absolute w-full h-full top-0 left-0 bg-[rgba(62,62,62,0.44)] flex justify-center items-center z-10">
-            <div class="w-24 h-24 rounded-full bg-[#717171] flex items-center justify-center">
-              <span class="font-bold text-lg text-white">已售完</span>
+            <div class="w-16 h-16 md:w-24 md:h-24 rounded-full bg-[#717171] flex items-center justify-center select-none">
+              <span class="font-bold text-sm md:text-lg text-white">已售完</span>
             </div>
           </div>
-          <img :src="product.imgUrl" :alt="product.title" @click="$router.push(`/product/${product.id}`)" class="h-full w-full duration-300 group-hover:scale-110 group-hover:z-0 cursor-pointer">
+          <img :src="product.imgUrl" :alt="product.title" @click="$router.push(`/product/${product.id}?category=${$route.query.category}`)" class="h-full w-full duration-300 group-hover:scale-110 group-hover:z-0 cursor-pointer">
         </div>
         <a href="#" v-if="!product.isSoldOut" @click.prevent="$router.push(`/product/${product.id}`)" class="duration-150 group-hover:text-[#FA5936] line-clamp-2 mb-8 mt-3">{{ product.title }}</a>
         <a href="#" v-else class="pointer-events-none line-clamp-2 mb-8 mt-3">{{ product.title }}</a>

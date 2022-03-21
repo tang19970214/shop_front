@@ -26,5 +26,16 @@ export default {
       };
     },
   },
+  mounted() {
+    window.fbAsyncInit = () => {
+      FB.init({
+        appId: "1289081708257437",
+        cookie: true,
+        xfbml: true,
+        version: "v12.0",
+      });
+      FB.AppEvents.logPageView();
+    }
+  }
 };
 </script>

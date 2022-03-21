@@ -28,7 +28,7 @@ export default {
   name: "product",
   asyncData() {
     const menuList = [
-      {id: 1, label: '全部商品', options: [], enable: false},
+      {id: 'all', label: '全部商品', options: [], enable: false},
       {id: 2, label: '調飲系列茶包', options: [], enable: false},
       {id: 3, label: '烏龍茶', options: [], enable: false},
       {id: 4, label: '比賽茶系列', options: [{id: 1, label: '子分類1'}, {id: 2, label: '子分類2'}], enable: false},
@@ -36,14 +36,10 @@ export default {
     ]
     return { menuList }
   },
-  data () {
-    return {
-      selectedCategory: ''
+  computed: {
+    selectedCategory() {
+      return this.menuList.find(item => item.id === parseInt(this.$route.query?.category))?.label
     }
-  },
-  mounted() {
-    const selectedCategory = this.menuList.find(item => item.id === parseInt(this.$route.query?.category))
-    this.selectedCategory = selectedCategory?.label
   }
 };
 </script>

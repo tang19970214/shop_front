@@ -1,5 +1,5 @@
 <template>
-  <section class="fixed top-0 left-0 w-full bg-white shadow-[0px_4px_4px_rgba(140,140,140,0.25)] z-20">
+  <header class="fixed top-0 left-0 w-full bg-white shadow-[0px_4px_4px_rgba(140,140,140,0.25)] z-20">
     <div class="w-full max-w-[1280px] p-4 box-border mx-auto flex flex-col gap-6">
       <div class="hidden lg:block w-full">
         <div class="w-full flex items-center justify-between text-lg">
@@ -27,9 +27,14 @@
       </div>
 
       <div class="relative w-full flex items-center justify-between gap-7">
-        <fa class="lg:hidden text-2xl absolute left-0" :icon="['fas', 'bars']" />
+        <!-- <fa class="lg:hidden text-2xl absolute left-0" :icon="['fas', 'bars']" /> -->
+        <div @click="isOpen = !isOpen" class="lg:hidden absolute left-0 flex flex-col duration-300 gap-1 z-40">
+          <div class="h-[3px] w-6 bg-black duration-300" :class="{' translate-y-1.5 translate-x-0 rotate-45': isOpen}"></div>
+          <div class="h-[3px] w-6 bg-black duration-300" :class="{'opacity-0': isOpen}"></div>
+          <div class="h-[3px] w-6 bg-black duration-300" :class="{' -translate-y-2 -translate-x-0 -rotate-45': isOpen}"></div>
+        </div>
 
-        <strong class="text-2xl lg:text-5xl pl-12 lg:pl-0" @click="$router.push('/')">LOGO</strong>
+        <strong class="text-2xl lg:text-5xl ml-12 lg:ml-0 cursor-pointer" @click="$router.push('/')">LOGO</strong>
 
         <div class="hidden lg:block w-full h-10 relative">
           <fa class="absolute left-3 top-2.5 text-[#A3A3A3] text-xl" :icon="['fas', 'search']" />
@@ -54,8 +59,23 @@
           </ul>
         </div>
       </div>
+
+      <transition name="fade">
+        <div v-if="isOpen" class="fixed top-0 bg-white left-0 w-screen h-screen pt-20 px-6">
+          <ul class="text-lg">
+            <li v-for="list in menuList" :key="list.id" @click="list.enable = !list.enable" class="py-3 border-b border-b-[#a3a3a3] last:border-b-0 duration-1000 -translate-x-1/2" :class="{'-translate-x-0': isOpen}">
+              {{ list.label }}
+              <fa v-if="list.options" icon="fa-solid fa-caret-up" class="duration-300" :class="{'rotate-180': list.enable}"></fa>
+              <ul v-if="list.label === '商品分類'" class="pl-4 max-h-0 overflow-hidden duration-500" :class="{'max-h-screen': list.enable}">
+                <li class="my-4" @click="$router.push({path: `/product?category=all&page=1`}), isOpen = false" :class="{'text-[#FA5936]': $route.query.category == 1}">全部商品</li>
+                <li v-for="option in list.options" :key="option.id" @click="$router.push({path: `/product?category=${option.id}&page=1`}), isOpen = false" class="my-4" :class="{'text-[#FA5936]': $route.query.category == option.id}">{{ option.label }}</li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </transition>
     </div>
-  </section>
+  </header>
 </template>
 
 <script>
@@ -66,9 +86,10 @@ export default {
     return {
       menuList: [
         { id: 1, label: "特店取貨店點", value: "/pickup" },
-        { id: 2, label: "商品分類", value: "/product?category=1&page=1" },
+        { id: 2, label: "商品分類", value: "/product?category=all&page=1", enable: false, options: [{id: 2, label: '調飲系列茶包'}, {id: 3, label: '烏龍茶'}, {id: 4, label: '比賽茶系列'}, {id: 5, label: '禮盒'}] },
         { id: 3, label: "專欄分享", value: "/share" },
       ],
+      isOpen: false
     };
   },
   computed: {
@@ -84,17 +105,6 @@ export default {
       if (this.$route.path === path) return;
       this.$router.push(path);
     },
-  },
-  mounted() {
-    window.fbAsyncInit = () => {
-      FB.init({
-        appId: "1289081708257437",
-        cookie: true,
-        xfbml: true,
-        version: "v12.0",
-      });
-      FB.AppEvents.logPageView();
-    };
-  },
+  }
 };
 </script>
