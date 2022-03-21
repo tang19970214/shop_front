@@ -102,11 +102,51 @@
             <span>折價券</span>
           </div>
           <div class="col-span-9">
-            <div class="flex flex-wrap gap-3 -translate-x-2 md:-translate-x-4">
-              <p v-for="coupon in coupons" :key="coupon.id" class="duration-300 py-1 px-4 text-sky-500 border border-[#c4c4c4] rounded-xl cursor-default md:hover:bg-sky-500 md:hover:text-white md:hover:border-sky-500">
-                {{ coupon.label }}
-              </p>
+            <ul class="flex flex-wrap gap-3 -translate-x-2 md:-translate-x-4 relative couponList">
+              <li v-for="coupon in coupons" :key="coupon.id" class="duration-300 py-1 px-4 text-sky-500 border border-[#c4c4c4] rounded-xl cursor-default">
+                <span>{{ coupon.label }}</span>
+              </li>
+              <!-- 取得優惠券-電腦版 -->
+              <transition name="scale">
+                <div v-if="showCoupon" class="hidden md:block absolute rounded-md w-80 h-52 drop-shadow-[0px_2px_3px_rgba(0,0,0,0.25)] bg-white border border-[#c4c4c4] -left-3 -top-60 p-2 after:content-[''] after:absolute after:-bottom-6 after:left-10 after:border-solid after:border-[24px_20px_0px_20px] after:border-[white_transparent_transparent_transparent]">
+                  <div class="h-full w-full px-5 overflow-y-scroll scrollbar">
+                    <ul>
+                      <li v-for="item in coupons" :key="`${item.id} + ${item.label}`" class="flex justify-between py-3 border-b border-b-[#a3a3a3] last:border-b-0">
+                        <div class="flex flex-col">
+                          <p class="text-black">{{ item.label }}</p>
+                          <span class="text-neutral-400 text-xs">有效日期：{{ item.time }}</span>
+                        </div>
+                        <button @click="item.isGet = true" class="w-16 rounded-md text-white text-center text-xs bg-gradient-to-t from-[#FA5936] to-[#FA5936]" :class="{'from-[#a3a3a3] to-[#a3a3a3]': item.isGet}">
+                          <span v-if="!item.isGet">領取</span>
+                          <span v-else>已領取</span>
+                        </button>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </transition>
+            </ul>
+          </div>
+          <!-- 取得優惠券-手機版 -->
+          <transition name="fade">
+            <div v-if="showCoupon" @click="showCoupon = false" class="block md:hidden bg-[rgba(64,64,64,0.6)] fixed left-0 top-0 w-screen h-screen pointer-events-none z-30" :class="{'pointer-events-auto': showCoupon}"></div>
+          </transition>
+          <div class="duration-300 block md:hidden fixed left-0 -bottom-[40vh] w-screen h-[40vh] bg-white z-40 p-3" :class="{'-bottom-[0]' : showCoupon}">
+            <div class="h-3/4 w-full px-5 overflow-y-scroll scrollbar">
+              <ul>
+                <li v-for="item in coupons" :key="`${item.id} + ${item.label}`" class="flex justify-between py-3 border-b border-b-[#a3a3a3] last:border-b-0">
+                  <div class="flex flex-col">
+                    <p class="text-black">{{ item.label }}</p>
+                    <span class="text-neutral-400 text-xs">有效日期：{{ item.time }}</span>
+                  </div>
+                  <button @click="item.isGet = true" class="w-16 rounded-md text-white text-center text-xs bg-gradient-to-t from-[#FA5936] to-[#FA5936]" :class="{'from-[#a3a3a3] to-[#a3a3a3]': item.isGet}">
+                    <span v-if="!item.isGet">領取</span>
+                    <span v-else>已領取</span>
+                  </button>
+                </li>
+              </ul>
             </div>
+            <button @click="showCoupon = false" class="w-full py-2 mt-5 border border-[#FA5936] rounded-xl">關閉</button>
           </div>
         </div>
 
@@ -127,14 +167,14 @@
     <!-- 商品詳情、評價 tabMenu -->
     <div class="w-full mt-16 lg:mt-0 sticky top-[64px] lg:top-[132px] z-10">
       <ul class="flex w-full mb-10 shadow-[0px_4px_4px_rgba(0,0,0,0.25)] relative overflow-hidden">
-        <li v-for="list in tabList" :key="list.id" @click="$router.push({ path: `/product/${product.id}${list.path}`, scrollBehavior: false})" class="duration-300 text-center text-lg w-1/2 py-3 bg-white cursor-pointer hover:text-[#FA5936]">{{ list.label }}</li>
+        <li v-for="list in tabList" :key="list.id" @click="$router.push({ path: `/product/${product.id}${list.path}?category=${$route.query.category}`, scrollBehavior: false})" class="duration-300 text-center text-lg w-1/2 py-3 bg-white cursor-pointer hover:text-[#FA5936]">{{ list.label }}</li>
         <div class="absolute ease-in-out duration-700 left-0 bottom-0 w-1/2 h-2 bg-[#FA5936]" :class="{'left-[50%]': $route.name == 'product-id-rate'}"></div>
       </ul>
     </div>
     
     <!-- 商品詳情、評價 -->
     <transition name="fade">
-      <Nuxt-child :product="product" :estimate="estimate" />
+      <Nuxt-child :product="product" />
     </transition>
 
     <!-- 推薦商品 -->
@@ -210,96 +250,12 @@ export default {
         },
       ]
     }
-    const estimate = {
-      avgRate: 4.6,
-      totalResult: 523,
-      totalPage: 8,
-      items: [
-        {
-          id: 1,
-          profileImg: 'https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1769&q=80',
-          account: 'u*****4',
-          rate: 1,
-          time: '2022/03/14',
-          spec: '500g',
-          content: 'fuck you',
-          images: [
-            {id: 1, imgUrl: require("~/static/images/product_example3.png")},
-            {id: 2, imgUrl: require("~/static/images/product_example2.png")}
-          ]
-        },
-        {
-          id: 2,
-          profileImg: 'https://images.unsplash.com/photo-1533738363-b7f9aef128ce?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80',
-          account: 'u*****4',
-          rate: 4,
-          time: '2022/03/14',
-          spec: '800g',
-          content: '評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價',
-          images: [
-            {id: 1, imgUrl: require("~/static/images/product_example3.png")},
-            {id: 2, imgUrl: require("~/static/images/product_example2.png")}
-          ]
-        },
-        {
-          id: 3,
-          profileImg: 'https://images.unsplash.com/photo-1574158622682-e40e69881006?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1180&q=80',
-          account: 'w*****f',
-          rate: 5,
-          time: '2022/03/14',
-          spec: '500g',
-          content: '評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價',
-          images: [
-            {id: 1, imgUrl: require("~/static/images/product_example3.png")},
-            {id: 2, imgUrl: require("~/static/images/product_example2.png")}
-          ]
-        },
-        {
-          id: 4,
-          profileImg: 'https://images.unsplash.com/photo-1541364983171-a8ba01e95cfc?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80',
-          account: 'u*****4',
-          rate: 5,
-          time: '2022/03/14',
-          spec: '500g',
-          content: '評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價',
-          images: [
-            {id: 1, imgUrl: require("~/static/images/product_example3.png")},
-            {id: 2, imgUrl: require("~/static/images/product_example2.png")}
-          ]
-        },
-        {
-          id: 5,
-          profileImg: 'https://images.unsplash.com/photo-1569591159212-b02ea8a9f239?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80',
-          account: 'b****7',
-          rate: 5,
-          time: '2022/03/14',
-          spec: '500g',
-          content: '評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價',
-          images: [
-            {id: 1, imgUrl: require("~/static/images/product_example3.png")},
-            {id: 2, imgUrl: require("~/static/images/product_example2.png")}
-          ]
-        },
-        {
-          id: 6,
-          profileImg: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1686&q=80',
-          account: 'a*******3',
-          rate: 5,
-          time: '2022/03/14',
-          spec: '500g',
-          content: '評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價評價',
-          images: [
-            {id: 1, imgUrl: require("~/static/images/product_example3.png")},
-            {id: 2, imgUrl: require("~/static/images/product_example2.png")}
-          ]
-        },
-      ]
-    }
     const coupons = [
-      {id: 1, label: '滿999享85折'},
-      {id: 2, label: '首購免運'},
-      {id: 3, label: '老闆跳樓'},
-      {id: 4, label: '生日8折'}
+      {id: 1, label: '滿999享85折', time: '2022/04/31', isGet: false},
+      {id: 2, label: '首購免運', time: '2022/05/15', isGet: true},
+      {id: 3, label: '生日禮券', time: '2022/05/18', isGet: false},
+      {id: 4, label: '生日禮券', time: '2022/05/18', isGet: false},
+      {id: 5, label: '生日禮券', time: '2022/05/18', isGet: false},
     ]
     const userSelected = {
       id: parseInt(context.params.id),
@@ -307,7 +263,7 @@ export default {
       quantity: 1,
       coupon: 0
     }
-    return { product, estimate, coupons, userSelected }
+    return { product, coupons, userSelected }
   },
   data() {
     return {
@@ -323,7 +279,8 @@ export default {
       // 收藏清單
       favoriteList: JSON.parse(window.localStorage.getItem('favoriteList')) || [],
       tabList: [{id: 1, label: '商品詳情', path: ''}, {id: 2, label: '評價', path: '/rate'}],
-      selectedTab: '商品詳情'
+      selectedTab: '商品詳情',
+      showCoupon: false
     }
   },
   computed: {
@@ -440,7 +397,39 @@ export default {
       setTimeout(() => {
         this.$router.push('/cart')
       }, 1000)
+    },
+    // 開啟折價券Modal
+    openCouponModal() {
+      this.showCoupon = true
+    },
+    // 關閉折價券Modal
+    closeCouponModal() {
+      this.showCoupon = false
     }
+  },
+  mounted() {
+    // 判斷折價券在不同裝置下的監聽
+    const couponList = document.querySelector('.couponList')
+    const screenWidth = window.innerWidth
+    if (screenWidth >= 768) {
+      couponList.addEventListener('mouseover', this.openCouponModal)
+      couponList.addEventListener('mouseleave', this.closeCouponModal)
+    } else {
+      couponList.addEventListener('click', this.openCouponModal)
+    }
+    window.onresize = () => {
+      couponList.removeEventListener('mouseover', this.openCouponModal)
+      couponList.removeEventListener('mouseleave', this.closeCouponModal)
+      couponList.removeEventListener('click', this.openCouponModal)
+      const resizeWidth = window.innerWidth
+      if (resizeWidth >= 768) {
+        couponList.addEventListener('mouseover', this.openCouponModal)
+        couponList.addEventListener('mouseleave', this.closeCouponModal)
+      } else {
+        couponList.addEventListener('click', this.openCouponModal)
+      }
+    }
+    // end
   }
 }
 </script>
