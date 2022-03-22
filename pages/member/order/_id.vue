@@ -281,29 +281,29 @@
                 <fa icon="fa-solid fa-camera"></fa>
                 上傳照片
               </label>
-              <input @change="uploadImages($event, idx)" type="file" accept="image/*" multiple :id="`uploadBtn + ${rate.id}`" class="hidden" :disabled="rate.photos.length >= 5">
+              <input @change="uploadImages($event, idx)" type="file" accept="image/png, image/jpg, image/jpeg, image/webp" multiple :id="`uploadBtn + ${rate.id}`" class="hidden" :disabled="rate.photos.length >= 5">
               <span class="text-lg text-[#a3a3a3]">最多可以上傳5張照片</span>
             </div>
             <!-- 已上傳的圖片 -->
-            <ul class="flex gap-2 border-b border-b-neutral-700" :class="{'border-b-0': (idx + 1) === rateArr.length}">
-              <li v-for="(uploaded, uploadImgIdx) in rate.photos" :key="uploadImgIdx" class="relative group mb-3">
+            <transition-group tag="ul" name="scale" class="flex gap-2 border-b border-b-neutral-700 items-center" :class="{'border-b-0': (idx + 1) === rateArr.length}">
+              <li v-for="(uploaded, uploadImgIdx) in rate.photos" :key="`${uploaded.filePath} + ${uploaded.fileName}`" class="relative group mb-3">
                 <img :src="`${imgBaseURL}/${uploaded.filePath}`" :alt="uploaded.fileName" class="w-16 h-16 object-cover">
-                <div @click="deleteImg(idx, uploadImgIdx)" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full w-10 h-10 bg-[#717171] duration-300 opacity-0 flex justify-center items-center pointer-events-none cursor-pointer group-hover:opacity-100 group-hover:pointer-events-auto">
+                <div @click="deleteImg(idx, uploadImgIdx)" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full w-10 h-10 bg-[#FA5936] duration-300 opacity-0 flex justify-center items-center pointer-events-none cursor-pointer group-hover:opacity-100 group-hover:pointer-events-auto">
                   <fa icon="fa-solid fa-xmark" class="text-lg text-white"></fa>
                 </div>
               </li>
               <!-- 上傳圖片時的 Loading -->
-              <li v-if="isUploading === idx">
-                <fa icon="fa-solid fa-spinner fa-spin-pulse" class="text-black animate-spin"></fa>
+              <li v-if="isUploading === idx" class="ml-5" key="loading">
+                <fa icon="fa-solid fa-spinner fa-spin-pulse" class="text-black mb-2 animate-spin"></fa>
               </li>
-            </ul>
+            </transition-group>
           </li>
           <label for="anonymousCheckbox" class="cursor-pointer border border-[#a3a3a3] rounded-md overflow-hidden px-3 py-0.5 duration-300 relative" :class="{'border-[#FA5936]': isAnonymous}">
             <div class="bg-[#FA5936] scale-0 absolute w-full h-full top-0 left-0 flex items-center justify-center duration-300 rounded-md" :class="{'scale-110': isAnonymous}">
               <fa icon="fa-solid fa-check" class="text-sm text-white"></fa>
             </div>
           </label>
-          <label for="anonymousCheckbox" class="text-lg select-none ml-2">匿名評價此商品</label>
+          <label for="anonymousCheckbox" class="text-lg select-none ml-2 cursor-pointer">匿名評價此商品</label>
           <input v-model="isAnonymous" type="checkbox" id="anonymousCheckbox" class="hidden">
           <span class="text-gray-400 block ml-10 md:inline md:ml-0">您的名稱將顯示 {{ anonymousUserName }}</span>
         </ul>
@@ -350,10 +350,17 @@ export default {
           },
           {
             id: 2,
-            imgUrl: require("~/static/images/product_example.png"),
+            imgUrl: require("~/static/images/product_example2.png"),
             title: "春季的初戀微甜｜金牌紅烏龍禮盒",
             quantity: 2,
             sale: 12000,
+          },
+          {
+            id: 3,
+            imgUrl: require("~/static/images/product_example3.png"),
+            title: "金牌紅烏龍禮盒",
+            quantity: 5,
+            sale: 9999,
           },
         ],
         name: "陳OO",
@@ -386,8 +393,8 @@ export default {
     anonymousUserName() {
       if (this.isAnonymous) {
         const userName = 'user1234'
-        const firstStr = userName.substr(0, 1)
-        const lastStr = userName.substr(-1, 1)
+        const firstStr = userName.slice(0, 1)
+        const lastStr = userName.slice(-1)
         let hideStar = ''
         for (let i = 0; i < userName.length - 2; i++) {
           hideStar += '*'
@@ -432,7 +439,7 @@ export default {
           this.$swal.fire({
             icon: "error",
             title: "請選擇取消原因",
-            timer: 1000,
+            timer: 1500,
             showConfirmButton: false,
           });
         } else {
@@ -442,7 +449,7 @@ export default {
           this.$swal.fire({
             icon: "success",
             title: "取消訂單成功",
-            timer: 1000,
+            timer: 1500,
             showConfirmButton: false,
           });
         }
@@ -450,7 +457,7 @@ export default {
         this.$swal.fire({
           icon: "error",
           title: "此訂單已出貨，無法取消訂單",
-          timer: 1000,
+          timer: 1500,
           showConfirmButton: false,
         });
       }
@@ -476,8 +483,9 @@ export default {
       this.openRateModal = false
     },
     // 上傳圖片
-    async uploadImages(e, photosArr) {
-      this.isUploading = photosArr
+    async uploadImages(e, rateIdx) {
+      let whichOneOverSize = ''
+      this.isUploading = rateIdx
       for (let i = 0; i < e.target.files.length; i++) {
         const formData = new FormData()
         if (i > 5) {
@@ -489,14 +497,18 @@ export default {
           })
         } else {
           if (e.target.files[i].size > 2000000) {
-            this.$swal.fire({
-              icon: 'error',
-              confirmButtonText: '確定',
-              confirmButtonColor: '#FA5936',
-              title: `第${i + 1}個檔案大於2MB，請上傳小於2MB的檔案！`
-            })
+            whichOneOverSize += `${i + 1}、`
+            if (i === (e.target.files.length - 1)) {
+              whichOneOverSize = whichOneOverSize.slice(0, -1)
+              this.$swal.fire({
+                icon: 'error',
+                confirmButtonText: '確定',
+                confirmButtonColor: '#FA5936',
+                title: `第${whichOneOverSize}個檔案大於2MB，請上傳小於2MB的檔案！`
+              })
+            }
           } else {
-            if (this.rateArr[photosArr].photos.length >= 5) {
+            if (this.rateArr[rateIdx].photos.length >= 5) {
               this.$swal.fire({
                 icon: 'warning',
                 confirmButtonText: '確定',
@@ -508,13 +520,13 @@ export default {
               formData.append('files', e.target.files[i])
               await this.$api.members.uploadFiles(formData)
               .then((res) => {
-                const { id, fileName, filePath } = res.data.result[0]
+                const { fileName, filePath } = res.data.result[0]
                 const rate = {
                   fileName,
                   filePath
                 }
-                this.rateArr[photosArr].photos.push(rate)
-                this.rateArr[photosArr].tempFiles = JSON.stringify(this.rateArr[photosArr].photos)
+                this.rateArr[rateIdx].photos.push(rate)
+                this.rateArr[rateIdx].tempFiles = JSON.stringify(this.rateArr[rateIdx].photos)
               })
               .catch((err) => {
                 console.log(err.response)
@@ -533,14 +545,14 @@ export default {
       this.rateArr[idx].photos.splice(uploadImgIdx, 1)
     },
     handleRate() {
-      const isRateStar = this.rateArr.map((item) => item.rate)
-                                     .includes(0)
-      if (!isRateStar) {
+      const allItemRateStar = this.rateArr.map((item) => item.rate)
+      const isAllRate = allItemRateStar.includes(0)
+      if (!isAllRate) {
         this.order.status = 5
         this.$swal.fire({
           icon: 'success',
           showConfirmButton: false,
-          timer: 1000,
+          timer: 1500,
           title: '評價商品成功'
         })
         this.rateArr.forEach((item) => {
@@ -548,11 +560,18 @@ export default {
         })
         this.handleCloseRateModal()
       } else {
+        let whichOneNotRate = ''
+        allItemRateStar.forEach((item, idx) => {
+          if (item === 0) {
+            whichOneNotRate += `${idx + 1}、`
+          }
+        })
+        whichOneNotRate = whichOneNotRate.slice(0, -1)
         this.$swal.fire({
           icon: 'warning',
           showConfirmButton: false,
-          timer: 1000,
-          title: '尚有商品未完成評價'
+          timer: 1500,
+          title: `第${whichOneNotRate}個商品尚未完成評價`
         })
       }
     }

@@ -60,7 +60,7 @@ export default {
             this.$swal.fire({
               icon: "error",
               title: message,
-              timer: 1000,
+              timer: 1500,
               showConfirmButton: false,
             });
           }

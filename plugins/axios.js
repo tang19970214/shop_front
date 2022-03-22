@@ -74,7 +74,7 @@ export default ({
             icon: 'error',
             title: errorRes,
             showConfirmButton: false,
-            timer: 1000
+            timer: 1500
           })
         } else {
           console.log(errorRes.response)

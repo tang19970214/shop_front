@@ -364,7 +364,7 @@ export default {
             icon: 'error',
             title: '超過庫存上限',
             showConfirmButton: false,
-            timer: 1000
+            timer: 1500
           })
         } else {
           target.quantity += this.userSelected.quantity
@@ -372,7 +372,7 @@ export default {
             icon: 'success',
             title: '已加入至購物車',
             showConfirmButton: false,
-            timer: 1000
+            timer: 1500
           })
         }
       } else {
@@ -386,7 +386,7 @@ export default {
           icon: 'success',
           title: '已加入至購物車',
           showConfirmButton: false,
-          timer: 1000
+          timer: 1500
         })
       }
       window.localStorage.setItem('cartList', JSON.stringify(cart))
@@ -397,7 +397,7 @@ export default {
         icon: 'success',
         title: '已加入購物車',
         showConfirmButton: false,
-        timer: 1000
+        timer: 1500
       })
       setTimeout(() => {
         this.$router.push('/cart')

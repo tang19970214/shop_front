@@ -164,7 +164,7 @@ export default {
                   icon: "error",
                   title: message,
                   showConfirmButton: false,
-                  timer: 1000,
+                  timer: 1500,
                 });
                 break;
               default:

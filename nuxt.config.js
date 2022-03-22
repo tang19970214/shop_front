@@ -1,6 +1,6 @@
 export default {
   server: {
-    port: 1803
+    port: 1803,
   },
   router: {
     scrollBehavior(route) {

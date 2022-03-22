@@ -103,7 +103,7 @@ export default {
                 .fire({
                   icon: "success",
                   title: "登入成功！",
-                  timer: 1000,
+                  timer: 1500,
                   showConfirmButton: false,
                 })
                 .then(() => {
@@ -113,7 +113,7 @@ export default {
               this.$swal.fire({
                 icon: "error",
                 title: status,
-                timer: 1000,
+                timer: 1500,
                 showConfirmButton: false,
               });
               this.disLoginBtn = false;

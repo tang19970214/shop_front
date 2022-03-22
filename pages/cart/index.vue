@@ -58,7 +58,7 @@ export default {
         .fire({
           icon: 'warning',
           title: '您尚未選擇任何商品',
-          timer: 1000,
+          timer: 1500,
           showConfirmButton: false
         })
       } else {

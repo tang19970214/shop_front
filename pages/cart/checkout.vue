@@ -575,7 +575,7 @@ export default {
       this.$swal.fire({
         icon: "success",
         title: "新增優惠券成功",
-        timer: 1000,
+        timer: 1500,
         showConfirmButton: false,
       });
       const ticket = {
