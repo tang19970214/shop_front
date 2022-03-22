@@ -277,17 +277,17 @@
             </div>
             <textarea v-model="rate.message" rows="4" placeholder="寫下你的想法..." class="w-full border border-[#a3a3a3] rounded-xl px-5 py-2 resize-none"></textarea>
             <div class="my-3 flex items-center gap-2">
-              <label :for="`uploadBtn + ${rate.id}`" class="duration-300 text-[#FA5936] text-lg border border-[#FA5936] py-1 px-3 rounded-xl cursor-pointer hover:bg-[#FA5936] hover:text-white">
+              <label :for="`uploadBtn + ${rate.id}`" class="duration-300 text-[#FA5936] text-lg border border-[#FA5936] py-1 px-3 rounded-xl" :class="{'cursor-not-allowed bg-gray-300 text-[#fff] border-[#fff]': rate.photos.length >= 5, 'cursor-pointer hover:bg-[#FA5936] hover:text-white': rate.photos.length < 5}">
                 <fa icon="fa-solid fa-camera"></fa>
                 上傳照片
               </label>
-              <input @change="uploadImages($event, idx)" type="file" accept="image/*" multiple :id="`uploadBtn + ${rate.id}`" class="hidden">
+              <input @change="uploadImages($event, idx)" type="file" accept="image/*" multiple :id="`uploadBtn + ${rate.id}`" class="hidden" :disabled="rate.photos.length >= 5">
               <span class="text-lg text-[#a3a3a3]">最多可以上傳5張照片</span>
             </div>
             <!-- 已上傳的圖片 -->
             <ul class="flex gap-2 border-b border-b-neutral-700" :class="{'border-b-0': (idx + 1) === rateArr.length}">
-              <li v-for="(uploaded, uploadImgIdx) in rate.photos" :key="uploaded.id" class="relative group mb-3">
-                <img :src="uploaded.filePath" :alt="uploaded.fileName" class="w-16 h-16 object-cover">
+              <li v-for="(uploaded, uploadImgIdx) in rate.photos" :key="uploadImgIdx" class="relative group mb-3">
+                <img :src="`${imgBaseURL}/${uploaded.filePath}`" :alt="uploaded.fileName" class="w-16 h-16 object-cover">
                 <div @click="deleteImg(idx, uploadImgIdx)" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full w-10 h-10 bg-[#717171] duration-300 opacity-0 flex justify-center items-center pointer-events-none cursor-pointer group-hover:opacity-100 group-hover:pointer-events-auto">
                   <fa icon="fa-solid fa-xmark" class="text-lg text-white"></fa>
                 </div>
@@ -325,6 +325,10 @@
 <script>
 export default {
   name: "member-order-id",
+  asyncData({ env }) {
+    const imgBaseURL = env.VUE_APP_IMG_URL
+    return { imgBaseURL }
+  },
   data() {
     return {
       order: {
@@ -473,17 +477,17 @@ export default {
     },
     // 上傳圖片
     async uploadImages(e, photosArr) {
-      if (e.target.files.length > 5) {
-        this.$swal.fire({
-          icon: 'error',
-          confirmButtonText: '確定',
-          confirmButtonColor: '#FA5936',
-          title: `最多可以上傳5張照片`
-        })
-      } else {
-        this.isUploading = photosArr
-        for (let i = 0; i < e.target.files.length; i++) {
-          const formData = new FormData()
+      this.isUploading = photosArr
+      for (let i = 0; i < e.target.files.length; i++) {
+        const formData = new FormData()
+        if (i > 5) {
+          this.$swal.fire({
+            icon: 'error',
+            confirmButtonText: '確定',
+            confirmButtonColor: '#FA5936',
+            title: `最多可以上傳5張照片`
+          })
+        } else {
           if (e.target.files[i].size > 2000000) {
             this.$swal.fire({
               icon: 'error',
@@ -506,9 +510,8 @@ export default {
               .then((res) => {
                 const { id, fileName, filePath } = res.data.result[0]
                 const rate = {
-                  id,
                   fileName,
-                  filePath: `${process.env.VUE_APP_IMG_URL}/${filePath}`
+                  filePath
                 }
                 this.rateArr[photosArr].photos.push(rate)
                 this.rateArr[photosArr].tempFiles = JSON.stringify(this.rateArr[photosArr].photos)
@@ -517,10 +520,10 @@ export default {
                 console.log(err.response)
               })
             }
-          }
-          if ((i + 1) === e.target.files.length) {
-            this.isUploading = null
-          }
+        }
+        }
+        if ((i + 1) === e.target.files.length) {
+          this.isUploading = null
         }
       }
       e.target.value = ''
