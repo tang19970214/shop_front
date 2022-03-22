@@ -68,8 +68,9 @@ export default {
   methods: {
     toProductPage(id) {
       if (this.mousedownPos.x !== this.mouseUpPos.x || this.mousedownPos.y !== this.mouseUpPos.y) return
+      const category = this.$route.query.category
       window.scrollTo({top: 0, behavior: 'smooth'})
-      this.$router.push(`/product/${id}`)
+      this.$router.push(`/product/${id}?category=${category}`)
     },
     changeImg(bool) {
       if (bool) {

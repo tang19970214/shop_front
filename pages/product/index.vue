@@ -18,8 +18,8 @@
             <span class="text-[#EF4444]">${{ product.sale }}</span>
             <span class="text-[#a3a3a3] line-through">${{ product.price }}</span>
           </div>
-          <fa v-show="isFavorite(product.id)" @click.prevent="addFavorite(true, product)" class="text-[#EF4444] text-xl cursor-pointer animate-pulse" icon="fa-solid fa-heart"></fa>
-          <fa v-show="!isFavorite(product.id)" @click.prevent="addFavorite(false, product)" class="text-[#EF4444] text-xl cursor-pointer animate-pulse" icon="fa-regular fa-heart"></fa>
+          <fa v-show="isFavorite(product.id)" @click.prevent="addFavorite(true, product)" class="text-[#EF4444] text-xl cursor-pointer" icon="fa-solid fa-heart"></fa>
+          <fa v-show="!isFavorite(product.id)" @click.prevent="addFavorite(false, product)" class="text-[#EF4444] text-xl cursor-pointer" icon="fa-regular fa-heart"></fa>
         </div>
       </div>
     </transition-group>

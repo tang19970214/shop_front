@@ -208,7 +208,7 @@
     <!-- 取消訂單按鈕 -->
     <div class="flex justify-center">
       <button
-        v-if="order.status < 5"
+        v-if="order.status < 4"
         type="button"
         data-mdb-ripple="true"
         data-mdb-ripple-color="light"
@@ -219,7 +219,20 @@
       >
         取消訂單
       </button>
-      <button v-if="order.status >= 5" type="button" data-mdb-ripple="true" data-mdb-ripple-color="light" class="bg-gradient-to-r from-[#FF6D3F] to-[#FA5936] mt-16 duration-150 w-60 py-4 rounded-xl shadow-md text-white text-lg tracking-widest hover:shadow-inner disabled:cursor-not-allowed disabled:opacity-80">繼續購物 >></button>
+      <button v-if="order.status >= 5" @click="$router.push('/product?category=all&page=1')" type="button" data-mdb-ripple="true" data-mdb-ripple-color="light" class="bg-gradient-to-r from-[#FF6D3F] to-[#FA5936] mt-16 duration-150 w-60 py-4 rounded-xl shadow-md text-white text-lg tracking-widest hover:shadow-inner disabled:cursor-not-allowed disabled:opacity-80">繼續購物 >></button>
+    </div>
+
+    <!-- 立即評價按鈕 -->
+    <div class="flex justify-center">
+      <button
+      v-if="order.status === 4"
+      @click="handleOpenRateModal()"
+      type="button"
+      data-mdb-ripple="true"
+      data-mdb-ripple-color="light"
+      class="bg-gradient-to-t from-[#FF6D3F] to-[#FA5936] px-20 py-4 mt-20 mb-10 rounded-xl text-white">
+        立即評價
+      </button>
     </div>
 
     <!-- 取消訂單彈出視窗 -->
@@ -245,6 +258,68 @@
         <button @click="cancelOrder()" data-mdb-ripple="true" data-mdb-ripple-color="light" class="duration-150 mt-16 mb-14 w-60 py-3.5 px-2 rounded-lg shadow-md text-white text-lg tracking-widest bg-gradient-to-r from-[#FA5936] to-[#FF6D3F] hover:shadow-inner disabled:cursor-not-allowed disabled:opacity-80">確認</button>
       </div>
     </Modal>
+
+    <!-- 評價彈出視窗 -->
+    <Modal :openModal="openRateModal" :width="'w-11/12 lg:w-1/2'" @closeModal="handleCloseRateModal">
+      <h4 class="text-left md:text-center text-xl font-bold">評價商品</h4>
+      <div class="mt-8">
+        <ul>
+          <li v-for="(rate, idx) in rateArr" :key="rate.id" class="my-5">
+            <div class="flex gap-4 mb-2 border-b border-b-[#c4c4c4] pb-3 md:pb-0 md:border-0">
+              <img :src="rate.imgUrl" :alt="rate.title" class="h-16 w-16">
+              <h5>{{ rate.title }}</h5>
+            </div>
+            <div class="flex justify-center my-5 gap-5">
+              <div v-for="star in 5" :key="star" class="text-[#FFC107] text-3xl cursor-pointer" @click="rate.rate = star">
+                <fa v-if="star <= rate.rate" icon="fa-solid fa-star"></fa>
+                <fa v-else icon="fa-regular fa-star"></fa>
+              </div>
+            </div>
+            <textarea v-model="rate.message" rows="4" placeholder="寫下你的想法..." class="w-full border border-[#a3a3a3] rounded-xl px-5 py-2 resize-none"></textarea>
+            <div class="my-3 flex items-center gap-2">
+              <label :for="`uploadBtn + ${rate.id}`" class="duration-300 text-[#FA5936] text-lg border border-[#FA5936] py-1 px-3 rounded-xl cursor-pointer hover:bg-[#FA5936] hover:text-white">
+                <fa icon="fa-solid fa-camera"></fa>
+                上傳照片
+              </label>
+              <input @change="uploadImages($event, idx)" type="file" accept="image/*" multiple :id="`uploadBtn + ${rate.id}`" class="hidden">
+              <span class="text-lg text-[#a3a3a3]">最多可以上傳5張照片</span>
+            </div>
+            <!-- 已上傳的圖片 -->
+            <ul class="flex gap-2 border-b border-b-neutral-700" :class="{'border-b-0': (idx + 1) === rateArr.length}">
+              <li v-for="(uploaded, uploadImgIdx) in rate.photos" :key="uploaded" class="relative group">
+                <img :src="uploaded" alt="" class="w-16 h-16 object-cover">
+                <div @click="deleteImg(idx, uploadImgIdx)" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full w-10 h-10 bg-[#717171] duration-300 opacity-0 flex justify-center items-center pointer-events-none cursor-pointer group-hover:opacity-100 group-hover:pointer-events-auto">
+                  <fa icon="fa-solid fa-xmark" class="text-lg text-white"></fa>
+                </div>
+              </li>
+              <!-- 上傳圖片時的 Loading -->
+              <li v-if="isUploading">
+                <fa icon="fa-solid fa-spinner fa-spin-pulse" class="text-black animate-spin"></fa>
+              </li>
+            </ul>
+          </li>
+          <label for="anonymousCheckbox" class="cursor-pointer border border-[#a3a3a3] rounded-md overflow-hidden px-3 py-0.5 duration-300 relative" :class="{'border-[#FA5936]': isAnonymous}">
+            <div class="bg-[#FA5936] scale-0 absolute w-full h-full top-0 left-0 flex items-center justify-center duration-300 rounded-md" :class="{'scale-110': isAnonymous}">
+              <fa icon="fa-solid fa-check" class="text-sm text-white"></fa>
+            </div>
+          </label>
+          <label for="anonymousCheckbox" class="text-lg select-none ml-2">匿名評價此商品</label>
+          <input v-model="isAnonymous" type="checkbox" id="anonymousCheckbox" class="hidden">
+          <span class="text-gray-400 block ml-10 md:inline md:ml-0">您的名稱將顯示 {{ anonymousUserName }}</span>
+        </ul>
+        <div class="flex justify-center">
+          <button
+          @click="handleRate()"
+          type="button"
+          data-mdb-ripple="true"
+          data-mdb-ripple-color="light"
+          class="px-24 py-3 mt-11 mb-5 text-white text-lg bg-gradient-to-r from-[rgba(255,109,63,0.84)] to-[#FA5936] rounded-xl">
+          送出
+          </button>
+        </div>
+      </div>
+    </Modal>
+
   </section>
 </template>
 <script>
@@ -255,7 +330,7 @@ export default {
       order: {
         id: 21111708328107,
         time: "2021/01/28",
-        status: 5,
+        status: 4,
         price: 30000,
         total: 29800,
         transportPrice: 60,
@@ -290,6 +365,10 @@ export default {
       cancelType: "",
       isOpen: false,
       copyMessageIsShow: false,
+      openRateModal: false,
+      rateArr: [],
+      isUploading: false,
+      isAnonymous: false
     };
   },
   computed: {
@@ -299,6 +378,21 @@ export default {
         total += item.quantity
       })
       return total
+    },
+    anonymousUserName() {
+      if (this.isAnonymous) {
+        const userName = 'user1234'
+        const firstStr = userName.substr(0, 1)
+        const lastStr = userName.substr(-1, 1)
+        let hideStar = ''
+        for (let i = 0; i < userName.length - 2; i++) {
+          hideStar += '*'
+        }
+        const anonymousName = firstStr + hideStar + lastStr
+        return anonymousName
+      } else {
+        return 'user1234'
+      }
     }
   },
   methods: {
@@ -355,6 +449,48 @@ export default {
         });
       }
     },
+    handleOpenRateModal() {
+      this.rateArr = []
+      this.order.orderItems.forEach((item) => {
+        const rate = {
+          id: item.id,
+          title: item.title,
+          imgUrl: item.imgUrl,
+          rate: 0,
+          message: '',
+          photos: []
+        }
+        this.rateArr.push(rate)
+      })
+      this.openRateModal = true
+    },
+    handleCloseRateModal() {
+      this.openRateModal = false
+    },
+    // 上傳圖片
+    uploadImages(e, photosArr) {
+      this.isUploading = true
+      setTimeout(() => {
+        this.isUploading = false
+      }, 500)
+    },
+    deleteImg(idx, uploadImgIdx) {
+      this.rateArr[idx].photos.splice(uploadImgIdx, 1)
+    },
+    handleRate() {
+      const isRateStar = this.rateArr.map((item) => item.rate)
+                                     .includes(0)
+      if (!isRateStar) {
+        this.order.status = 5
+        this.$swal.fire({
+          icon: 'success',
+          showConfirmButton: false,
+          timer: 1000,
+          title: '評價商品成功'
+        })
+        this.handleCloseRateModal()
+      }
+    }
   },
 };
 </script>

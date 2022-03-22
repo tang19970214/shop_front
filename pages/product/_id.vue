@@ -49,11 +49,11 @@
           <span class="text-2xl font-bold text-[#FA5936]">${{ productSale }}</span>
           <div class="flex justify-between md:justify-end mt-2 md:mt-0">
             <div class="flex items-center space-x-3" v-show="isFavorite">
-              <fa icon="fa-solid fa-heart" @click="addFavorite(true)" class="text-[#ef4444] cursor-pointer text-xl animate-pulse"></fa>
+              <fa icon="fa-solid fa-heart" @click="addFavorite(true)" class="text-[#ef4444] cursor-pointer text-xl"></fa>
               <span>已加入收藏</span>
             </div>
             <div class="flex items-center space-x-3" v-show="!isFavorite">
-              <fa icon="fa-regular fa-heart" @click="addFavorite(false)" class="text-[#ef4444] cursor-pointer text-xl animate-pulse"></fa>
+              <fa icon="fa-regular fa-heart" @click="addFavorite(false)" class="text-[#ef4444] cursor-pointer text-xl"></fa>
               <span>加入收藏</span>
             </div>
             <div class="flex md:hidden items-center space-x-2">
@@ -109,6 +109,7 @@
               <!-- 取得優惠券-電腦版 -->
               <transition name="scale">
                 <div v-if="showCoupon" class="hidden md:block absolute rounded-md w-80 h-52 drop-shadow-[0px_2px_3px_rgba(0,0,0,0.25)] bg-white border border-[#c4c4c4] -left-3 -top-60 p-2 after:content-[''] after:absolute after:-bottom-6 after:left-10 after:border-solid after:border-[24px_20px_0px_20px] after:border-[white_transparent_transparent_transparent]">
+                  <div class="absolute w-full h-24 bg-transparent left-0 -bottom-24"></div>
                   <div class="h-full w-full px-5 overflow-y-scroll scrollbar">
                     <ul>
                       <li v-for="item in coupons" :key="`${item.id} + ${item.label}`" class="flex justify-between py-3 border-b border-b-[#a3a3a3] last:border-b-0">
@@ -116,7 +117,8 @@
                           <p class="text-black">{{ item.label }}</p>
                           <span class="text-neutral-400 text-xs">有效日期：{{ item.time }}</span>
                         </div>
-                        <button @click="item.isGet = true" class="w-16 rounded-md text-white text-center text-xs bg-gradient-to-t from-[#FA5936] to-[#FA5936]" :class="{'from-[#a3a3a3] to-[#a3a3a3]': item.isGet}">
+                        <button @click="getCoupon(item)" class="w-16 rounded-md text-white text-center text-xs bg-gradient-to-t from-[#FA5936] to-[#FA5936]" :class="{'from-[#a3a3a3] to-[#a3a3a3] pointer-events-none': item.isGet}">
+                          <fa v-if="gettingCoupon === item.id" icon="fa-solid fa-spinner fa-spin-pulse" class="text-white animate-spin"></fa>
                           <span v-if="!item.isGet">領取</span>
                           <span v-else>已領取</span>
                         </button>
@@ -124,6 +126,7 @@
                     </ul>
                   </div>
                 </div>
+                
               </transition>
             </ul>
           </div>
@@ -131,7 +134,7 @@
           <transition name="fade">
             <div v-if="showCoupon" @click="showCoupon = false" class="block md:hidden bg-[rgba(64,64,64,0.6)] fixed left-0 top-0 w-screen h-screen pointer-events-none z-30" :class="{'pointer-events-auto': showCoupon}"></div>
           </transition>
-          <div class="duration-300 block md:hidden fixed left-0 -bottom-[40vh] w-screen h-[40vh] bg-white z-40 p-3" :class="{'-bottom-[0]' : showCoupon}">
+          <div class="duration-700 ease-[cubic-bezier(.76,.2,.09,.95)] block md:hidden fixed left-0 -bottom-[40vh] w-screen h-[40vh] bg-white z-40 p-3" :class="{'-bottom-[0]' : showCoupon}">
             <div class="h-3/4 w-full px-5 overflow-y-scroll scrollbar">
               <ul>
                 <li v-for="item in coupons" :key="`${item.id} + ${item.label}`" class="flex justify-between py-3 border-b border-b-[#a3a3a3] last:border-b-0">
@@ -139,14 +142,15 @@
                     <p class="text-black">{{ item.label }}</p>
                     <span class="text-neutral-400 text-xs">有效日期：{{ item.time }}</span>
                   </div>
-                  <button @click="item.isGet = true" class="w-16 rounded-md text-white text-center text-xs bg-gradient-to-t from-[#FA5936] to-[#FA5936]" :class="{'from-[#a3a3a3] to-[#a3a3a3]': item.isGet}">
+                  <button @click="getCoupon(item)" class="w-16 rounded-md text-white text-center text-xs bg-gradient-to-t from-[#FA5936] to-[#FA5936]" :class="{'from-[#a3a3a3] to-[#a3a3a3] pointer-events-none': item.isGet}">
+                    <fa v-if="gettingCoupon === item.id" icon="fa-solid fa-spinner fa-spin-pulse" class="text-white animate-spin"></fa>
                     <span v-if="!item.isGet">領取</span>
                     <span v-else>已領取</span>
                   </button>
                 </li>
               </ul>
             </div>
-            <button @click="showCoupon = false" class="w-full py-2 mt-5 border border-[#FA5936] rounded-xl">關閉</button>
+            <button @click="showCoupon = false" class="w-[calc(100%-40px)] py-2 ml-5 mt-5 border border-[#FA5936] rounded-xl text-[#FA5936]">關閉</button>
           </div>
         </div>
 
@@ -280,7 +284,8 @@ export default {
       favoriteList: JSON.parse(window.localStorage.getItem('favoriteList')) || [],
       tabList: [{id: 1, label: '商品詳情', path: ''}, {id: 2, label: '評價', path: '/rate'}],
       selectedTab: '商品詳情',
-      showCoupon: false
+      showCoupon: false,
+      gettingCoupon: ''
     }
   },
   computed: {
@@ -397,6 +402,14 @@ export default {
       setTimeout(() => {
         this.$router.push('/cart')
       }, 1000)
+    },
+    //取得折價券
+    getCoupon(item) {
+      this.gettingCoupon = item.id
+      setTimeout(() => {
+        this.gettingCoupon = ''
+        item.isGet = true
+      }, 500)
     },
     // 開啟折價券Modal
     openCouponModal() {
