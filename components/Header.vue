@@ -12,9 +12,24 @@
           </div>
           <!-- user -->
           <div class="w-auto">
-            <div class="flex items-center gap-2" v-if="!!token">
+            <div class="flex items-center gap-2 relative z-30 group" v-if="!!token">
               <fa class="text-[#A3A3A3]" :icon="['fas', 'user-circle']" />
               <p>陳ＯＯ</p>
+              <div class="hidden md:block absolute w-full h-24 bg-transparent top-0 left-0 pointer-events-none group-hover:pointer-events-auto"></div>
+              <div class="hidden md:block group-hover:scale-100 group-hover:pointer-events-auto pointer-events-none  duration-300 scale-0 absolute -bottom-36 -left-24 h-32 w-52 bg-white p-5 border border-[#c4c4c4] rounded-md shadow-[0px_4px_4px_rgba(0,0,0,0.25)] z-30 after:content-[''] after:w-6 after:h-6 after:bg-white after:absolute after:right-10 after:-top-3 after:rotate-45 after:rounded-[5px_0px_0px_0px] after:border-t after:border-l after:border-t-[#c4c4c4] after:border-l-[#c4c4c4]">
+                <ul class="flex flex-col justify-between">
+                  <li v-for="list in memberList" :key="list.id" class="duration-300 cursor-pointer hover:text-[#FA5936]" :class="{'text-[#FA5936]': $route.name === list.path}">
+                    <a v-if="list.value !== '/logout'" @click.prevent="goPath(list.value)" class="block">
+                      <fa :icon="list.icon" class="mr-4"></fa>
+                      {{ list.label }}
+                    </a>
+                    <a v-else class="block" @click="logout()">
+                      <fa :icon="list.icon" class="mr-4"></fa>
+                      {{ list.label }}
+                    </a>
+                  </li>
+                </ul>
+              </div>
             </div>
 
             <div class="flex items-center gap-2" v-else>
@@ -89,22 +104,30 @@ export default {
         { id: 2, label: "商品分類", value: "/product?category=all&page=1", enable: false, options: [{id: 2, label: '調飲系列茶包'}, {id: 3, label: '烏龍茶'}, {id: 4, label: '比賽茶系列'}, {id: 5, label: '禮盒'}] },
         { id: 3, label: "專欄分享", value: "/share" },
       ],
+      memberList: [
+        {id: 1, label: "我的帳戶", value: "/member", path: "member", icon: "fa-solid fa-user"},
+        {id: 2, label: "我的收藏", value: "/member/favorite", path: "member-favorite", icon: "fa-regular fa-heart"},
+        {id: 3, label: "登出", value: "/logout", path: "member-logout", icon: "fa-solid fa-arrow-right-from-bracket"},
+      ],
       isOpen: false
     };
   },
   computed: {
-    ...mapState(["token"]),
+    ...mapState(['token']),
     checkRoute() {
       return (path) => {
         return this.$route.path === path || this.$route.matched[0]?.path === path;
       };
-    },
+    }
   },
   methods: {
     goPath(path) {
       if (this.$route.path === path) return;
       this.$router.push(path);
     },
+    logout() {
+      console.log('Logout')
+    }
   }
 };
 </script>

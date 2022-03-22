@@ -31,6 +31,13 @@ export default ({ $request }, inject) => {
           data
         })
       },
+      logout(data) {
+        return $request({
+          url: "/member/logout",
+          method: "post",
+          data
+        })
+      },
       getRegistVerifyCode(params) {
         return $request({
           url: "members/getregistverifycode",
@@ -51,16 +58,22 @@ export default ({ $request }, inject) => {
           method: "get"
         })
       },
-      async getMemberByToken(token) {
+      async getMemberByToken() {
         return await $request({
           url: "members/getmemberbytoken",
-          method: "get",
-          headers: { Authorization: `Bearer ${token}` }
+          method: "get"
         })
       },
       async refresh(data) {
         return await $request({
           url: "members/refresh",
+          method: "post",
+          data
+        })
+      },
+      async uploadFiles(data) {
+        return await $request({
+          url: "files/upload",
           method: "post",
           data
         })

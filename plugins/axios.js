@@ -18,17 +18,24 @@ export default ({
   $axios,
   redirect
 }, inject) => {
-  const token = getToken()
 
   const service = $axios.create({
-    headers: {
-      common: {
-        Accept: 'text/plain, */*',
-        Authorization: `Bearer ${token}`
-      }
-    }
+    // headers: {
+    //   common: {
+    // Accept: 'text/plain, */*',
+    //     Authorization: `Bearer ${token}`
+    //   }
+    // },
+    // withCredentials: true,
+    baseURL: process.env.VUE_APP_BASE_API
   })
-  service.setBaseURL(process.env.VUE_APP_BASE_API)
+  // service.setBaseURL(process.env.VUE_APP_BASE_API)
+
+  service.interceptors.request.use((config) => {
+    const token = getToken();
+    token && (config.headers['Authorization'] = `Bearer ${token}`)
+    return config;
+  }, (error) => Promise.reject(error))
 
   service.interceptors.response.use((response) => {
     if (lineResponseUrl.includes(response.config.url)) {

@@ -247,7 +247,7 @@
         <div class="flex items-center">
           <span class="text-sm lg:text-lg">取消原因：</span>
           <div class="w-60 relative after:absolute after:pointer-events-none after:w-6 after:h-full after:content-[''] after:top-4 after:right-3 after:bg-[url(~/static/images/icon/arrow-bottom.svg)] after:bg-no-repeat">
-            <select v-model="cancelType" name="" class="appearance-none py-2.5 px-4 w-full rounded-md border border-[#a3a3a3]" :class="{ 'text-slate-400': cancelType === '','text-slate-900': cancelType !== '' }">
+            <select v-model="cancelType" name="" class="appearance-none bg-white py-2.5 px-4 w-full rounded-md border border-[#a3a3a3]" :class="{ 'text-slate-400': cancelType === '','text-slate-900': cancelType !== '' }">
               <option value="" disabled selected>請選擇</option>
               <option :value="item" v-for="item in cancelOrderSelect" :key="item">
                 {{ item }}
@@ -286,14 +286,14 @@
             </div>
             <!-- 已上傳的圖片 -->
             <ul class="flex gap-2 border-b border-b-neutral-700" :class="{'border-b-0': (idx + 1) === rateArr.length}">
-              <li v-for="(uploaded, uploadImgIdx) in rate.photos" :key="uploaded" class="relative group">
-                <img :src="uploaded" alt="" class="w-16 h-16 object-cover">
+              <li v-for="(uploaded, uploadImgIdx) in rate.photos" :key="uploaded.id" class="relative group mb-3">
+                <img :src="uploaded.filePath" :alt="uploaded.fileName" class="w-16 h-16 object-cover">
                 <div @click="deleteImg(idx, uploadImgIdx)" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full w-10 h-10 bg-[#717171] duration-300 opacity-0 flex justify-center items-center pointer-events-none cursor-pointer group-hover:opacity-100 group-hover:pointer-events-auto">
                   <fa icon="fa-solid fa-xmark" class="text-lg text-white"></fa>
                 </div>
               </li>
               <!-- 上傳圖片時的 Loading -->
-              <li v-if="isUploading">
+              <li v-if="isUploading === idx">
                 <fa icon="fa-solid fa-spinner fa-spin-pulse" class="text-black animate-spin"></fa>
               </li>
             </ul>
@@ -367,7 +367,7 @@ export default {
       copyMessageIsShow: false,
       openRateModal: false,
       rateArr: [],
-      isUploading: false,
+      isUploading: null,
       isAnonymous: false
     };
   },
@@ -396,6 +396,7 @@ export default {
     }
   },
   methods: {
+    // 複製物流編號
     copyId() {
       const range = document.createRange();
       const copyString = document.querySelector("#transportId");
@@ -420,6 +421,7 @@ export default {
         this.isOpen = false;
       }
     },
+    // 取消訂單
     cancelOrder() {
       if (this.order.status >= 3) {
         if (!this.cancelType) {
@@ -449,6 +451,7 @@ export default {
         });
       }
     },
+    // 開啟評價 Modal
     handleOpenRateModal() {
       this.rateArr = []
       this.order.orderItems.forEach((item) => {
@@ -464,16 +467,65 @@ export default {
       })
       this.openRateModal = true
     },
+    // 關閉評價 Modal
     handleCloseRateModal() {
       this.openRateModal = false
     },
     // 上傳圖片
-    uploadImages(e, photosArr) {
-      this.isUploading = true
-      setTimeout(() => {
-        this.isUploading = false
-      }, 500)
+    async uploadImages(e, photosArr) {
+      if (e.target.files.length > 5) {
+        this.$swal.fire({
+          icon: 'error',
+          confirmButtonText: '確定',
+          confirmButtonColor: '#FA5936',
+          title: `最多可以上傳5張照片`
+        })
+      } else {
+        this.isUploading = photosArr
+        for (let i = 0; i < e.target.files.length; i++) {
+          const formData = new FormData()
+          if (e.target.files[i].size > 2000000) {
+            this.$swal.fire({
+              icon: 'error',
+              confirmButtonText: '確定',
+              confirmButtonColor: '#FA5936',
+              title: `第${i + 1}個檔案大於2MB，請上傳小於2MB的檔案！`
+            })
+          } else {
+            if (this.rateArr[photosArr].photos.length >= 5) {
+              this.$swal.fire({
+                icon: 'warning',
+                confirmButtonText: '確定',
+                confirmButtonColor: '#FA5936',
+                title: `最多可以上傳5張照片`
+              })
+              this.isUploading = null
+            } else {
+              formData.append('files', e.target.files[i])
+              await this.$api.members.uploadFiles(formData)
+              .then((res) => {
+                const { id, fileName, filePath } = res.data.result[0]
+                const rate = {
+                  id,
+                  fileName,
+                  filePath: `${process.env.VUE_APP_IMG_URL}/${filePath}`
+                }
+                this.rateArr[photosArr].photos.push(rate)
+                this.rateArr[photosArr].tempFiles = JSON.stringify(this.rateArr[photosArr].photos)
+              })
+              .catch((err) => {
+                console.log(err.response)
+              })
+            }
+          }
+          if ((i + 1) === e.target.files.length) {
+            this.isUploading = null
+          }
+        }
+      }
+      e.target.value = ''
     },
+    // 刪除Img
     deleteImg(idx, uploadImgIdx) {
       this.rateArr[idx].photos.splice(uploadImgIdx, 1)
     },
@@ -488,7 +540,17 @@ export default {
           timer: 1000,
           title: '評價商品成功'
         })
+        this.rateArr.forEach((item) => {
+          console.log(item.tempFiles)
+        })
         this.handleCloseRateModal()
+      } else {
+        this.$swal.fire({
+          icon: 'warning',
+          showConfirmButton: false,
+          timer: 1000,
+          title: '尚有商品未完成評價'
+        })
       }
     }
   },

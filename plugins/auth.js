@@ -28,3 +28,8 @@ export function setRefreshToken(token) {
 export function removeRefreshToken() {
   return Cookies.remove(refreshToken)
 }
+
+export function getUserId() {
+  const { id } = JSON.parse(window.localStorage.getItem('userInfo'))
+  return id
+}

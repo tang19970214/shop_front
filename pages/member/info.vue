@@ -234,8 +234,7 @@ export default {
     },
     async getMemberByToken() {
       // TODO:@George --save userInfo to vuex from permission
-      const token = Cookies.get("Authorization");
-      await this.api.members.getMemberByToken(token)
+      await this.api.members.getMemberByToken()
       .then((res) => {
         const { code, result } = res.data;
         if (code === 200) {

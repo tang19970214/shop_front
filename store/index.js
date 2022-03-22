@@ -1,9 +1,10 @@
 import Vue from 'vue'
-import { setToken, getToken, setRefreshToken, getRefreshToken } from "~/plugins/auth";
-
+import { setToken, getToken, setRefreshToken, getRefreshToken, getUserId } from "~/plugins/auth";
 export const state = () => ({
   token: getToken(),
-  refreshToken: getRefreshToken()
+  refreshToken: getRefreshToken(),
+  userId: '',
+  userName: ''
 });
 
 export const mutations = {
@@ -13,6 +14,12 @@ export const mutations = {
   setRefreshToken(state, token) {
     state.refreshToken = token;
   },
+  setUserId(state, id) {
+    state.userId = id
+  },
+  setUserName(state, name) {
+    state.userName = name
+  }
 }
 
 export const actions = {
@@ -23,11 +30,10 @@ export const actions = {
       Vue.prototype.api.members.login(data).then((res) => {
         const { accessToken, refreshToken, code, message } = res.data;
         if (code === 200) {
-          setToken(accessToken)
-          setRefreshToken(refreshToken)
           commit("setToken", accessToken);
           commit("setRefreshToken", refreshToken);
-          // console.log(res.data);
+          setToken(accessToken)
+          setRefreshToken(refreshToken)
 
           resolve('success');
         } else {

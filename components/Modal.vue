@@ -10,7 +10,7 @@
           </div>
         </div>
         <!-- body -->
-        <div class="px-2 md:px-5">
+        <div class="px-4 md:px-5">
           <slot></slot>
         </div>
       </div>

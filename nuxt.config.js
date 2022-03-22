@@ -12,7 +12,7 @@ export default {
   head: {
     title: 'shop',
     htmlAttrs: {
-      lang: 'en'
+      lang: 'zh-TW'
     },
     meta: [
       { charset: 'utf-8' },
@@ -85,9 +85,9 @@ export default {
     //   })
     // ]
   },
-  server: {
-    port: 1803,
-    host: '0.0.0.0',
-    timing: false
-  }
+  // server: {
+  //   port: 1803,
+  //   host: '0.0.0.0',
+  //   timing: false
+  // }
 }
