@@ -24,23 +24,27 @@
         <li class="w-1/5 flex flex-col flex-none items-center relative after:content-[''] after:absolute after:bg-[#1ebe5a] after:w-full after:h-1 after:-right-1/2 after:top-1/2 after:z-[-1]">
           <div class="w-[70px] h-[70px] bg-[#1ebe5a] rounded-full relative after:content-[''] after:absolute after:w-full after:h-full after:bg-[url(~/static/images/icon/step1.svg)] after:bg-no-repeat after:top-3.5 after:left-3.5"></div>
           <p class="absolute text-center -bottom-8">訂單已成立</p>
-          <p class="absolute text-center -bottom-14 text-[#A3A3A3]">2022-02-02 12:32</p>
+          <p class="absolute text-center -bottom-14 text-[#A3A3A3] text-sm md:text-md">{{ order.statusTime[0] }}</p>
         </li>
         <li class="w-1/5 flex flex-col flex-none items-center relative after:content-[''] after:absolute after:bg-[#1ebe5a] after:w-full after:h-1 after:-right-1/2 after:top-1/2 after:z-[-1]">
           <div class="w-[70px] h-[70px] border-4 border-[#1ebe5a] rounded-full bg-white relative after:content-[''] after:absolute after:w-full after:h-full after:bg-[url(~/static/images/icon/step2.svg)] after:bg-no-repeat after:top-3.5 after:left-3.5" :class="{'bg-[#1ebe5a] after:bg-[url(~/static/images/icon/step2-done.svg)]': order.status >= 2}"></div>
           <p class="absolute text-center -bottom-8">訂單已付款</p>
+          <p class="absolute text-center -bottom-14 text-[#A3A3A3] text-sm md:text-md">{{ order.statusTime[1] }}</p>
         </li>
         <li class="w-1/5 flex flex-col flex-none items-center relative after:content-[''] after:absolute after:bg-[#1ebe5a] after:w-full after:h-1 after:-right-1/2 after:top-1/2 after:z-[-1]">
           <div class="w-[70px] h-[70px] border-4 border-[#1ebe5a] rounded-full bg-white relative after:content-[''] after:absolute after:w-full after:h-full after:bg-[url(~/static/images/icon/step3.svg)] after:bg-no-repeat after:top-3.5 after:left-3.5" :class="{'bg-[#1ebe5a] after:bg-[url(~/static/images/icon/step3-done.svg)]': order.status >= 3}"></div>
           <p class="absolute text-center -bottom-8">訂單已出貨</p>
+          <p class="absolute text-center -bottom-14 text-[#A3A3A3] text-sm md:text-md">{{ order.statusTime[2] }}</p>
         </li>
         <li class="w-1/5 flex flex-col flex-none items-center relative after:content-[''] after:absolute after:bg-[#1ebe5a] after:w-full after:h-1 after:-right-1/2 after:top-1/2 after:z-[-1]">
           <div class="w-[70px] h-[70px] border-4 border-[#1ebe5a] rounded-full bg-white relative after:content-[''] after:absolute after:w-full after:h-full after:bg-[url(~/static/images/icon/step4.svg)] after:bg-no-repeat after:top-3.5 after:left-3.5" :class="{'bg-[#1ebe5a] after:bg-[url(~/static/images/icon/step4-done.svg)]': order.status >= 4}"></div>
           <p class="absolute text-center -bottom-8">待收貨</p>
+          <p class="absolute text-center -bottom-14 text-[#A3A3A3] text-sm md:text-md">{{ order.statusTime[3] }}</p>
         </li>
         <li class="w-1/5 flex flex-col flex-none items-center relative">
           <div class="w-[70px] h-[70px] border-4 border-[#1ebe5a] rounded-full bg-white relative after:content-[''] after:absolute after:w-full after:h-full after:bg-[url(~/static/images/icon/step5.svg)] after:bg-no-repeat after:top-3.5 after:left-3.5" :class="{'bg-[#1ebe5a] after:bg-[url(~/static/images/icon/step5-done.svg)]': order.status === 5}"></div>
           <p class="absolute text-center -bottom-8">待評價</p>
+          <p class="absolute text-center -bottom-14 text-[#A3A3A3] text-sm md:text-md">{{ order.statusTime[4] }}</p>
         </li>
       </ul>
     </div>
@@ -335,6 +339,7 @@ export default {
         id: 21111708328107,
         time: "2021/01/28",
         status: 4,
+        statusTime: ['2022-02-02 12:32', '2022-02-02 14:57', '2022-02-03 09:17', '2022-02-05 11:22'],
         price: 30000,
         total: 29800,
         transportPrice: 60,

@@ -80,7 +80,8 @@
           <ul class="flex flex-col gap-8">
             <li v-for="list in responsiveMemberList" :key="list.id">
               <fa :icon="list.icon" class="mr-5"></fa>
-              <a @click="$router.push(list.value), memberMenuOpen = false" :class="{'text-[#FA5936]': $route.name === list.path}">{{ list.label }}</a>
+              <a v-if="list.value !== '/logout'" @click="$router.push(list.value), memberMenuOpen = false" :class="{'text-[#FA5936]': $route.name === list.path}">{{ list.label }}</a>
+              <a v-else @click="logout()">{{ list.label }}</a>
               <ul v-if="list.options" class="ml-16 mt-5 flex flex-col gap-5">
                 <li v-for="option in list.options" :key="option.id + option.label" @click="$router.push(option.value), memberMenuOpen = false" :class="{'text-[#FA5936]': $route.name === option.path}">{{ option.label }}</li>
               </ul>
@@ -148,7 +149,19 @@ export default {
       this.$router.push(path);
     },
     logout() {
-      console.log('Logout')
+      const logout = this.$store.dispatch('Logout')
+      if (logout) {
+        this.$swal.fire({
+          icon: "success",
+          title: "會員已登出",
+          timer: 1500,
+          showConfirmButton: false,
+        })
+        .then(() => {
+          this.$router.push('/')
+        })
+      }
+      this.memberMenuOpen = false
     },
     handleToggleMemberMenu() {
       this.memberMenuOpen = !this.memberMenuOpen

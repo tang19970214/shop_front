@@ -1,10 +1,8 @@
 import Vue from 'vue'
-import { setToken, getToken, setRefreshToken, getRefreshToken, getUserId } from "~/plugins/auth";
+import { setToken, getToken, setRefreshToken, getRefreshToken, removeToken, removeRefreshToken } from "~/plugins/auth";
 export const state = () => ({
   token: getToken(),
-  refreshToken: getRefreshToken(),
-  userId: '',
-  userName: ''
+  refreshToken: getRefreshToken()
 });
 
 export const mutations = {
@@ -13,12 +11,6 @@ export const mutations = {
   },
   setRefreshToken(state, token) {
     state.refreshToken = token;
-  },
-  setUserId(state, id) {
-    state.userId = id
-  },
-  setUserName(state, name) {
-    state.userName = name
   }
 }
 
@@ -43,5 +35,12 @@ export const actions = {
         reject(err);
       })
     })
+  },
+  Logout({ commit }) {
+    commit('setToken', '')
+    commit('setRefreshToken', '')
+    removeToken()
+    removeRefreshToken()
+    return (true)
   }
 }
