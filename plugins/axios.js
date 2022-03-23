@@ -93,9 +93,17 @@ export default ({
       Vue.prototype.api.members.refresh(tokens)
         .then((res) => {
           const {
+            code,
             accessToken,
             refreshToken
           } = res.data
+          switch (code) {
+            case 500:
+              let url = window.location.pathname
+              window.localStorage.setItem('last_path', JSON.stringify(url))
+              redirect('/login')
+              break
+          }
           let reGetAPI = {}
           reGetAPI.headers = {}
           reGetAPI.headers.Authorization = `Bearer ${accessToken}`

@@ -529,7 +529,8 @@ export default {
                 this.rateArr[rateIdx].tempFiles = JSON.stringify(this.rateArr[rateIdx].photos)
               })
               .catch((err) => {
-                console.log(err.response)
+                this.handleCloseRateModal()
+                console.log(err)
               })
             }
         }

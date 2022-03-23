@@ -67,10 +67,24 @@
         </div>
 
         <div class="lg:hidden">
-          <ul class="flex items-center gap-5 text-[#404040]">
-            <li><fa :icon="['fas', 'search']" /></li>
-            <li><fa :icon="['fas', 'shopping-cart']" /></li>
-            <li><fa :icon="['fas', 'user-circle']" /></li>
+          <ul class="flex items-center text-[#404040]">
+            <li><fa :icon="['fas', 'search']" class="text-xl px-2.5" /></li>
+            <li><fa @click="$router.push('/cart')" :icon="['fas', 'shopping-cart']" class="text-xl px-2.5" /></li>
+            <li>
+              <fa v-if="token" @click="handleToggleMemberMenu()" :icon="['fas', 'user-circle']" class="text-xl px-2.5" />
+              <fa v-else @click="$router.push('/login')" :icon="['fas', 'user-circle']" class="text-xl px-2.5" />
+            </li>
+          </ul>
+        </div>
+        <div class="fixed w-full h-[calc(100vh-64px)] duration-700 top-16 bg-white p-9 text-lg ease-[cubic-bezier(.88,.1,.3,.98)] shadow-lg lg:hidden" :class="{'right-[0%]': memberMenuOpen, 'right-[-100%]': !memberMenuOpen}">
+          <ul class="flex flex-col gap-8">
+            <li v-for="list in responsiveMemberList" :key="list.id">
+              <fa :icon="list.icon" class="mr-5"></fa>
+              <a @click="$router.push(list.value), memberMenuOpen = false" :class="{'text-[#FA5936]': $route.name === list.path}">{{ list.label }}</a>
+              <ul v-if="list.options" class="ml-16 mt-5 flex flex-col gap-5">
+                <li v-for="option in list.options" :key="option.id + option.label" @click="$router.push(option.value), memberMenuOpen = false" :class="{'text-[#FA5936]': $route.name === option.path}">{{ option.label }}</li>
+              </ul>
+            </li>
           </ul>
         </div>
       </div>
@@ -109,7 +123,15 @@ export default {
         {id: 2, label: "我的收藏", value: "/member/favorite", path: "member-favorite", icon: "fa-regular fa-heart"},
         {id: 3, label: "登出", value: "/logout", path: "member-logout", icon: "fa-solid fa-arrow-right-from-bracket"},
       ],
-      isOpen: false
+      responsiveMemberList: [
+        {id: 1, label: "我的帳戶", value: "/member", path: "member", icon: "fa-solid fa-user", options: [{id: 1, label: "修改會員資料", value: "/member/info", path: "member-info"}, {id: 2, label: "修改密碼", value: "/member/password", path: "member-password"}]},
+        {id: 2, label: "我的收藏", value: "/member/favorite", path: "member-favorite", icon: "fa-regular fa-heart"},
+        {id: 3, label: "我的訂單", value: "/member/order", path: "member-order", icon: "fa-solid fa-clipboard-list"},
+        {id: 4, label: "我的優惠券", value: "/member/ticket", path: "member-ticket", icon: "fa-solid fa-ticket"},
+        {id: 5, label: "登出", value: "/logout", path: "member-logout", icon: "fa-solid fa-arrow-right-from-bracket"},
+      ],
+      isOpen: false,
+      memberMenuOpen: false
     };
   },
   computed: {
@@ -127,6 +149,9 @@ export default {
     },
     logout() {
       console.log('Logout')
+    },
+    handleToggleMemberMenu() {
+      this.memberMenuOpen = !this.memberMenuOpen
     }
   }
 };

@@ -99,6 +99,9 @@ export default {
           .dispatch("Login", this.formInfo)
           .then((status) => {
             if (status === "success") {
+              // 判斷有無需要導向的頁面
+              let path = window.localStorage.getItem('last_path')
+              if (path) { path = path.slice(1, -1) }
               this.$swal
                 .fire({
                   icon: "success",
@@ -107,7 +110,12 @@ export default {
                   showConfirmButton: false,
                 })
                 .then(() => {
-                  this.$router.push("/");
+                  if (!path) {
+                    this.$router.push('/');
+                  } else {
+                    window.localStorage.removeItem('last_path')
+                    this.$router.push(path);
+                  }
                 });
             } else {
               this.$swal.fire({

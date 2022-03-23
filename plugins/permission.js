@@ -1,4 +1,3 @@
-import Vue from 'vue'
 import { getToken, getRefreshToken } from "~/plugins/auth.js"
 
 export default ({ app, store }) => {
