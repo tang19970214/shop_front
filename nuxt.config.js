@@ -4,9 +4,12 @@ export default {
     host: '0.0.0.0'
   },
   router: {
-    scrollBehavior(route) {
-      const whiteList = ['product-id', 'product-id-rate']
-      if (whiteList.includes(route.name)) return
+    scrollBehavior(route, from) {
+      const notToTopList = ['product-id', 'product-id-rate']
+      const needToTopList = ['product']
+      console.log(from)
+      if (needToTopList.includes(from.name)) return { x: 0, y: 0 }
+      if (notToTopList.includes(route.name)) return
       return { x: 0, y: 0 }
     }
   },

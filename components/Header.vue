@@ -158,13 +158,26 @@ export default {
           showConfirmButton: false,
         })
         .then(() => {
+          this.memberMenuOpen = false
           this.$router.push('/')
         })
+      } else {
+        this.memberMenuOpen = false
       }
-      this.memberMenuOpen = false
     },
     handleToggleMemberMenu() {
       this.memberMenuOpen = !this.memberMenuOpen
+    }
+  },
+  mounted() {
+    window.fbAsyncInit = () => {
+      FB.init({
+        appId: "1289081708257437",
+        cookie: true,
+        xfbml: true,
+        version: "v12.0",
+      });
+      FB.AppEvents.logPageView();
     }
   }
 };

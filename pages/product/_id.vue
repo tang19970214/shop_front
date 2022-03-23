@@ -34,9 +34,9 @@
         </div>
         <div class="hidden md:flex items-center my-6 space-x-2.5">
           <span>分享</span>
-          <img class="h-9 w-9 cursor-pointer" src="~/static/images/icon/line.svg" alt="分享到Line">
-          <img class="h-8 w-8 cursor-pointer" src="~/static/images/icon/facebook.svg" alt="分享到Facebook">
-          <img class="h-7 w-7 cursor-pointer" src="~/static/images/icon/link.svg" alt="分享連結">
+          <img @click="shareLink('line')" class="h-9 w-9 cursor-pointer" src="~/static/images/icon/line.svg" alt="分享到Line">
+          <img @click="shareLink('facebook')" class="h-8 w-8 cursor-pointer" src="~/static/images/icon/facebook.svg" alt="分享到Facebook">
+          <img @click="shareLink('default')" class="h-7 w-7 cursor-pointer" src="~/static/images/icon/link.svg" alt="分享連結">
         </div>
       </div>
 
@@ -58,9 +58,9 @@
             </div>
             <div class="flex md:hidden items-center space-x-2">
               <span>分享</span>
-              <img class="h-9 w-9 cursor-pointer" src="~/static/images/icon/line.svg" alt="分享到Line">
-              <img class="h-8 w-8 cursor-pointer" src="~/static/images/icon/facebook.svg" alt="分享到Facebook">
-              <img class="h-7 w-7 cursor-pointer" src="~/static/images/icon/link.svg" alt="分享連結">
+              <img @click="shareLink('line-responsive')" class="h-9 w-9 cursor-pointer" src="~/static/images/icon/line.svg" alt="分享到Line">
+              <img @click="shareLink('facebook')" class="h-8 w-8 cursor-pointer" src="~/static/images/icon/facebook.svg" alt="分享到Facebook">
+              <img @click="shareLink('default')" class="h-7 w-7 cursor-pointer" src="~/static/images/icon/link.svg" alt="分享連結">
             </div>
           </div>
         </div>
@@ -418,6 +418,33 @@ export default {
     // 關閉折價券Modal
     closeCouponModal() {
       this.showCoupon = false
+    },
+    async shareLink(toWhere) {
+      const url = window.location.href
+      switch(toWhere) {
+        case 'line':
+          window.open(`https://social-plugins.line.me/lineit/share?url=${url}`, '_blank', 'width=640,height=480,left=450,top=250')
+          break
+        case 'line-responsive':
+          window.open(`https://social-plugins.line.me/lineit/share?url=${url}`)
+          break
+        case 'facebook':
+          window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank', 'width=640,height=480,left=450,top=250')
+          break
+        case 'default':
+          if (navigator.share) {
+            await navigator.share({
+              title: `${this.product.category}${this.product.title}`,
+              text: '商品介紹',
+              url
+            })
+            .then(() => console.log('success'))
+            .catch((err) => console.log(err))
+          } else {
+            window.open(`mailto:?&subject=我發現一個超讚的網站&body=${this.product.category} - ${this.product.title} ${url}`)
+          }
+          break
+      }
     }
   },
   mounted() {

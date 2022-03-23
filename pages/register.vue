@@ -1,5 +1,5 @@
 <template>
-  <section class="w-full flex flex-col items-center justify-center px-5">
+  <section class="w-full flex flex-col items-center justify-center px-5 mt-5 md:mt-0">
     <!-- tab -->
     <div class="w-full md:max-w-[460px] flex items-center justify-between border-b" v-if="$route.name !== 'register-finish'">
       <div class="w-full text-center pb-1 border-b-[5px] transition duration-300 hover:font-bold" :class="{'border-[#FA5936] font-bold': item.routeName === $route.name, 'border-transparent cursor-pointer': item.routeName !== $route.name}" v-for="item in tabList" :key="item.id" @click="changeTab(item.routeName)">
@@ -28,17 +28,6 @@ export default {
       if (routeName === this.$route.name) return;
       this.$router.push({ name: routeName });
     },
-  },
-  mounted() {
-    window.fbAsyncInit = () => {
-      FB.init({
-        appId: "1289081708257437",
-        cookie: true,
-        xfbml: true,
-        version: "v12.0",
-      });
-      FB.AppEvents.logPageView();
-    }
   }
 };
 </script>

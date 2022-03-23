@@ -11,7 +11,7 @@
           </div>
           <img :src="product.imgUrl" :alt="product.title" @click="$router.push(`/product/${product.id}?category=${$route.query.category}`)" class="h-full w-full duration-300 group-hover:scale-110 group-hover:z-0 cursor-pointer">
         </div>
-        <a href="#" v-if="!product.isSoldOut" @click.prevent="$router.push(`/product/${product.id}`)" class="duration-150 group-hover:text-[#FA5936] line-clamp-2 mb-8 mt-3">{{ product.title }}</a>
+        <a href="#" v-if="!product.isSoldOut" @click.prevent="$router.push(`/product/${product.id}`), scrollBehavior({ x: 0, y: 0 })" class="duration-150 group-hover:text-[#FA5936] line-clamp-2 mb-8 mt-3">{{ product.title }}</a>
         <a href="#" v-else class="pointer-events-none line-clamp-2 mb-8 mt-3">{{ product.title }}</a>
         <div class="absolute w-full left-0 bottom-0 flex flex-col md:flex-row items-start md:justify-between">
           <div class="flex space-x-3">

@@ -1,5 +1,5 @@
 <template>
-  <section class="w-full flex flex-col items-center justify-center px-5">
+  <section class="w-full flex flex-col items-center justify-center px-5 mt-5 md:mt-0">
     <h3 class="text-2xl mb-6" v-if="$route.name !== 'login-resetFinish'">{{setTitle()}}</h3>
 
     <Nuxt-child class="md:max-w-[460px]" />
@@ -25,17 +25,6 @@ export default {
         }
       };
     },
-  },
-  mounted() {
-    window.fbAsyncInit = () => {
-      FB.init({
-        appId: "1289081708257437",
-        cookie: true,
-        xfbml: true,
-        version: "v12.0",
-      });
-      FB.AppEvents.logPageView();
-    }
   }
 };
 </script>
