@@ -1,13 +1,12 @@
 export default {
   server: {
     port: 1803,
-    host: '0.0.0.0'
+    // host: '0.0.0.0'
   },
   router: {
     scrollBehavior(route, from) {
       const notToTopList = ['product-id', 'product-id-rate']
       const needToTopList = ['product']
-      console.log(from)
       if (needToTopList.includes(from.name)) return { x: 0, y: 0 }
       if (notToTopList.includes(route.name)) return
       return { x: 0, y: 0 }

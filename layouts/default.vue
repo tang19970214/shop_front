@@ -4,6 +4,7 @@
       <!-- <Loading /> -->
       <Header />
       <Nuxt class="pt-16 lg:pt-[132px] pb-4 min-h-[calc(100vh-88px)]" />
+      <GoTop />
       <Footer />
     </section>
   </client-only>
