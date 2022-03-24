@@ -18,6 +18,7 @@
         <button @click="changeImg(true)" class="absolute right-1 top-1/3 w-8 h-8 rounded-full bg-[rgba(231,231,231,0.79)] p-2.5 flex md:hidden justify-center items-center duration-300 hover:bg-[#FA5936] group">
           <fa icon="fa-solid fa-angle-right" class="text-black duration-300 group-hover:text-white"></fa>
         </button>
+        <!-- 下方輪播圖片 -->
         <div class="relative w-full">
           <VueSlickCarousel :arrows="false" :slidesToShow="4" ref="c2" :asNavFor="$refs.c1" :focusOnSelect="true" class="mt-5 -mx-1">
             <div v-for="(item, idx) in product.images" :key="item.id" class="pr-2" @click="changeImg(idx)">
@@ -172,7 +173,7 @@
     <div class="w-full mt-16 lg:mt-0 sticky top-[64px] lg:top-[132px] z-10">
       <ul class="flex w-full mb-10 shadow-[0px_4px_4px_rgba(0,0,0,0.25)] relative overflow-hidden">
         <li v-for="list in tabList" :key="list.id" @click="$router.push({ path: `/product/${product.id}${list.path}?category=${$route.query.category}`, scrollBehavior: false})" class="duration-300 text-center text-lg w-1/2 py-3 bg-white cursor-pointer hover:text-[#FA5936]">{{ list.label }}</li>
-        <div class="absolute ease-in-out duration-700 left-0 bottom-0 w-1/2 h-2 bg-[#FA5936]" :class="{'left-[50%]': $route.name == 'product-id-rate'}"></div>
+        <div class="absolute duration-700 ease-[cubic-bezier(1,.23,.28,1)] left-0 bottom-0 w-1/2 h-2 bg-[#FA5936]" :class="{'left-[50%]': $route.name == 'product-id-rate'}"></div>
       </ul>
     </div>
     

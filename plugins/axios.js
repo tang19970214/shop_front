@@ -99,6 +99,8 @@ export default ({
           } = res.data
           switch (code) {
             case 500:
+              removeToken()
+              removeRefreshToken()
               let url = window.location.pathname
               window.localStorage.setItem('last_path', JSON.stringify(url))
               redirect('/login')

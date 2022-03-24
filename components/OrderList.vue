@@ -35,7 +35,7 @@
           <p class="text-lg text-[#FA5936]">${{ list.sale * list.quantity }}</p>
         </td>
       </tr>
-      <div v-if="isOverFiveItems && !isShowTotalItems" class="cursor-pointer absolute flex justify-center items-end pb-4 bottom-0 left-0 w-full h-[250px] bg-gradient-to-b from-[rgba(255,255,255,0.6)] to-[rgba(251,238,223,0.87)]" @click.prevent="isShowTotalItems = true">
+      <div v-if="isOverFiveItems && !isShowTotalItems" class="cursor-pointer absolute flex justify-center items-end pb-4 bottom-0 left-0 w-full h-1/3 bg-gradient-to-b from-[rgba(255,255,255,0.1)] to-[rgba(251,238,223,0.87)]" @click.prevent="isShowTotalItems = true">
         <a href="#" class="w-full text-center duration-300 text-sky-500 hover:text-sky-600 text-lg"> 查看完整訂單 >> </a>
       </div>
     </table>
