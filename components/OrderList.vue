@@ -31,7 +31,7 @@
             </div>
           </div>
         </td>
-        <td class="hidden lg:table-cell" :class="{ hidden: idx >= 5 && isOverFiveItems && !isShowTotalItems, 'lg:hidden': idx >= 5 && isOverFiveItems && !isShowTotalItems }">
+        <td class="hidden lg:table-cell text-right" :class="{ hidden: idx >= 5 && isOverFiveItems && !isShowTotalItems, 'lg:hidden': idx >= 5 && isOverFiveItems && !isShowTotalItems }">
           <p class="text-lg text-[#FA5936]">${{ list.sale * list.quantity }}</p>
         </td>
       </tr>

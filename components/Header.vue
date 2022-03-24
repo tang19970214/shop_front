@@ -16,7 +16,7 @@
               <fa class="text-[#A3A3A3]" :icon="['fas', 'user-circle']" />
               <p>陳ＯＯ</p>
               <div class="hidden md:block absolute w-full h-24 bg-transparent top-0 left-0 pointer-events-none group-hover:pointer-events-auto"></div>
-              <div class="hidden md:block group-hover:scale-100 group-hover:pointer-events-auto pointer-events-none  duration-300 scale-0 absolute -bottom-36 -left-24 h-32 w-52 bg-white p-5 border border-[#c4c4c4] rounded-md shadow-[0px_4px_4px_rgba(0,0,0,0.25)] z-30 after:content-[''] after:w-6 after:h-6 after:bg-white after:absolute after:right-10 after:-top-3 after:rotate-45 after:rounded-[5px_0px_0px_0px] after:border-t after:border-l after:border-t-[#c4c4c4] after:border-l-[#c4c4c4]">
+              <div class="hidden md:block group-hover:scale-100 group-hover:pointer-events-auto pointer-events-none  duration-300 scale-0 absolute -bottom-36 -left-32 xl:-left-24 h-32 w-52 bg-white p-5 border border-[#c4c4c4] rounded-md shadow-[0px_4px_4px_rgba(0,0,0,0.25)] z-30 after:content-[''] after:w-6 after:h-6 after:bg-white after:absolute after:right-10 after:-top-3 after:rotate-45 after:rounded-[5px_0px_0px_0px] after:border-t after:border-l after:border-t-[#c4c4c4] after:border-l-[#c4c4c4]">
                 <ul class="flex flex-col justify-between">
                   <li v-for="list in memberList" :key="list.id" class="duration-300 cursor-pointer hover:text-[#FA5936]" :class="{'text-[#FA5936]': $route.name === list.path}">
                     <a v-if="list.value !== '/logout'" @click.prevent="goPath(list.value)" class="block">

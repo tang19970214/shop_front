@@ -8,7 +8,7 @@
       <div class="col-span-12 md:col-span-6 relative">
         <VueSlickCarousel v-bind="settings" ref="c1" :asNavFor="$refs.c2" :focusOnSelect="true">
           <div v-for="item in product.images" :key="item.id">
-            <img class="w-full h-[360px] md:h-[400px] object-cover pointer-events-none" :src="item.imgUrl" alt="">
+            <img class="w-full h-[360px] xl:h-[400px] object-cover pointer-events-none" :src="item.imgUrl" alt="">
           </div>
         </VueSlickCarousel>
         <!-- 手機版輪播按鈕 -->

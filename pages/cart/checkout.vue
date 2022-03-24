@@ -79,7 +79,7 @@
             <span class="text-lg font-bold">訂單金額</span>
           </div>
           <div class="col-span-3 md:col-span-2 flex flex-col text-right">
-            <span class="text-3xl font-bold text-[#FA5936]">{{ totalPrice }}</span>
+            <span class="text-3xl font-bold text-[#FA5936]">${{ totalPrice }}</span>
           </div>
         </div>
       </tr>
@@ -294,7 +294,7 @@
     </ValidationObserver>
 
     <!-- 優惠券彈出視窗 -->
-    <Modal :openModal="openModal" :width="'w-11/12 lg:w-full md:w-7/12 xl:w-7/12'" @closeModal="closeModal">
+    <Modal :openModal="openModal" :width="'w-11/12 md:w-7/12'" @closeModal="closeModal">
       <div class="p-0 lg:px-5 lg:py-0">
         <h4 class="text-2xl font-bold mb-6">使用優惠碼</h4>
         <div class="relative w-full lg:w-1/2">
@@ -320,7 +320,7 @@
     </Modal>
 
     <!-- 優惠券詳情彈出視窗 -->
-    <Modal :openModal="openCouponDetailModal" :title="'優惠券詳情'" :headerBorder="true" :width="'w-11/12 lg:w-full md:w-7/12 xl:w-7/12'" @closeModal="closeCouponDetail">
+    <Modal :openModal="openCouponDetailModal" :title="'優惠券詳情'" :headerBorder="true" :width="'w-11/12 md:w-7/12'" @closeModal="closeCouponDetail">
       <div class="py-5">
         <h3 class="font-bold text-lg">{{ couponDetail.name }}</h3>
         <div class="w-full bg-[#FFF5C2] p-5">
@@ -350,7 +350,7 @@
     </Modal>
 
     <!-- 新增地址彈出視窗 -->
-    <Modal :openModal="openAddAddressModal" :width="'w-11/12 lg:w-full md:w-7/12 xl:w-7/12'" @closeModal="closeAddAddressModal">
+    <Modal :openModal="openAddAddressModal" :width="'w-11/12 md:w-7/12'" @closeModal="closeAddAddressModal">
       <h3 class="text-2xl font-bold md:px-6">新增地址</h3>
       <span class="text-lg md:px-6">請確認你已提供與身份證件相同之真實姓名，以便取貨時供超商店員核對</span>
       
@@ -601,36 +601,36 @@ export default {
       })
       this.checkoutInfo.deliveryAddress = ''
     },
+    // 信用卡跳格
     autoTab(e) {
-      e.path[0]
-      switch(e.path[0].id) {
+      switch(e.target.id) {
         case'cardNum1':
-          if (e.path[0].value.length === 4) {
+          if (e.target.value.length === 4) {
             this.$refs.cardNum2.focus()
           }
           break
         case'cardNum2':
-          if (e.path[0].value.length === 4) {
+          if (e.target.value.length === 4) {
             this.$refs.cardNum3.focus()
           }
           break
         case'cardNum3':
-          if (e.path[0].value.length === 4) {
+          if (e.target.value.length === 4) {
             this.$refs.cardNum4.focus()
           }
           break
         case 'cardNum4':
-          if (e.path[0].value.length === 4) {
+          if (e.target.value.length === 4) {
             this.$refs.expiredMonth.focus()
           }
           break
         case 'expiredMonth':
-          if (e.path[0].value.length === 2) {
+          if (e.target.value.length === 2) {
             this.$refs.expiredYear.focus()
           }
           break
         case 'expiredYear':
-          if (e.path[0].value.length === 2) {
+          if (e.target.value.length === 2) {
             this.$refs.cvv.focus()
           }
           break

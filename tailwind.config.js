@@ -7,9 +7,7 @@ module.exports = {
     "./plugins/**/*.{js,ts}",
     "./nuxt.config.{js,ts}",
     "./src/**/*.{html,js}",
-    "./node_modules/tw-elements/dist/js/**/*.js",
-    './public/**/*.html',
-    './src/**/*.{js,jsx,ts,tsx,vue}',
+    "./node_modules/tw-elements/dist/js/**/*.js"
   ],
   plugins: [
     require('tw-elements/dist/plugin'),
