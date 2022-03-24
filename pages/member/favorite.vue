@@ -9,11 +9,11 @@
     </div>
     <div class="w-full grid grid-cols-2 lg:grid-cols-3 gap-6">
       <div v-for="item in filterList(list)" :key="item.id" class="w-full flex flex-col gap-1 text-left group overflow-hidden">
-        <div class="w-full h-44 md:h-80 overflow-hidden cursor-pointer">
+        <div @click="$router.push(`/product/${item.id}?category=${item.category}`)" class="w-full h-44 md:h-80 overflow-hidden cursor-pointer">
           <img :src="item.imgUrl" :alt="item.title" class="w-full h-80 duration-300 object-cover group-hover:scale-125" />
         </div>
 
-        <label class="duration-300 group-hover:text-[#FA5936]">{{ item.title }}</label>
+        <label @click="$router.push(`/product/${item.id}?category=${item.category}`)" class="duration-300 cursor-pointer group-hover:text-[#FA5936]">{{ item.title }}</label>
 
         <div class="w-full block md:flex items-center justify-between">
           <div class="flex items-center gap-1">
@@ -24,7 +24,6 @@
               ${{ item.price }}
             </p>
           </div>
-
           <fa @click="cancelFavorite(item)" class="cursor-pointer text-red-500 mt-2 md:bt-0" :icon="['fas', 'heart']"/>
         </div>
       </div>
@@ -41,6 +40,7 @@ export default {
       list: [
         {
           id: 1,
+          category: 2,
           imgUrl: 'https://images.unsplash.com/photo-1504382103100-db7e92322d39?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80',
           title: "春季的初戀微甜｜金牌紅烏龍禮盒",
           price: 6520,
@@ -50,6 +50,7 @@ export default {
         },
         {
           id: 2,
+          category: 3,
           imgUrl: 'https://images.unsplash.com/reserve/EnF7DhHROS8OMEp2pCkx_Dufer%20food%20overhead%20hig%20res.jpg?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1778&q=80',
           title: "春季的初戀微甜｜金牌紅烏龍禮盒",
           price: 6520,
@@ -59,6 +60,7 @@ export default {
         },
         {
           id: 3,
+          category: 4,
           imgUrl: 'https://images.unsplash.com/photo-1541870730196-cd1efcbf5649?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=872&q=80',
           title: "春季的初戀微甜｜金牌紅烏龍禮盒",
           price: 6000,
@@ -68,6 +70,7 @@ export default {
         },
         {
           id: 4,
+          category: 2,
           imgUrl: 'https://images.unsplash.com/photo-1544787219-7f47ccb76574?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=842&q=80',
           title: "春季的初戀微甜｜金牌紅烏龍禮盒",
           price: 6000,
@@ -77,6 +80,7 @@ export default {
         },
         {
           id: 5,
+          category: 3,
           imgUrl: 'https://images.unsplash.com/photo-1491720731493-223f97d92c21?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1462&q=80',
           title: "春季的初戀微甜｜金牌紅烏龍禮盒",
           price: 6000,

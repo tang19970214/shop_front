@@ -24,7 +24,7 @@
             {{ list.label }}
           </span>
         </li>
-        <div :style="borderStyle" class="absolute bottom-[0%] h-1 duration-1000 ease-[cubic-bezier(1,.23,.28,1)] bg-[#FA5936]"></div>
+        <div :style="borderStyle" class="absolute bottom-[0%] h-1 duration-700 ease-[cubic-bezier(1,.23,.28,1)] bg-[#FA5936]"></div>
       </ul>
     </div>
 

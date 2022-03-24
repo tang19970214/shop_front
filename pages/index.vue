@@ -11,13 +11,15 @@
     </div> -->
 
     <div class="w-full" v-for="item in blockList" :key="item.id">
-      <component :is="item.name" :carouselArr="carouselArr" />
+      <!-- 測試 keep-alive -->
+      <keep-alive>
+        <component :is="item.name" :carouselArr="carouselArr" />
+      </keep-alive>
     </div>
   </section>
 </template>
 
 <script>
-import Cookies from "js-cookie";
 export default {
   name: "index",
   async asyncData({ app, $api }) {
