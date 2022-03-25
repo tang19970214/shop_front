@@ -8,13 +8,6 @@ const toQsFrom = (data) => Qs.stringify(data)
 export default ({ $request }, inject) => {
   const api = {
     check: {
-      login(data) {
-        return $request({
-          url: "check/login",
-          method: "post",
-          data
-        })
-      },
       getUserProfile(params) {
         return $request({
           url: "check/getUserProfile",

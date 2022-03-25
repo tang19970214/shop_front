@@ -27,28 +27,28 @@
           <p class="absolute text-center -bottom-14 text-[#A3A3A3] text-sm md:text-md">{{ order.statusTime[0] }}</p>
         </li>
         <li class="w-1/5 flex flex-col flex-none items-center relative after:content-[''] after:absolute after:bg-[#1ebe5a] after:w-full after:h-1 after:-right-1/2 after:top-1/2 after:z-[-1]">
-          <div class="w-[70px] h-[70px] border-4 border-[#1ebe5a] rounded-full bg-white relative after:content-[''] after:absolute after:w-full after:h-full after:bg-[url(~/static/images/icon/step2.svg)] after:bg-no-repeat after:top-3.5 after:left-3.5" :class="{'bg-[#1ebe5a] after:bg-[url(~/static/images/icon/step2-done.svg)]': order.status >= 2}"></div>
+          <div class="w-[70px] h-[70px] border-4 border-[#1ebe5a] rounded-full bg-white relative after:content-[''] after:absolute after:w-full after:h-full after:bg-[url(~/static/images/icon/step2.svg)] after:bg-no-repeat after:top-3.5 after:left-3.5" :class="{ 'bg-[#1ebe5a] after:bg-[url(~/static/images/icon/step2-done.svg)]': order.status >= 2 }"></div>
           <p class="absolute text-center -bottom-8">訂單已付款</p>
           <p class="absolute text-center -bottom-14 text-[#A3A3A3] text-sm md:text-md">{{ order.statusTime[1] }}</p>
         </li>
         <li class="w-1/5 flex flex-col flex-none items-center relative after:content-[''] after:absolute after:bg-[#1ebe5a] after:w-full after:h-1 after:-right-1/2 after:top-1/2 after:z-[-1]">
-          <div class="w-[70px] h-[70px] border-4 border-[#1ebe5a] rounded-full bg-white relative after:content-[''] after:absolute after:w-full after:h-full after:bg-[url(~/static/images/icon/step3.svg)] after:bg-no-repeat after:top-3.5 after:left-3.5" :class="{'bg-[#1ebe5a] after:bg-[url(~/static/images/icon/step3-done.svg)]': order.status >= 3}"></div>
+          <div class="w-[70px] h-[70px] border-4 border-[#1ebe5a] rounded-full bg-white relative after:content-[''] after:absolute after:w-full after:h-full after:bg-[url(~/static/images/icon/step3.svg)] after:bg-no-repeat after:top-3.5 after:left-3.5" :class="{ 'bg-[#1ebe5a] after:bg-[url(~/static/images/icon/step3-done.svg)]': order.status >= 3 }"></div>
           <p class="absolute text-center -bottom-8">訂單已出貨</p>
           <p class="absolute text-center -bottom-14 text-[#A3A3A3] text-sm md:text-md">{{ order.statusTime[2] }}</p>
         </li>
         <li class="w-1/5 flex flex-col flex-none items-center relative after:content-[''] after:absolute after:bg-[#1ebe5a] after:w-full after:h-1 after:-right-1/2 after:top-1/2 after:z-[-1]">
-          <div class="w-[70px] h-[70px] border-4 border-[#1ebe5a] rounded-full bg-white relative after:content-[''] after:absolute after:w-full after:h-full after:bg-[url(~/static/images/icon/step4.svg)] after:bg-no-repeat after:top-3.5 after:left-3.5" :class="{'bg-[#1ebe5a] after:bg-[url(~/static/images/icon/step4-done.svg)]': order.status >= 4}"></div>
+          <div class="w-[70px] h-[70px] border-4 border-[#1ebe5a] rounded-full bg-white relative after:content-[''] after:absolute after:w-full after:h-full after:bg-[url(~/static/images/icon/step4.svg)] after:bg-no-repeat after:top-3.5 after:left-3.5" :class="{ 'bg-[#1ebe5a] after:bg-[url(~/static/images/icon/step4-done.svg)]': order.status >= 4 }"></div>
           <p class="absolute text-center -bottom-8">待收貨</p>
           <p class="absolute text-center -bottom-14 text-[#A3A3A3] text-sm md:text-md">{{ order.statusTime[3] }}</p>
         </li>
         <li class="w-1/5 flex flex-col flex-none items-center relative">
-          <div class="w-[70px] h-[70px] border-4 border-[#1ebe5a] rounded-full bg-white relative after:content-[''] after:absolute after:w-full after:h-full after:bg-[url(~/static/images/icon/step5.svg)] after:bg-no-repeat after:top-3.5 after:left-3.5" :class="{'bg-[#1ebe5a] after:bg-[url(~/static/images/icon/step5-done.svg)]': order.status === 5}"></div>
+          <div class="w-[70px] h-[70px] border-4 border-[#1ebe5a] rounded-full bg-white relative after:content-[''] after:absolute after:w-full after:h-full after:bg-[url(~/static/images/icon/step5.svg)] after:bg-no-repeat after:top-3.5 after:left-3.5" :class="{ 'bg-[#1ebe5a] after:bg-[url(~/static/images/icon/step5-done.svg)]': order.status === 5 }"></div>
           <p class="absolute text-center -bottom-8">待評價</p>
           <p class="absolute text-center -bottom-14 text-[#A3A3A3] text-sm md:text-md">{{ order.statusTime[4] }}</p>
         </li>
       </ul>
     </div>
-    
+
     <div v-else class="w-full bg-[#FFF5C2] p-5 text-center">
       <div class="flex justify-center">
         <p class="font-bold text-2xl">訂單已取消</p>
@@ -58,14 +58,13 @@
       </div>
       <p class="text-lg text-[#404040]">訂單編號：{{ order.id }}</p>
     </div>
-    
+
     <table class="w-full mt-6">
-      
       <!-- 商品列表 -->
       <tr v-for="list in order.orderItems" :key="list.id" class="border-b border-b-[#c4c4c4]">
         <td class="p-4">
           <div class="flex md:items-center space-x-5">
-            <img class="h-24 w-24" :src="list.imgUrl" :alt="list.title">
+            <img class="h-24 w-24" :src="list.imgUrl" :alt="list.title" />
             <div class="flex flex-col space-y-2 text-lg">
               <h3>{{ list.title }}</h3>
               <span class="block md:hidden">X{{ list.quantity }}</span>
@@ -92,13 +91,13 @@
             </p>
             <p class="text-lg">運費</p>
             <div class="flex justify-end space-x-2 items-center">
-              <div class="border border-[#a3a3a3] rounded-md w-5 h-5 flex items-center justify-center bg-[#a3a3a3]" :class="{'bg-[#fff]': order.point === 0}">
+              <div class="border border-[#a3a3a3] rounded-md w-5 h-5 flex items-center justify-center bg-[#a3a3a3]" :class="{ 'bg-[#fff]': order.point === 0 }">
                 <fa class="text-white text-xs" icon="fa-solid fa-check"></fa>
               </div>
               <p class="text-lg relative">使用紅利金</p>
             </div>
             <div class="flex items-center justify-end space-x-3">
-              <img src="~/static/images/icon/coupon.svg" alt="優惠碼/折價券">
+              <img src="~/static/images/icon/coupon.svg" alt="優惠碼/折價券" />
               <p class="text-lg">使用優惠碼/折價券</p>
             </div>
           </div>
@@ -118,11 +117,13 @@
           <div class="grid grid-cols-12">
             <div class="col-span-8">
               <div class="flex flex-col items-end space-y-3 py-3 text-lg">
-                <span><span class="text-sm text-[#a3a3a3] mr-2">({{ totalQuantity }}件商品)</span>商品小計</span>
+                <span
+                  ><span class="text-sm text-[#a3a3a3] mr-2">({{ totalQuantity }}件商品)</span>商品小計</span
+                >
                 <span>運費</span>
                 <span>使用紅利金</span>
                 <span class="p-2 w-full border border-[#16A34A] text-[#16A34A] rounded-md text-right relative">
-                  <img class="absolute top-1/2 left-2 -translate-y-3" src="~/static/images/icon/coupon-green.svg" alt="使用優惠碼/折價券">
+                  <img class="absolute top-1/2 left-2 -translate-y-3" src="~/static/images/icon/coupon-green.svg" alt="使用優惠碼/折價券" />
                   使用優惠碼/折價券
                 </span>
               </div>
@@ -143,7 +144,9 @@
       <tr class="hidden md:table-row">
         <td></td>
         <td class="text-right"><span class="text-lg font-bold">訂單金額</span></td>
-        <td class="text-right pr-5 py-5"><span class="text-3xl text-[#FA5936] font-bold">${{ order.total }}</span></td>
+        <td class="text-right pr-5 py-5">
+          <span class="text-3xl text-[#FA5936] font-bold">${{ order.total }}</span>
+        </td>
       </tr>
       <!-- 訂單金額手機版 -->
       <tr class="table-row md:hidden">
@@ -217,7 +220,7 @@
         data-mdb-ripple="true"
         data-mdb-ripple-color="light"
         class="mt-16 duration-150 w-60 py-4 rounded-xl shadow-md text-white text-lg tracking-widest hover:shadow-inner disabled:cursor-not-allowed disabled:opacity-80"
-        :class="{'bg-[#a3a3a3] cursor-not-allowed': order.status >= 3, 'bg-gradient-to-r from-[#FF6D3F] to-[#FA5936]': order.status < 3,}"
+        :class="{ 'bg-[#a3a3a3] cursor-not-allowed': order.status >= 3, 'bg-gradient-to-r from-[#FF6D3F] to-[#FA5936]': order.status < 3 }"
         :disabled="order.status >= 3"
         @click="isOpen = true"
       >
@@ -228,15 +231,7 @@
 
     <!-- 立即評價按鈕 -->
     <div class="flex justify-center">
-      <button
-      v-if="order.status === 4"
-      @click="handleOpenRateModal()"
-      type="button"
-      data-mdb-ripple="true"
-      data-mdb-ripple-color="light"
-      class="bg-gradient-to-t from-[#FF6D3F] to-[#FA5936] px-20 py-4 mt-20 mb-10 rounded-xl text-white">
-        立即評價
-      </button>
+      <button v-if="order.status === 4" @click="handleOpenRateModal()" type="button" data-mdb-ripple="true" data-mdb-ripple-color="light" class="bg-gradient-to-t from-[#FF6D3F] to-[#FA5936] px-20 py-4 mt-20 mb-10 rounded-xl text-white">立即評價</button>
     </div>
 
     <!-- 取消訂單彈出視窗 -->
@@ -251,7 +246,7 @@
         <div class="flex items-center">
           <span class="text-sm lg:text-lg">取消原因：</span>
           <div class="w-60 relative after:absolute after:pointer-events-none after:w-6 after:h-full after:content-[''] after:top-4 after:right-3 after:bg-[url(~/static/images/icon/arrow-bottom.svg)] after:bg-no-repeat">
-            <select v-model="cancelType" name="" class="appearance-none bg-white py-2.5 px-4 w-full rounded-md border border-[#a3a3a3]" :class="{ 'text-slate-400': cancelType === '','text-slate-900': cancelType !== '' }">
+            <select v-model="cancelType" name="" class="appearance-none bg-white py-2.5 px-4 w-full rounded-md border border-[#a3a3a3]" :class="{ 'text-slate-400': cancelType === '', 'text-slate-900': cancelType !== '' }">
               <option value="" disabled selected>請選擇</option>
               <option :value="item" v-for="item in cancelOrderSelect" :key="item">
                 {{ item }}
@@ -270,7 +265,7 @@
         <ul>
           <li v-for="(rate, idx) in rateArr" :key="rate.id" class="my-5">
             <div class="flex gap-4 mb-2 border-b border-b-[#c4c4c4] pb-3 md:pb-0 md:border-0">
-              <img :src="rate.imgUrl" :alt="rate.title" class="h-16 w-16">
+              <img :src="rate.imgUrl" :alt="rate.title" class="h-16 w-16" />
               <h5>{{ rate.title }}</h5>
             </div>
             <div class="flex justify-center my-5 gap-5">
@@ -281,17 +276,17 @@
             </div>
             <textarea v-model="rate.message" rows="4" placeholder="寫下你的想法..." class="w-full border border-[#a3a3a3] rounded-xl px-5 py-2 resize-none"></textarea>
             <div class="my-3 flex items-center gap-2">
-              <label :for="`uploadBtn + ${rate.id}`" class="duration-300 text-[#FA5936] text-lg border border-[#FA5936] py-1 px-3 rounded-xl" :class="{'cursor-not-allowed bg-gray-300 text-[#fff] border-[#fff]': rate.photos.length >= 5, 'cursor-pointer hover:bg-[#FA5936] hover:text-white': rate.photos.length < 5}">
+              <label :for="`uploadBtn + ${rate.id}`" class="duration-300 text-[#FA5936] text-lg border border-[#FA5936] py-1 px-3 rounded-xl" :class="{ 'cursor-not-allowed bg-gray-300 text-[#fff] border-[#fff]': rate.photos.length >= 5, 'cursor-pointer hover:bg-[#FA5936] hover:text-white': rate.photos.length < 5 }">
                 <fa icon="fa-solid fa-camera"></fa>
                 上傳照片
               </label>
-              <input @change="uploadImages($event, idx)" type="file" accept="image/png, image/jpg, image/jpeg, image/webp" multiple :id="`uploadBtn + ${rate.id}`" class="hidden" :disabled="rate.photos.length >= 5">
+              <input @change="uploadImages($event, idx)" type="file" accept="image/png, image/jpg, image/jpeg, image/webp" multiple :id="`uploadBtn + ${rate.id}`" class="hidden" :disabled="rate.photos.length >= 5" />
               <span class="text-lg text-[#a3a3a3]">最多可以上傳5張照片</span>
             </div>
             <!-- 已上傳的圖片 -->
-            <transition-group tag="ul" name="scale" class="flex gap-2 border-b border-b-neutral-700 items-center" :class="{'border-b-0': (idx + 1) === rateArr.length}">
+            <transition-group tag="ul" name="scale" class="flex gap-2 border-b border-b-neutral-700 items-center" :class="{ 'border-b-0': idx + 1 === rateArr.length }">
               <li v-for="(uploaded, uploadImgIdx) in rate.photos" :key="`${uploaded.filePath} + ${uploaded.fileName}`" class="relative group mb-3">
-                <img :src="`${imgBaseURL}/${uploaded.filePath}`" :alt="uploaded.fileName" class="w-16 h-16 object-cover">
+                <img :src="`${imgBaseURL}/${uploaded.filePath}`" :alt="uploaded.fileName" class="w-16 h-16 object-cover" />
                 <div @click="deleteImg(idx, uploadImgIdx)" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full w-10 h-10 bg-[#FA5936] duration-300 opacity-0 flex justify-center items-center pointer-events-none cursor-pointer group-hover:opacity-100 group-hover:pointer-events-auto">
                   <fa icon="fa-solid fa-xmark" class="text-lg text-white"></fa>
                 </div>
@@ -302,36 +297,28 @@
               </li>
             </transition-group>
           </li>
-          <label for="anonymousCheckbox" class="cursor-pointer border border-[#a3a3a3] rounded-md overflow-hidden px-3 py-0.5 duration-300 relative" :class="{'border-[#FA5936]': isAnonymous}">
-            <div class="bg-[#FA5936] scale-0 absolute w-full h-full top-0 left-0 flex items-center justify-center duration-300 rounded-md" :class="{'scale-110': isAnonymous}">
+          <label for="anonymousCheckbox" class="cursor-pointer border border-[#a3a3a3] rounded-md overflow-hidden px-3 py-0.5 duration-300 relative" :class="{ 'border-[#FA5936]': isAnonymous }">
+            <div class="bg-[#FA5936] scale-0 absolute w-full h-full top-0 left-0 flex items-center justify-center duration-300 rounded-md" :class="{ 'scale-110': isAnonymous }">
               <fa icon="fa-solid fa-check" class="text-sm text-white"></fa>
             </div>
           </label>
           <label for="anonymousCheckbox" class="text-lg select-none ml-2 cursor-pointer">匿名評價此商品</label>
-          <input v-model="isAnonymous" type="checkbox" id="anonymousCheckbox" class="hidden">
+          <input v-model="isAnonymous" type="checkbox" id="anonymousCheckbox" class="hidden" />
           <span class="text-gray-400 block ml-10 md:inline md:ml-0">您的名稱將顯示 {{ anonymousUserName }}</span>
         </ul>
         <div class="flex justify-center">
-          <button
-          @click="handleRate()"
-          type="button"
-          data-mdb-ripple="true"
-          data-mdb-ripple-color="light"
-          class="px-24 py-3 mt-11 mb-5 text-white text-lg bg-gradient-to-r from-[rgba(255,109,63,0.84)] to-[#FA5936] rounded-xl">
-          送出
-          </button>
+          <button @click="handleRate()" type="button" data-mdb-ripple="true" data-mdb-ripple-color="light" class="px-24 py-3 mt-11 mb-5 text-white text-lg bg-gradient-to-r from-[rgba(255,109,63,0.84)] to-[#FA5936] rounded-xl">送出</button>
         </div>
       </div>
     </Modal>
-
   </section>
 </template>
 <script>
 export default {
   name: "member-order-id",
   asyncData({ env }) {
-    const imgBaseURL = env.VUE_APP_IMG_URL
-    return { imgBaseURL }
+    const imgBaseURL = env.VUE_APP_IMG_URL;
+    return { imgBaseURL };
   },
   data() {
     return {
@@ -339,7 +326,7 @@ export default {
         id: 21111708328107,
         time: "2021/01/28",
         status: 4,
-        statusTime: ['2022-02-02 12:32', '2022-02-02 14:57', '2022-02-03 09:17', '2022-02-05 11:22'],
+        statusTime: ["2022-02-02 12:32", "2022-02-02 14:57", "2022-02-03 09:17", "2022-02-05 11:22"],
         price: 30000,
         total: 29800,
         transportPrice: 60,
@@ -384,32 +371,32 @@ export default {
       openRateModal: false,
       rateArr: [],
       isUploading: null,
-      isAnonymous: false
+      isAnonymous: false,
     };
   },
   computed: {
     totalQuantity() {
-      let total = 0
+      let total = 0;
       this.order.orderItems.forEach((item) => {
-        total += item.quantity
-      })
-      return total
+        total += item.quantity;
+      });
+      return total;
     },
     anonymousUserName() {
       if (this.isAnonymous) {
-        const userName = 'user1234'
-        const firstStr = userName.slice(0, 1)
-        const lastStr = userName.slice(-1)
-        let hideStar = ''
+        const userName = "user1234";
+        const firstStr = userName.slice(0, 1);
+        const lastStr = userName.slice(-1);
+        let hideStar = "";
         for (let i = 0; i < userName.length - 2; i++) {
-          hideStar += '*'
+          hideStar += "*";
         }
-        const anonymousName = firstStr + hideStar + lastStr
-        return anonymousName
+        const anonymousName = firstStr + hideStar + lastStr;
+        return anonymousName;
       } else {
-        return 'user1234'
+        return "user1234";
       }
-    }
+    },
   },
   methods: {
     // 複製物流編號
@@ -469,118 +456,119 @@ export default {
     },
     // 開啟評價 Modal
     handleOpenRateModal() {
-      this.rateArr = []
+      this.rateArr = [];
       this.order.orderItems.forEach((item) => {
         const rate = {
           id: item.id,
           title: item.title,
           imgUrl: item.imgUrl,
           rate: 0,
-          message: '',
-          photos: []
-        }
-        this.rateArr.push(rate)
-      })
-      this.openRateModal = true
+          message: "",
+          photos: [],
+        };
+        this.rateArr.push(rate);
+      });
+      this.openRateModal = true;
     },
     // 關閉評價 Modal
     handleCloseRateModal() {
-      this.openRateModal = false
+      this.openRateModal = false;
     },
     // 上傳圖片
     async uploadImages(e, rateIdx) {
-      let whichOneOverSize = ''
-      this.isUploading = rateIdx
+      let whichOneOverSize = "";
+      this.isUploading = rateIdx;
       for (let i = 0; i < e.target.files.length; i++) {
-        const formData = new FormData()
+        const formData = new FormData();
         if (i > 5) {
           this.$swal.fire({
-            icon: 'error',
-            confirmButtonText: '確定',
-            confirmButtonColor: '#FA5936',
-            title: `最多可以上傳5張照片`
-          })
+            icon: "error",
+            confirmButtonText: "確定",
+            confirmButtonColor: "#FA5936",
+            title: `最多可以上傳5張照片`,
+          });
         } else {
           if (e.target.files[i].size > 2000000) {
-            whichOneOverSize += `${i + 1}、`
-            if (i === (e.target.files.length - 1)) {
-              whichOneOverSize = whichOneOverSize.slice(0, -1)
+            whichOneOverSize += `${i + 1}、`;
+            if (i === e.target.files.length - 1) {
+              whichOneOverSize = whichOneOverSize.slice(0, -1);
               this.$swal.fire({
-                icon: 'error',
-                confirmButtonText: '確定',
-                confirmButtonColor: '#FA5936',
-                title: `第${whichOneOverSize}個檔案大於2MB，請上傳小於2MB的檔案！`
-              })
+                icon: "error",
+                confirmButtonText: "確定",
+                confirmButtonColor: "#FA5936",
+                title: `第${whichOneOverSize}個檔案大於2MB，請上傳小於2MB的檔案！`,
+              });
             }
           } else {
             if (this.rateArr[rateIdx].photos.length >= 5) {
               this.$swal.fire({
-                icon: 'warning',
-                confirmButtonText: '確定',
-                confirmButtonColor: '#FA5936',
-                title: `最多可以上傳5張照片`
-              })
-              this.isUploading = null
+                icon: "warning",
+                confirmButtonText: "確定",
+                confirmButtonColor: "#FA5936",
+                title: `最多可以上傳5張照片`,
+              });
+              this.isUploading = null;
             } else {
-              formData.append('files', e.target.files[i])
-              await this.$api.members.uploadFiles(formData)
-              .then((res) => {
-                const { fileName, filePath } = res.data.result[0]
-                const rate = {
-                  fileName,
-                  filePath
-                }
-                this.rateArr[rateIdx].photos.push(rate)
-                this.rateArr[rateIdx].tempFiles = JSON.stringify(this.rateArr[rateIdx].photos)
-              })
-              .catch((err) => {
-                this.handleCloseRateModal()
-                console.log(err)
-              })
+              formData.append("files", e.target.files[i]);
+              await this.$api.members
+                .uploadFiles(formData)
+                .then((res) => {
+                  const { fileName, filePath } = res.data.result[0];
+                  const rate = {
+                    fileName,
+                    filePath,
+                  };
+                  this.rateArr[rateIdx].photos.push(rate);
+                  this.rateArr[rateIdx].tempFiles = JSON.stringify(this.rateArr[rateIdx].photos);
+                })
+                .catch((err) => {
+                  this.handleCloseRateModal();
+                  console.log(err);
+                });
             }
+          }
         }
-        }
-        if ((i + 1) === e.target.files.length) {
-          this.isUploading = null
+        if (i + 1 === e.target.files.length) {
+          this.isUploading = null;
         }
       }
-      e.target.value = ''
+      e.target.value = "";
     },
     // 刪除Img
     deleteImg(idx, uploadImgIdx) {
-      this.rateArr[idx].photos.splice(uploadImgIdx, 1)
+      this.rateArr[idx].photos.splice(uploadImgIdx, 1);
     },
     handleRate() {
-      const allItemRateStar = this.rateArr.map((item) => item.rate)
-      const isAllRate = allItemRateStar.includes(0)
+      const allItemRateStar = this.rateArr.map((item) => item.rate);
+      const isAllRate = allItemRateStar.includes(0);
       if (!isAllRate) {
-        this.order.status = 5
+        this.order.status = 5;
         this.$swal.fire({
-          icon: 'success',
+          icon: "success",
           showConfirmButton: false,
           timer: 1500,
-          title: '評價商品成功'
-        })
+          title: "評價商品成功",
+        });
         this.rateArr.forEach((item) => {
-          console.log(item.tempFiles)
-        })
-        this.handleCloseRateModal()
+          console.log(item.tempFiles);
+        });
+        this.handleCloseRateModal();
       } else {
-        let whichOneNotRate = ''
+        let whichOneNotRate = "";
         allItemRateStar.forEach((item, idx) => {
           if (item === 0) {
-            whichOneNotRate += `${idx + 1}、`
+            whichOneNotRate += `${idx + 1}、`;
           }
-        })
-        whichOneNotRate = whichOneNotRate.slice(0, -1)
+        });
+        whichOneNotRate = whichOneNotRate.slice(0, -1);
         this.$swal.fire({
-          icon: 'warning',
+          icon: "warning",
           showConfirmButton: false,
           timer: 1500,
-          title: `第${whichOneNotRate}個商品尚未完成評價`
-        })
+          title: `第${whichOneNotRate}個商品尚未完成評價`,
+        });
       }
-    }
+    },
   },
 };
 </script>
