@@ -38,7 +38,7 @@ export default {
   },
   computed: {
     selectedCategory() {
-      return this.menuList.find(item => item.id === parseInt(this.$route.query?.category))?.label
+      return this.menuList.find(item => item.id == this.$route.query?.category)?.label
     }
   }
 };

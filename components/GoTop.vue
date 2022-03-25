@@ -12,12 +12,19 @@
 export default {
   data() {
     return {
-      isShow: false
+      isShow: false,
+      canSmoothList: ['Chrome', 'Firefox', 'Version/15.4']
     }
   },
   methods: {
     goTop() {
-      if (navigator.userAgent.indexOf("Chrome") !== -1 || navigator.userAgent.indexOf("Firefox") !== -1) {
+      let count = 0
+      this.canSmoothList.forEach((item) => {
+        if (navigator.userAgent.indexOf(item) !== -1) {
+          count += 1
+        }
+      })
+      if (count) {
         window.scrollTo({top: 0, behavior: 'smooth'})
       } else {
         const GoTopTimer = setInterval(() => {
