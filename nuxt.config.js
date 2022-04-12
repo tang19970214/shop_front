@@ -38,7 +38,6 @@ export default {
 
   plugins: [
     '~/plugins/auth',
-    '~/plugins/axios',
     '~/plugins/api',
     { src: '~/plugins/permission', ssr: false },
 

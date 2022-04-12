@@ -16,4 +16,8 @@ body::-webkit-scrollbar-thumb {
   background-color: #a3a3a3;
   border-radius: 20px;
 }
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
 /*# sourceMappingURL=main.css.map */
